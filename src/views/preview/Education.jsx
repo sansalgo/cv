@@ -6,6 +6,9 @@ import SectionTitle from './components/SectionTitle'
 import DashedDivider from './components/DashedDivider'
 import Section from './components/Section'
 import Container from './components/Container'
+import { useFormData } from './FormDataContext'
+import { Fragment } from 'react'
+import ConditionalRender from './components/ConditionalRender'
 
 const styles = StyleSheet.create({
   datePlaceRow: {
@@ -13,31 +16,39 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => (
-  <Section>
-    <SectionTitle title='EDUCATION' />
-    <Container>
-      <DividerSubtitle beforeText='B.Sc(Mathematics)' afterText='Park’s College' />
-      <DatePlaceRow style={styles.datePlaceRow} date='Jun 2019 – Present' place='Tiruppur, Tamilnadu' />
-      <PointText>Percentage : 80</PointText>
-    </Container>
-    <Container>
-      <DashedDivider />
-      <DividerSubtitle beforeText='BE(CSE)' afterText='Karpagam College of Engineering' />
-      <DatePlaceRow style={styles.datePlaceRow} date='Jun 2019 – Present' place='Tiruppur, Tamilnadu' />
-      <PointText>Percentage : 80</PointText>
-    </Container>
-    <Container>
-      <DashedDivider />
-      <DividerSubtitle beforeText='HSC ' afterText='Sasurie vidhya bhavan matriculation higher secondary school' />
-      <DatePlaceRow style={styles.datePlaceRow} date='Jun 2019 – Present' place='Tiruppur, Tamilnadu' />
-      <PointText>Percentage : 80</PointText>
-    </Container>
-    <Container>
-      <DashedDivider />
-      <DividerSubtitle beforeText='B.Sc(Mathematics) ' afterText=' Park’s College' />
-      <DatePlaceRow style={styles.datePlaceRow} date='Jun 2019 – Present' place='Tiruppur, Tamilnadu' />
-      <PointText>Percentage : 80</PointText>
-    </Container>
-  </Section>
-)
+export default () => {
+  const data = useFormData()
+  return (
+    <Section>
+      <SectionTitle title='EDUCATION' />
+      <ConditionalRender value={data.education}>
+        {data.education.map((value, index) => (
+          <Fragment key={index}>
+            <Container>
+              <ConditionalRender value={value.course}>
+                <ConditionalRender value={value.institution}>
+                  <DividerSubtitle beforeText={value.course} afterText={value.institution} />
+                </ConditionalRender>
+              </ConditionalRender>
+              <ConditionalRender value={value.startDate}>
+                <ConditionalRender value={value.endDate}>
+                  <ConditionalRender value={value.location}>
+                    <DatePlaceRow
+                      style={styles.datePlaceRow}
+                      date={`${value.startDate} - ${value.endDate}`}
+                      place={value.location}
+                    />
+                  </ConditionalRender>
+                </ConditionalRender>
+              </ConditionalRender>
+              <ConditionalRender value={value.percentage}>
+                <PointText>Percentage : {value.percentage}</PointText>
+              </ConditionalRender>
+            </Container>
+            {index !== data.education.length - 1 && <DashedDivider />}
+          </Fragment>
+        ))}
+      </ConditionalRender>
+    </Section>
+  )
+}

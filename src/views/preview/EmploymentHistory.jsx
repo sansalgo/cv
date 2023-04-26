@@ -5,6 +5,9 @@ import DatePlaceRow from './components/DatePlaceRow'
 import DashedDivider from './components/DashedDivider'
 import Section from './components/Section'
 import Container from './components/Container'
+import { Fragment } from 'react'
+import { useFormData } from './FormDataContext'
+import ConditionalRender from './components/ConditionalRender'
 
 const styles = StyleSheet.create({
   description: {
@@ -17,33 +20,40 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => (
-  <Section>
-    <SectionTitle title='EMPLOYMENT HISTORY' />
-    <Container>
-      <DividerSubtitle beforeText='MEAN/MERN Stack Developer' afterText='Phicode' />
-      <DatePlaceRow style={styles.datePlaceRow} date='Nov 2021 – Present' place='Coimbatore, Tamilnadu' />
-      <View style={styles.description}>
-        <Text>Description:</Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem autem molestiae voluptate adipisci inventore
-          maiores, tenetur cupiditate natus quis sapiente, soluta delectus minima nemo totam eligendi atque. Minima,
-          assumenda quidem
-        </Text>
-      </View>
-    </Container>
-    <Container>
-      <DashedDivider />
-      <DividerSubtitle beforeText='MEAN/MERN Stack Developer' afterText='Phicode' />
-      <DatePlaceRow style={styles.datePlaceRow} date='Nov 2021 – Present' place='Coimbatore, Tamilnadu' />
-      <View style={styles.description}>
-        <Text>Description:</Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem autem molestiae voluptate adipisci inventore
-          maiores, tenetur cupiditate natus quis sapiente, soluta delectus minima nemo totam eligendi atque. Minima,
-          assumenda quidem
-        </Text>
-      </View>
-    </Container>
-  </Section>
-)
+export default () => {
+  const data = useFormData()
+  return (
+    <Section>
+      <SectionTitle title='EMPLOYMENT HISTORY' />
+      {data.employmentHistory.map((value, index) => (
+        <Fragment key={index}>
+          <Container>
+            <ConditionalRender value={value.position}>
+              <ConditionalRender value={value.companyName}>
+                <DividerSubtitle beforeText={value.position} afterText={value.companyName} />
+              </ConditionalRender>
+            </ConditionalRender>
+            <ConditionalRender value={value.startDate}>
+              <ConditionalRender value={value.endDate}>
+                <ConditionalRender value={value.location}>
+                  <DatePlaceRow
+                    style={styles.datePlaceRow}
+                    date={`${value.startDate} - ${value.endDate}`}
+                    place={value.location}
+                  />
+                </ConditionalRender>
+              </ConditionalRender>
+            </ConditionalRender>
+            <ConditionalRender value={value.description}>
+              <View style={styles.description}>
+                <Text>Description:</Text>
+                <Text>{value.description}</Text>
+              </View>
+            </ConditionalRender>
+          </Container>
+          {index !== data.employmentHistory.length - 1 && <DashedDivider />}
+        </Fragment>
+      ))}
+    </Section>
+  )
+}

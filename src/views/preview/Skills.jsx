@@ -1,7 +1,10 @@
 import { StyleSheet, View, Text } from '@react-pdf/renderer'
+import { Fragment } from 'react'
+import ConditionalRender from './components/ConditionalRender'
 import Container from './components/Container'
 import Section from './components/Section'
 import SectionTitle from './components/SectionTitle'
+import { useFormData } from './FormDataContext'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,23 +24,20 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => (
-  <Section>
-    <SectionTitle title='SKILLS' />
-    <Container>
-      <View style={styles.container}>
-        <Text style={styles.roundedLabel}>HTML5</Text>
-        <Text style={styles.roundedLabel}>CSS3</Text>
-        <Text style={styles.roundedLabel}>REACTJS</Text>
-        <Text style={styles.roundedLabel}>TYPESCRIPT</Text>
-        <Text style={styles.roundedLabel}>JAVASCRIPT</Text>
-        <Text style={styles.roundedLabel}>ANGULAR2+</Text>
-        <Text style={styles.roundedLabel}>FIREBASE+</Text>
-        <Text style={styles.roundedLabel}>NODEJS</Text>
-        <Text style={styles.roundedLabel}>EXPRESSJS</Text>
-        <Text style={styles.roundedLabel}>basics of Photoshop cs3</Text>
-        <Text style={styles.roundedLabel}>MONGODB</Text>
-      </View>
-    </Container>
-  </Section>
-)
+export default () => {
+  const data = useFormData()
+  return (
+    <Section>
+      <SectionTitle title='SKILLS' />
+      <Container>
+        <View style={styles.container}>
+          <ConditionalRender value={data.skills}>
+            {data.skills.map((value, index) => (
+              <Fragment key={index}>{value.value && <Text style={styles.roundedLabel}>{value.value}</Text>}</Fragment>
+            ))}
+          </ConditionalRender>
+        </View>
+      </Container>
+    </Section>
+  )
+}

@@ -51,7 +51,7 @@ const Layout = ({ children }) => {
             <AppBar position='static' elevation={0}>
               <Toolbar>
                 <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  {session ? <ProfileChip /> : ''}
+                  {session ? <ProfileChip /> : null}
                 </Box>
               </Toolbar>
             </AppBar>

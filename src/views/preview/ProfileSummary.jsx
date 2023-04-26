@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer'
+import ConditionalRender from './components/ConditionalRender'
 import Container from './components/Container'
 import Section from './components/Section'
 import SectionTitle from './components/SectionTitle'
+import { useFormData } from './FormDataContext'
 
 const styles = StyleSheet.create({
   summary: {
@@ -11,15 +13,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => (
-  <Section>
-    <SectionTitle title='PROFILE SUMMARY' />
-    <Container>
-      <Text style={styles.summary}>
-        I am a self taught MERN/MEAN stack developer with two years of hands-on experience and one year of industrial
-        experience of designing, development and implementing applications and solutions using a range of technologies
-        and programming languages
-      </Text>
-    </Container>
-  </Section>
-)
+export default () => {
+  const data = useFormData()
+  return (
+    <Section>
+      <SectionTitle title='PROFILE SUMMARY' />
+      <Container>
+        <ConditionalRender value={data.profileSummary}>
+          <Text style={styles.summary}>{data.profileSummary}</Text>
+        </ConditionalRender>
+      </Container>
+    </Section>
+  )
+}
