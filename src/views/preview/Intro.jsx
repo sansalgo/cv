@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer'
 import { useContext } from 'react'
 import { useFormContext } from 'react-hook-form'
-import ConditionalRender from './components/ConditionalRender'
-import IconText from './components/IconText'
+import ConditionalRender from '@/components/ConditionalRender'
+import IconText from '@/components/IconText'
 import { useFormData } from './FormDataContext'
 import { FormContext } from './PDFDocument'
 
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => {
+const Intro = () => {
   const data = useFormData()
   return (
     <View>
@@ -52,3 +52,5 @@ export default () => {
     </View>
   )
 }
+
+export default Intro

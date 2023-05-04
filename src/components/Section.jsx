@@ -6,4 +6,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({ children }) => <View style={styles.section}>{children}</View>
+const Section = ({ children }) => <View style={styles.section}>{children}</View>
+
+export default Section

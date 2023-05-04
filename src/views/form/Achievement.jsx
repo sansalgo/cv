@@ -9,9 +9,8 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import { Fragment } from 'react'
-import ChipButton from '@/components/chipButton'
-import CardFieldArray from './components/CardFieldArray'
-// import CardActionHeader from './components/cardActionHeader'
+import ChipButton from '@/components/ChipButton'
+import CardFieldArray from '@/components/CardFieldArray'
 
 const Achievement = () => {
   const { register, control } = useFormContext()

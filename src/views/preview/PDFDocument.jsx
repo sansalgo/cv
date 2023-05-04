@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default data => (
+const PDFDocument = data => (
   <FormDataProvider data={data}>
     <Document>
       <Page size='A4' style={styles.page}>
@@ -83,3 +83,4 @@ export default data => (
   </FormDataProvider>
 )
 
+export default PDFDocument

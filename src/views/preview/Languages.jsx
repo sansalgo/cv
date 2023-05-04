@@ -1,15 +1,15 @@
 import { StyleSheet, View, Text } from '@react-pdf/renderer'
 import { Fragment } from 'react'
-import ConditionalRender from './components/ConditionalRender'
-import Container from './components/Container'
-import PointText from './components/PointText'
-import Section from './components/Section'
-import SectionTitle from './components/SectionTitle'
+import ConditionalRender from '@/components/ConditionalRender'
+import Container from '@/components/Container'
+import PointText from '@/components/PointText'
+import Section from '@/components/Section'
+import SectionTitle from '@/components/SectionTitle'
 import { useFormData } from './FormDataContext'
 
 const styles = StyleSheet.create({})
 
-export default () => {
+const Languages = () => {
   const data = useFormData()
   return (
     <Section>
@@ -24,3 +24,5 @@ export default () => {
     </Section>
   )
 }
+
+export default Languages

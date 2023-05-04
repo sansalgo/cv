@@ -9,4 +9,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({ title }) => <Text style={styles.title}>{title}</Text>
+const SectionTitle = ({ title }) => <Text style={styles.title}>{title}</Text>
+
+export default SectionTitle

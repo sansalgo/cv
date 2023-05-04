@@ -1,11 +1,14 @@
-import Divider from '@mui/material/Divider'
-import { styled } from '@mui/material/styles'
+import { StyleSheet, View, Text } from '@react-pdf/renderer'
 
-const DashedDivider = styled(Divider)(({ theme }) => ({
-  borderStyle: 'dashed',
-  borderBottomWidth: 'thin',
-  borderColor: theme.palette.secondary.main,
-  opacity: '25%'
-}))
+const styles = StyleSheet.create({
+  divider: {
+    borderBottomWidth: 1,
+    borderBottomStyle: 'dashed',
+    marginTop: 8,
+    marginBottom: 8
+  }
+})
 
-export default DashedDivider;
+const DashedDivider = () => <View style={styles.divider} />
+
+export default DashedDivider

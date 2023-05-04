@@ -1,14 +1,14 @@
 import { StyleSheet, View, Text } from '@react-pdf/renderer'
-import DatePlaceRow from './components/DatePlaceRow'
-import DividerSubtitle from './components/DividerSubtitle'
-import PointText from './components/PointText'
-import SectionTitle from './components/SectionTitle'
-import DashedDivider from './components/DashedDivider'
-import Section from './components/Section'
-import Container from './components/Container'
+import DatePlaceRow from '@/components/DatePlaceRow'
+import DividerSubtitle from '@/components/DividerSubtitle'
+import PointText from '@/components/PointText'
+import SectionTitle from '@/components/SectionTitle'
+import DashedDivider from '@/components/DashedDivider'
+import Section from '@/components/Section'
+import Container from '@/components/Container'
 import { useFormData } from './FormDataContext'
 import { Fragment } from 'react'
-import ConditionalRender from './components/ConditionalRender'
+import ConditionalRender from '@/components/ConditionalRender'
 
 const styles = StyleSheet.create({
   datePlaceRow: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default () => {
+const Education = () => {
   const data = useFormData()
   return (
     <Section>
@@ -52,3 +52,5 @@ export default () => {
     </Section>
   )
 }
+
+export default Education

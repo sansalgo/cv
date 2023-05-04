@@ -23,6 +23,7 @@ import Stack from '@mui/material/Stack'
 import { useRouter } from 'next/router'
 import PDFDocument from '../preview/PDFDocument'
 import { useEffect } from 'react'
+import EndCard from '@/components/EndCard'
 
 const Form = () => {
   //   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const Form = () => {
           companyName: '',
           startDate: '',
           endDate: '',
-          loaction: '',
+          location: '',
           projects: []
         }
       ],
@@ -142,15 +143,11 @@ const Form = () => {
             </div>
           </div> */}
           <Grid item xs={12} order={{ xs: 3 }} justifyContent='center'>
-            <Card variant='outlined'>
-              <CardContent>
-                <Box display='flex' justifyContent='end'>
-                  <Button type='submit' disabled={loading} variant='contained'>
-                    {loading ? <CircularProgress color='secondary' /> : 'Preview'}
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
+            <EndCard>
+              <Button type='submit' disabled={loading} variant='contained'>
+                {loading ? <CircularProgress color='secondary' /> : 'Preview'}
+              </Button>
+            </EndCard>
           </Grid>
         </Grid>
       </form>

@@ -10,9 +10,11 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({ date, place, style = {} }) => (
+const DatePlaceRow = ({ date, place, style = {} }) => (
   <View style={{ ...styles.container, ...style }}>
     <IconText style={styles.date} icon='calendar' text={date} />
     <IconText icon='location-pin' text={place} />
   </View>
 )
+
+export default DatePlaceRow

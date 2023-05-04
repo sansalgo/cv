@@ -11,9 +11,9 @@ import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import { Fragment } from 'react'
-import ChipButton from '@/components/chipButton'
+import ChipButton from '@/components/ChipButton'
 // import CardActionHeader from './components/cardActionHeader'
-import CardFieldArray from './components/CardFieldArray'
+import CardFieldArray from '@/components/CardFieldArray'
 
 const Extras = () => {
   const { register, control } = useFormContext()

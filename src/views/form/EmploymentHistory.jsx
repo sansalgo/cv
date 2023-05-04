@@ -11,8 +11,8 @@ import Grid from '@mui/material/Grid'
 import DatePicker from 'react-datepicker'
 
 import { Fragment, useState } from 'react'
-import ChipButton from '@/components/chipButton'
-import CardFieldArray from './components/CardFieldArray'
+import ChipButton from '@/components/ChipButton'
+import CardFieldArray from '@/components/CardFieldArray'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import DatePickerWrapper from '@/components/DatePickerWrapper'
@@ -23,8 +23,6 @@ const EmploymentHistory = () => {
     control,
     name: 'employmentHistory'
   })
-
-  const [date, setDate] = useState(new Date())
 
   return (
     <CardFieldArray
@@ -42,7 +40,6 @@ const EmploymentHistory = () => {
                     action={
                       <ChipButton
                         color='primary'
-                        // disabled={fields.length === 1}
                         label={<RemoveRoundedIcon />}
                         variant='outlined'
                         onClick={() => remove(index)}
@@ -71,13 +68,13 @@ const EmploymentHistory = () => {
                           <Controller
                             control={control}
                             name={`employmentHistory.${index}.startDate`}
-                            render={({ field }) => (
+                            render={({ field: { value, onChange } }) => (
                               <DatePicker
                                 dateFormat='MM/yyyy'
                                 placeholderText='Start Date'
                                 showMonthYearPicker
-                                selected={field.value}
-                                onChange={date => field.onChange(date)}
+                                selected={value ? new Date(value) : null}
+                                onChange={onChange}
                                 customInput={<OutlinedInput fullWidth />}
                               />
                             )}
@@ -89,13 +86,13 @@ const EmploymentHistory = () => {
                           <Controller
                             control={control}
                             name={`employmentHistory.${index}.endDate`}
-                            render={({ field }) => (
+                            render={({ field: { value, onChange } }) => (
                               <DatePicker
                                 dateFormat='MM/yyyy'
                                 placeholderText='End Date'
                                 showMonthYearPicker
-                                selected={field.value}
-                                onChange={date => field.onChange(date)}
+                                selected={value ? new Date(value) : null}
+                                onChange={onChange}
                                 customInput={<OutlinedInput fullWidth />}
                               />
                             )}
@@ -118,7 +115,6 @@ const EmploymentHistory = () => {
                           placeholder='Description'
                           {...register(`employmentHistory.${index}.description`)}
                         />
-                        {/* <Projects nestIndex={index} {...{ control, register }} /> */}
                       </Grid>
                     </Grid>
                   </CardContent>

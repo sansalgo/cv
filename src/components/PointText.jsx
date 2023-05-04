@@ -12,9 +12,11 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({ children }) => (
+const PointText = ({ children }) => (
   <View style={styles.container}>
     <Text style={styles.point}>•</Text>
     <Text>{children}</Text>
   </View>
 )
+
+export default PointText

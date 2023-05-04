@@ -14,10 +14,12 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({ beforeText, afterText }) => (
+const DividerSubtitle = ({ beforeText, afterText }) => (
   <View style={styles.container}>
     <Text>{beforeText}</Text>
     <Text style={styles.divider}>|</Text>
     <Text>{afterText}</Text>
   </View>
 )
+
+export default DividerSubtitle

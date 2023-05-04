@@ -9,8 +9,8 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import { Fragment, useState } from 'react'
-import ChipButton from '@/components/chipButton'
-import CardFieldArray from './components/CardFieldArray'
+import ChipButton from '@/components/ChipButton'
+import CardFieldArray from '@/components/CardFieldArray'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import DatePickerWrapper from '@/components/DatePickerWrapper'
@@ -21,8 +21,6 @@ const Education = () => {
     control,
     name: 'education'
   })
-
-  const [date, setDate] = useState(new Date())
 
   return (
     <CardFieldArray
@@ -66,13 +64,13 @@ const Education = () => {
                             <Controller
                               control={control}
                               name={`education.${index}.startDate`}
-                              render={({ field }) => (
+                              render={({ field: { value, onChange } }) => (
                                 <DatePicker
                                   dateFormat='MM/yyyy'
                                   placeholderText='Start Date'
                                   showMonthYearPicker
-                                  selected={field.value}
-                                  onChange={date => field.onChange(date)}
+                                  selected={value ? new Date(value) : null}
+                                  onChange={onChange}
                                   customInput={<OutlinedInput fullWidth />}
                                 />
                               )}
@@ -84,13 +82,13 @@ const Education = () => {
                             <Controller
                               control={control}
                               name={`education.${index}.endDate`}
-                              render={({ field }) => (
+                              render={({ field: { value, onChange } }) => (
                                 <DatePicker
                                   dateFormat='MM/yyyy'
                                   placeholderText='End Date'
                                   showMonthYearPicker
-                                  selected={field.value}
-                                  onChange={date => field.onChange(date)}
+                                  selected={value ? new Date(value) : null}
+                                  onChange={onChange}
                                   customInput={<OutlinedInput fullWidth />}
                                 />
                               )}

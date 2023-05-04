@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { CacheProvider } from '@emotion/react'
 import { createEmotionCache } from '@/utils/create-emotion-cache'
 import '@fontsource/lato'
-import Layout from '@/components/layout'
+import Layout from '@/components/Layout'
 import { SessionProvider } from 'next-auth/react'
 
 const clientSideEmotionCache = createEmotionCache()
@@ -23,6 +23,18 @@ const theme = createTheme({
   },
 
   components: {
+    MuiPaper: {
+      defaultProps: {
+        variant: 'outlined',
+        elevation: 0
+      }
+    },
+    MuiAppBar: {
+      defaultProps: {
+        variant: "elevation",
+        elevation: 0
+      }
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {

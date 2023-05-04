@@ -6,4 +6,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ({ children }) => <View style={styles.container}>{children}</View>
+const Container = ({ children }) => <View style={styles.container}>{children}</View>
+
+export default Container
