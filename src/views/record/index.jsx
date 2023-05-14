@@ -9,31 +9,32 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Pagination from '@mui/material/Pagination'
 import EndCard from '@/components/EndCard'
-import { Button } from '@mui/material'
+import formatDateTime from '@/utils/format-date-time'
 
-const Record = ({ records }) => {
+import Stack from '@mui/material/Stack'
+import MenuAction from './MenuAction'
+import { useSelector } from 'react-redux'
+
+const Record = () => {
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(6)
+  const { records } = useSelector(state => state.record)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = event => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(1)
-  }
+  const rows = records.map((value, index) => ({
+    _id: value._id,
+    index: index + 1,
+    name: `${value.intro.firstName} ${value.intro.lastName}`,
+    dateCreated: formatDateTime(value.createdAt),
+    dateModified: formatDateTime(value.updatedAt)
+  }))
 
-  console.log(records)
-
-  // Sample data for the table
-  const rows = records.map(value => ({ id: value._id, date: value.createdAt }))
-
-  // Calculate the index of the first and last item on the current page
   const firstItemIndex = (page - 1) * rowsPerPage
   const lastItemIndex = firstItemIndex + rowsPerPage
 
-  // Filter the rows array to only show the rows for the current page
   const displayedRows = rows.slice(firstItemIndex, lastItemIndex)
 
   return (
@@ -43,15 +44,21 @@ const Record = ({ records }) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Date</TableCell>
+                <TableCell>Index</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Date Created</TableCell>
+                <TableCell>Date Modified</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {displayedRows.map(row => (
-                <TableRow key={row.id}>
-                  <TableCell>{row.id}</TableCell>
-                  <TableCell>{row.date}</TableCell>
+                <TableRow key={row.index}>
+                  <TableCell>{row.index}</TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.dateCreated}</TableCell>
+                  <TableCell>{row.dateModified}</TableCell>
+                  <TableCell>{<MenuAction id={row._id} />}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

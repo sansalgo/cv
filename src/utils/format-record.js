@@ -1,5 +1,4 @@
-export default function formatRecord(data) {
-  data.employmentHistory.map(value => (value.projects = value.projects.map(({ value }) => value)))
+const formatRecord = data => {
   data.skills = data.skills.map(({ value }) => value)
   data.achievement = data.achievement.map(({ value }) => value)
   data.projects = data.projects.map(({ value }) => value)
@@ -8,3 +7,5 @@ export default function formatRecord(data) {
 
   return data
 }
+
+export default formatRecord

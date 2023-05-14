@@ -21,7 +21,7 @@ const Achievement = () => {
   return (
     <CardFieldArray
       title='Achievement'
-      action={<ChipButton color='primary' variant='outlined' label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
       fields={fields}
     >
       {fields.length ? (
@@ -37,12 +37,7 @@ const Achievement = () => {
                         placeholder='Achievement'
                         endAdornment={
                           <InputAdornment position='end'>
-                            <ChipButton
-                              color='primary'
-                              variant='outlined'
-                              label={<RemoveRoundedIcon />}
-                              onClick={() => remove(index)}
-                            />
+                            <ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />
                           </InputAdornment>
                         }
                         {...register(`achievement.${index}.value`)}

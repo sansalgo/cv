@@ -25,7 +25,7 @@ const Education = () => {
   return (
     <CardFieldArray
       title='Education'
-      action={<ChipButton color='primary' variant='outlined' onClick={() => append()} label={<AddRounded />} />}
+      action={<ChipButton onClick={() => append()} label={<AddRounded />} />}
       fields={fields}
     >
       <CardContent>
@@ -35,17 +35,7 @@ const Education = () => {
               <Fragment key={item.id}>
                 <Grid item>
                   <Card variant='outlined'>
-                    <CardHeader
-                      action={
-                        <ChipButton
-                          // disabled={fields.length === 1}
-                          color='primary'
-                          variant='outlined'
-                          onClick={() => remove(index)}
-                          label={<RemoveRounded />}
-                        />
-                      }
-                    />
+                    <CardHeader action={<ChipButton onClick={() => remove(index)} label={<RemoveRounded />} />} />
                     <CardContent>
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>

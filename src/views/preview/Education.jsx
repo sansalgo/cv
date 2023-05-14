@@ -5,7 +5,7 @@ import PointText from '@/components/PointText'
 import SectionTitle from '@/components/SectionTitle'
 import DashedDivider from '@/components/DashedDivider'
 import Section from '@/components/Section'
-import Container from '@/components/Container'
+import SSContainer from '@/components/SSContainer'
 import { useFormData } from './FormDataContext'
 import { Fragment } from 'react'
 import ConditionalRender from '@/components/ConditionalRender'
@@ -24,7 +24,7 @@ const Education = () => {
       <ConditionalRender value={data.education}>
         {data.education.map((value, index) => (
           <Fragment key={index}>
-            <Container>
+            <SSContainer>
               <ConditionalRender value={value.course}>
                 <ConditionalRender value={value.institution}>
                   <DividerSubtitle beforeText={value.course} afterText={value.institution} />
@@ -44,7 +44,7 @@ const Education = () => {
               <ConditionalRender value={value.percentage}>
                 <PointText>Percentage : {value.percentage}</PointText>
               </ConditionalRender>
-            </Container>
+            </SSContainer>
             {index !== data.education.length - 1 && <DashedDivider />}
           </Fragment>
         ))}

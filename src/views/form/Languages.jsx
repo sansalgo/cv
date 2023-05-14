@@ -22,7 +22,7 @@ const Languages = () => {
   return (
     <CardFieldArray
       title='Languages'
-      action={<ChipButton color='primary' variant='outlined' label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
       fields={fields}
     >
       {fields.length ? (
@@ -38,12 +38,7 @@ const Languages = () => {
                         placeholder='Language'
                         endAdornment={
                           <InputAdornment position='end'>
-                            <ChipButton
-                              color='primary'
-                              onClick={() => remove(index)}
-                              label={<RemoveRoundedIcon />}
-                              variant='outlined'
-                            />
+                            <ChipButton onClick={() => remove(index)} label={<RemoveRoundedIcon />} />
                           </InputAdornment>
                         }
                         {...register(`languages.${index}.value`)}

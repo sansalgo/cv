@@ -5,6 +5,8 @@ import { createEmotionCache } from '@/utils/create-emotion-cache'
 import '@fontsource/lato'
 import Layout from '@/components/Layout'
 import { SessionProvider } from 'next-auth/react'
+import { wrapper } from '@/store'
+import { Provider } from 'react-redux'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -16,7 +18,9 @@ const theme = createTheme({
     background: {
       default: 'rgb(226, 226, 226)',
       paper: 'rgb(226, 226, 226)'
-    }
+    },
+    blue: 'rgb(0, 57, 172)',
+    orange: 'rgb(243, 137, 11)'
   },
   typography: {
     fontFamily: 'Lato'
@@ -31,11 +35,42 @@ const theme = createTheme({
     },
     MuiAppBar: {
       defaultProps: {
-        variant: "elevation",
+        variant: 'elevation',
         elevation: 0
       }
     },
+    MuiLink: {
+      defaultProps: {
+        underline: 'none'
+      }
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true
+      }
+    },
+    MuiSvgIcon: {
+      defaultProps: {
+        color: 'primary'
+      }
+    },
+    MuiChip: {
+      defaultProps: {
+        variant: 'outlined',
+        color: 'primary'
+      },
+      styleOverrides: {
+        root: {
+          '&:active': {
+            boxShadow: 'unset'
+          }
+        }
+      }
+    },
     MuiOutlinedInput: {
+      defaultProps: {
+        autoComplete: 'off'
+      },
       styleOverrides: {
         root: {
           '&:hover:not(.Mui-focused):not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline': {
@@ -50,22 +85,38 @@ const theme = createTheme({
           minWidth: '2rem'
         }
       }
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'unset'
+          }
+        }
+      }
     }
   }
 })
 
-const App = ({ Component, emotionCache = clientSideEmotionCache, pageProps: { session, ...pageProps } }) => {
+const App = ({ Component, ...rest }) => {
+  const { store, props } = wrapper.useWrappedStore(rest)
+  const {
+    emotionCache = clientSideEmotionCache,
+    pageProps: { session, ...pageProps }
+  } = props
   return (
-    <CacheProvider value={emotionCache}>
-      <SessionProvider session={session}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </SessionProvider>
-    </CacheProvider>
+    <Provider store={store}>
+      <CacheProvider value={emotionCache}>
+        <SessionProvider session={session}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </SessionProvider>
+      </CacheProvider>
+    </Provider>
   )
 }
 

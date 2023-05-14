@@ -17,6 +17,13 @@ export default async function handler(req, res) {
           return res.status(400).json({ message: 'Invalid ID provided' })
         }
         break
+      case 'DELETE':
+        try {
+          await Record.findByIdAndDelete({ _id: id })
+          return res.status(200).json({ message: 'Record deleted successfully' })
+        } catch (error) {
+          return res.status(500).json({ error: error.message })
+        }
       default:
         res.setHeader('Allow', ['GET'])
         res.status(405).json({ message: `Method ${req.method} not allowed` })

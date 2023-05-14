@@ -25,7 +25,7 @@ import PDFDocument from '../preview/PDFDocument'
 import { useEffect } from 'react'
 import EndCard from '@/components/EndCard'
 
-const Form = () => {
+const Form = ({ record }) => {
   //   const dispatch = useDispatch();
   const DocumentWrapper = styled(Box)(({ theme }) => ({
     '& .react-pdf__Page__canvas': {
@@ -44,7 +44,7 @@ const Form = () => {
           startDate: '',
           endDate: '',
           location: '',
-          projects: []
+          description: ''
         }
       ],
       education: [
@@ -64,29 +64,17 @@ const Form = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const formData = localStorage.getItem('formData')
-    console.log('useEffect')
-    if (formData) {
-      methods.reset(JSON.parse(formData))
+    if (record) {
+      methods.reset(record)
     }
-    return () => console.log("unmounted")
   }, [])
 
   const onSubmit = async data => {
     console.log(data)
     // if (!value) return null
-    localStorage.setItem('formData', JSON.stringify(data))
-    setLoading(true)
-    const blob = await pdf(PDFDocument(data)).toBlob()
-    const url = URL.createObjectURL(blob)
-    setLoading(false)
-    router.push(
-      {
-        pathname: '/preview',
-        query: { blobURL: url }
-      },
-      '/preview'
-    )
+    localStorage.setItem('record', JSON.stringify(data))
+
+    router.push(`/preview`)
   }
 
   return (

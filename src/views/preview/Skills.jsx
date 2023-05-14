@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from '@react-pdf/renderer'
 import { Fragment } from 'react'
 import ConditionalRender from '@/components/ConditionalRender'
-import Container from '@/components/Container'
+import SSContainer from '@/components/SSContainer'
 import Section from '@/components/Section'
 import SectionTitle from '@/components/SectionTitle'
 import { useFormData } from './FormDataContext'
@@ -29,7 +29,7 @@ const Skills = () => {
   return (
     <Section>
       <SectionTitle title='SKILLS' />
-      <Container>
+      <SSContainer>
         <View style={styles.container}>
           <ConditionalRender value={data.skills}>
             {data.skills.map((value, index) => (
@@ -37,7 +37,7 @@ const Skills = () => {
             ))}
           </ConditionalRender>
         </View>
-      </Container>
+      </SSContainer>
     </Section>
   )
 }

@@ -27,7 +27,7 @@ const EmploymentHistory = () => {
   return (
     <CardFieldArray
       title='Employment History'
-      action={<ChipButton color='primary' onClick={() => append()} variant='outlined' label={<AddRoundedIcon />} />}
+      action={<ChipButton onClick={() => append()} label={<AddRoundedIcon />} />}
       fields={fields}
     >
       <CardContent>
@@ -36,16 +36,7 @@ const EmploymentHistory = () => {
             return (
               <Grid item key={item.id}>
                 <Card variant='outlined' key={item.id}>
-                  <CardHeader
-                    action={
-                      <ChipButton
-                        color='primary'
-                        label={<RemoveRoundedIcon />}
-                        variant='outlined'
-                        onClick={() => remove(index)}
-                      />
-                    }
-                  />
+                  <CardHeader action={<ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />} />
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>

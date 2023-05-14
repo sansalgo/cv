@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
   return (
     <Container maxWidth='lg'>
       <Box sx={{ flexGrow: 1 }}>
-        {showAppBar && (
+        <ConditionalRender value={showAppBar}>
           <AppBar position='static'>
             <Toolbar>
               <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -57,7 +57,7 @@ const Layout = ({ children }) => {
               </Box>
             </Toolbar>
           </AppBar>
-        )}
+        </ConditionalRender>
       </Box>
       <ContentWrapper>{children}</ContentWrapper>
     </Container>

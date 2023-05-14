@@ -4,7 +4,7 @@ import PointText from '@/components/PointText'
 import Section from '@/components/Section'
 import SectionTitle from '@/components/SectionTitle'
 import { useFormData } from './FormDataContext'
-import Container from '@/components/Container'
+import SSContainer from '@/components/SSContainer'
 import ConditionalRender from '@/components/ConditionalRender'
 
 const styles = StyleSheet.create({})
@@ -14,13 +14,13 @@ const Achievement = () => {
   return (
     <Section>
       <SectionTitle title='ACHIEVEMENT' />
-      <Container>
+      <SSContainer>
         <ConditionalRender value={data.achievement}>
           {data.achievement.map((value, index) => (
             <Fragment key={index}>{value.value && <PointText>{value.value}</PointText>}</Fragment>
           ))}
         </ConditionalRender>
-      </Container>
+      </SSContainer>
     </Section>
   )
 }

@@ -15,32 +15,32 @@ export default function Intro() {
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <OutlinedInput fullWidth placeholder='First Name' {...register('firstName')} />
+            <OutlinedInput fullWidth placeholder='First Name' {...register('intro.firstName')} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <OutlinedInput fullWidth placeholder='Last Name' {...register('lastName')} />
+            <OutlinedInput fullWidth placeholder='Last Name' {...register('intro.lastName')} />
           </Grid>
 
           <Grid item xs={12}>
-            <OutlinedInput fullWidth placeholder='Position' {...register('position')} />
+            <OutlinedInput fullWidth placeholder='Position' {...register('intro.position')} />
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <OutlinedInput fullWidth placeholder='Email' {...register('email')} />
+            <OutlinedInput fullWidth placeholder='Email' {...register('intro.email')} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <OutlinedInput fullWidth placeholder='Phone' {...register('phone')} />
+            <OutlinedInput fullWidth placeholder='Phone' {...register('intro.phone')} />
           </Grid>
 
           <Grid item xs={12}>
-            <OutlinedInput fullWidth placeholder='City' {...register('city')} />
+            <OutlinedInput fullWidth placeholder='City' {...register('intro.city')} />
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <OutlinedInput fullWidth placeholder='Linkedin' {...register('linkedin')} />
+            <OutlinedInput fullWidth placeholder='Linkedin' {...register('intro.linkedin')} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <OutlinedInput fullWidth placeholder='GitHub' {...register('github')} />
+            <OutlinedInput fullWidth placeholder='GitHub' {...register('intro.github')} />
           </Grid>
         </Grid>
       </CardContent>

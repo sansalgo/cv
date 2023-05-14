@@ -17,8 +17,8 @@ const employmentHistorySchema = new Schema({
   companyName: String,
   startDate: Date,
   endDate: Date,
-  loaction: String,
-  projects: [String]
+  location: String,
+  description: String
 })
 
 const educationSchema = new Schema({

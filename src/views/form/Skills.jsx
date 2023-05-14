@@ -12,7 +12,6 @@ import { Fragment } from 'react'
 import ChipButton from '@/components/ChipButton'
 import CardFieldArray from '@/components/CardFieldArray'
 
-
 const Skills = () => {
   const { register, control } = useFormContext()
   const { append, fields, remove } = useFieldArray({
@@ -23,7 +22,7 @@ const Skills = () => {
   return (
     <CardFieldArray
       title='Skills'
-      action={<ChipButton color='primary' variant='outlined' label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
       fields={fields}
     >
       {fields.length ? (
@@ -39,12 +38,7 @@ const Skills = () => {
                         placeholder='Skill'
                         endAdornment={
                           <InputAdornment position='end'>
-                            <ChipButton
-                              color='primary'
-                              onClick={() => remove(index)}
-                              label={<RemoveRoundedIcon />}
-                              variant='outlined'
-                            />
+                            <ChipButton onClick={() => remove(index)} label={<RemoveRoundedIcon />} />
                           </InputAdornment>
                         }
                         {...register(`skills.${index}.value`)}

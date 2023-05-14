@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text } from '@react-pdf/renderer'
 import { Fragment } from 'react'
 import ConditionalRender from '@/components/ConditionalRender'
-import Container from '@/components/Container'
+import SSContainer from '@/components/SSContainer'
 import PointText from '@/components/PointText'
 import Section from '@/components/Section'
 import SectionTitle from '@/components/SectionTitle'
@@ -14,13 +14,13 @@ const Projects = () => {
   return (
     <Section>
       <SectionTitle title='PROJECTS' />
-      <Container>
+      <SSContainer>
         <ConditionalRender value={data.projects}>
           {data.projects.map((value, index) => (
             <Fragment key={index}>{value.value && <PointText>{value.value}</PointText>}</Fragment>
           ))}
         </ConditionalRender>
-      </Container>
+      </SSContainer>
     </Section>
   )
 }

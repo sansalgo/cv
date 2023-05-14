@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   }
 })
 
-const PDFDocument = data => (
-  <FormDataProvider data={data}>
+const PDFDocument = ({record}) => (
+  <FormDataProvider data={record}>
     <Document>
       <Page size='A4' style={styles.page}>
         <Intro />

@@ -24,7 +24,7 @@ const Extras = () => {
   return (
     <CardFieldArray
       title='Extras'
-      action={<ChipButton color='primary' variant='outlined' label={<AddRounded />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRounded />} onClick={() => append()} />}
       fields={fields}
     >
       {fields.length > 0 && (
@@ -40,12 +40,7 @@ const Extras = () => {
                         placeholder='Extra'
                         endAdornment={
                           <InputAdornment position='end'>
-                            <ChipButton
-                              color='primary'
-                              variant='outlined'
-                              label={<RemoveRounded />}
-                              onClick={() => remove(index)}
-                            />
+                            <ChipButton label={<RemoveRounded />} onClick={() => remove(index)} />
                           </InputAdornment>
                         }
                         {...register(`extras.${index}.value`)}

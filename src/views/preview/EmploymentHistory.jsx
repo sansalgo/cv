@@ -4,7 +4,7 @@ import SectionTitle from '@/components/SectionTitle'
 import DatePlaceRow from '@/components/DatePlaceRow'
 import DashedDivider from '@/components/DashedDivider'
 import Section from '@/components/Section'
-import Container from '@/components/Container'
+import SSContainer from '@/components/SSContainer'
 import { Fragment } from 'react'
 import { useFormData } from './FormDataContext'
 import ConditionalRender from '@/components/ConditionalRender'
@@ -27,7 +27,7 @@ const EmploymentHistory = () => {
       <SectionTitle title='EMPLOYMENT HISTORY' />
       {data.employmentHistory.map((value, index) => (
         <Fragment key={index}>
-          <Container>
+          <SSContainer>
             <ConditionalRender value={value.position}>
               <ConditionalRender value={value.companyName}>
                 <DividerSubtitle beforeText={value.position} afterText={value.companyName} />
@@ -50,7 +50,7 @@ const EmploymentHistory = () => {
                 <Text>{value.description}</Text>
               </View>
             </ConditionalRender>
-          </Container>
+          </SSContainer>
           {index !== data.employmentHistory.length - 1 && <DashedDivider />}
         </Fragment>
       ))}

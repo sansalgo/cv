@@ -1,16 +1,62 @@
-import Record from "@/views/record";
-import axios from "axios";
+import Record from '@/views/record'
+import axios from 'axios'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import { wrapper } from '@/store'
+import { setRecords } from '@/store/record'
 
-export default ({records}) => <Record records={records} />
-
-export const getServerSideProps = async ({req, res}) => {
-    const {data: records} = await axios.get(`http://localhost:3000/api/records`, {
-      headers: {
-        cookie: req.headers.cookie
+const extendTheme = theme =>
+  createTheme({
+    ...theme,
+    components: {
+      ...theme.components,
+      MuiTableBody: {
+        styleOverrides: {
+          root: {
+            '.MuiTableRow-root:last-child .MuiTableCell-root': {
+              borderBottom: 'unset'
+            }
+          }
+        }
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            textAlign: 'center'
+          }
+        }
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            padding: 0
+          }
+        }
+      },
+      MuiList: {
+        styleOverrides: {
+          root: {
+            padding: 0
+          }
+        }
       }
-    })
-
-    return {
-      props: { records }
     }
-}
+  })
+
+export default () => (
+  <ThemeProvider theme={theme => extendTheme(theme)}>
+    <CssBaseline />
+    <Record/>
+  </ThemeProvider>
+)
+
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
+  const { data: records } = await axios.get(`http://localhost:3000/api/records`, {
+    headers: {
+      cookie: req.headers.cookie
+    }
+  })
+
+  store.dispatch(setRecords(records))
+})
