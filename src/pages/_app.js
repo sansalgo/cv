@@ -7,6 +7,7 @@ import Layout from '@/components/Layout'
 import { SessionProvider } from 'next-auth/react'
 import { wrapper } from '@/store'
 import { Provider } from 'react-redux'
+import { Toaster } from 'react-hot-toast'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -111,6 +112,7 @@ const App = ({ Component, ...rest }) => {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <Layout>
+              <Toaster position='top-right' reverseOrder={false} />
               <Component {...pageProps} />
             </Layout>
           </ThemeProvider>

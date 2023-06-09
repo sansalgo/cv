@@ -44,7 +44,8 @@ const recordSchema = new Schema(
     achievement: [String]
   },
   {
-    timestamps: true
+    timestamps: true,
+    versionKey: false
   }
 )
 

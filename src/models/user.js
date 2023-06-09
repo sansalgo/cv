@@ -11,7 +11,10 @@ const userSchema = new Schema(
     email: String,
     password: String
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    versionKey: false
+  }
 )
 
 userSchema.pre('save', function (next) {

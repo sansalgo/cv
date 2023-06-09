@@ -16,7 +16,9 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-import { deleteRecord } from '@/store/record'
+import { deleteRecord, getRecord } from '@/store/record'
+import { pdf } from '@react-pdf/renderer'
+import PDFDocument from '../preview/PDFDocument'
 
 const MenuAction = ({ id }) => {
   const [open, setOpen] = useState(false)
@@ -36,6 +38,22 @@ const MenuAction = ({ id }) => {
       pathname: `/preview`,
       query: { id }
     })
+  }
+
+  const handleDownload = () => {
+    const a = document.createElement('a')
+    dispatch(getRecord(id))
+      .unwrap()
+      .then(async record => {
+        const blob = await pdf(<PDFDocument record={record} />).toBlob()
+        const href = URL.createObjectURL(blob)
+        a.href = href
+        a.setAttribute("download", 'test.pdf')
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(href)
+      })
   }
 
   const handelDelete = () => {
@@ -86,7 +104,7 @@ const MenuAction = ({ id }) => {
                       <VisibilityRoundedIcon />
                     </IconButton>
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem onClick={handleDownload}>
                     <IconButton>
                       <FileDownloadRoundedIcon />
                     </IconButton>
