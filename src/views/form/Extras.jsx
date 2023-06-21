@@ -1,19 +1,16 @@
-import { useFormContext, useFieldArray } from 'react-hook-form'
+import ChipButton from '@/components/ChipButton'
 import AddRounded from '@mui/icons-material/AddRounded'
 import RemoveRounded from '@mui/icons-material/RemoveRounded'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
+import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
+import InputAdornment from '@mui/material/InputAdornment'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import { Fragment } from 'react'
-import ChipButton from '@/components/ChipButton'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 // import CardActionHeader from './components/cardActionHeader'
 import CardFieldArray from '@/components/CardFieldArray'
+import { FileDownloadOffSharp } from '@mui/icons-material'
 
 const Extras = () => {
   const { register, control } = useFormContext()
@@ -21,10 +18,11 @@ const Extras = () => {
     control,
     name: 'extras'
   })
+  console.log(fields)
   return (
     <CardFieldArray
       title='Extras'
-      action={<ChipButton label={<AddRounded />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRounded />} onClick={() => append('')} />}
       fields={fields}
     >
       {fields.length > 0 && (

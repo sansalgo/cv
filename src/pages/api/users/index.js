@@ -8,18 +8,17 @@ export default async function handler(req, res) {
   try {
     await connectToDatabase()
     switch (req.method) {
-      case 'POST':
+      case 'PATCH':
         const { username, email, verificationSign, password } = req.body
-
         const validationFields = [
-          { field: 'username' },
+          { field: 'username', level: 'required' },
           { field: 'email' },
           { field: 'verificationSign' },
           { field: 'password' }
         ]
 
         const { status, json } = await userCheck(req.body)
-        if (status !== 404) {
+        if (status === 404) {
           return res.status(status).json(json)
         }
 
@@ -43,16 +42,21 @@ export default async function handler(req, res) {
           return res.status(400).json({ message: 'Invalid verification sign' })
         }
 
-        const user = new User(req.body)
+        const user = await User.findOne({ username, email }).exec()
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' })
+        }
+        user.password = password
         try {
-          const newUser = await user.save()
-          res.status(200).json(newUser)
-        } catch (err) {
-          res.status(400).json({ message: err.message })
+          await user.save()
+          res.status(200).json({ message: 'User updated successfully' })
+        } catch (error) {
+          console.log(error)
+          res.status(500).json({ message: 'Something went wrong' })
         }
         break
       default:
-        res.setHeader('Allow', ['POST'])
+        res.setHeader('Allow', ['PATCH'])
         res.status(405).json({ message: `Method ${req.method} not allowed` })
         break
     }

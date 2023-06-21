@@ -29,7 +29,6 @@ export default ({ record }) => {
 }
 
 export const getServerSideProps = async ({ query, req }) => {
-  console.log('query--->', query)
   if (query.id) {
     const { data: record } = await axios.get(`http://localhost:3000/api/records/${query.id}`, {
       headers: {

@@ -18,25 +18,21 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import LinkBehavior from '@/components/LinkBehavior'
 import ContainerCenter from '@/components/ContainerCenter'
+import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/router'
+import handleSignIn from '@/utils/handle-sign-in'
 
 const Login = () => {
   const { register, handleSubmit } = useForm()
-
+  const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword(() => !showPassword)
 
-  const onSubmit = async data => {
-    const credentials = {
-      username: data.username,
-      password: data.password,
-      callbackUrl: '/preview'
-    }
-    const res = await signIn('credentials', credentials)
-
-    if (res) {
-      console.log('error', res.error)
-    }
-  }
+  const onSubmit = async data =>
+    await handleSignIn({
+      ...data,
+      errorMessage: "Invalid credentials. Please check your username and password and try again."
+    })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

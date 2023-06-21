@@ -1,29 +1,24 @@
-import React, { useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import CircularProgress from '@mui/material/CircularProgress'
-import { pdf } from '@react-pdf/renderer'
+import EndCard from '@/components/EndCard'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
-import Intro from './Intro'
-import ProfileSummary from './ProfileSummary'
-import EmploymentHistory from './EmploymentHistory'
-import Education from './Education'
-import Extras from './Extras'
-import Skills from './Skills'
-import Projects from './Projects'
-import Languages from './Languages'
-import Achievement from './Achievement'
+import CircularProgress from '@mui/material/CircularProgress'
+import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
+import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
-import PDFDocument from '../preview/PDFDocument'
 import { useEffect } from 'react'
-import EndCard from '@/components/EndCard'
+import Achievement from './Achievement'
+import Education from './Education'
+import EmploymentHistory from './EmploymentHistory'
+import Extras from './Extras'
+import Intro from './Intro'
+import Languages from './Languages'
+import ProfileSummary from './ProfileSummary'
+import Projects from './Projects'
+import Skills from './Skills'
 
 const Form = ({ record }) => {
   //   const dispatch = useDispatch();
@@ -67,7 +62,7 @@ const Form = ({ record }) => {
     if (record) {
       methods.reset(record)
     }
-  }, [])
+  })
 
   const onSubmit = async data => {
     console.log(data)

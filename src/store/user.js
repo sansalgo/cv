@@ -48,6 +48,17 @@ export const addUser = createAsyncThunk('user/addUser', async (data, { rejectWit
   }
 })
 
+export const updateUser = createAsyncThunk('user/updateUser', async (data, { rejectWithValue }) => {
+  try {
+    const response = await axios.patch(`/api/users`, data)
+  } catch (error) {
+    if (!error.response) {
+      throw error
+    }
+    return rejectWithValue({ status: error.response.status, data: error.response.data })
+  }
+})
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: { checkUserCatch: {} },

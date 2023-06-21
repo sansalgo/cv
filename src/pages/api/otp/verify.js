@@ -1,6 +1,6 @@
 import connectToDatabase from '@/lib/mongodb'
 import OTP from '@/models/otp'
-import { generateSign } from '@/utils/sign'
+import { generateSign } from '@/utils/verification-sign'
 
 export default async function handler(req, res) {
   try {
@@ -10,19 +10,19 @@ export default async function handler(req, res) {
         const { email, otp } = req.body
 
         if (!email || !otp) {
-          return res.status(400).json({ error: 'Email and OTP are required' })
+          return res.status(400).json({ message: 'Email and OTP are required' })
         }
 
         const findOTP = await OTP.findOne({ email, otp }).exec()
 
         if (!findOTP) {
-          return res.status(401).json({ error: 'Invalid OTP' })
+          return res.status(401).json({ message: 'Invalid OTP' })
         }
 
         const tenMinutes = 10 * 60 * 100
 
         if (findOTP.updatedAt < Date.now() - tenMinutes) {
-          return res.status(408).json({ error: 'OTP has expired' })
+          return res.status(408).json({ message: 'OTP has expired' })
         }
 
         await OTP.deleteOne({ _id: findOTP._id })

@@ -1,10 +1,4 @@
 import connectToDatabase from '@/lib/mongodb'
-import Record from '@/models/record'
-import { authOptions } from '../auth/[...nextauth]'
-import { getServerSession } from 'next-auth'
-import { getSession } from 'next-auth/react'
-import formatRecord from '@/utils/format-record'
-import User from '@/models/user'
 import userCheck from '@/utils/user-check'
 
 export default async function handler(req, res) {

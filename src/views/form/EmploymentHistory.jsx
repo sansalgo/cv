@@ -1,21 +1,18 @@
-import { useFormContext, useFieldArray, Controller } from 'react-hook-form'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import FormControl from '@mui/material/FormControl'
-import InputAdornment from '@mui/material/InputAdornment'
 import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import CardHeader from '@mui/material/CardHeader'
 import Grid from '@mui/material/Grid'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import DatePicker from 'react-datepicker'
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 
-import { Fragment, useState } from 'react'
-import ChipButton from '@/components/ChipButton'
 import CardFieldArray from '@/components/CardFieldArray'
+import ChipButton from '@/components/ChipButton'
 
-import 'react-datepicker/dist/react-datepicker.css'
 import DatePickerWrapper from '@/components/DatePickerWrapper'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const EmploymentHistory = () => {
   const { register, control } = useFormContext()

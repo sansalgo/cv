@@ -1,6 +1,6 @@
 import ConditionalRender from '@/components/ConditionalRender'
 import VerificationWizard from '@/components/VerificationWizard'
-import { addUser, checkUser, sendOTP, verifyOTP } from '@/store/user'
+import { addUser, checkUser, sendOTP, updateUser, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -16,18 +16,18 @@ import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 
 const validationSchemas = [
-  schema([{ field: 'username' }, { field: 'email' }]),
+  schema([{ field: 'username', level: 'required' }, { field: 'email' }]),
   schema([{ field: 'otp' }]),
   schema([{ field: 'password' }, { field: 'confirmPassword' }])
 ]
 
-const Register = () => {
+const Forgot = () => {
   const [currentStep, setCurrentStep] = useState(0)
   const methods = useForm({ resolver: yupResolver(validationSchemas[currentStep]) })
   const dispatch = useDispatch()
   const { setError, setValue } = methods
 
-  const nextStep = () => {
+  const nextStep = async () => {
     setCurrentStep(currentStep + 1)
   }
 
@@ -35,22 +35,17 @@ const Register = () => {
     console.log('submit', data)
     switch (currentStep) {
       case 0:
+        console.log(currentStep)
         const credentials = { email: data.email, username: data.username }
-        const errorOptions = { retrievalError: false }
+        const errorOptions = { accountError: false }
         try {
           await dispatch(checkUser({ ...credentials, errorOptions })).unwrap()
         } catch (error) {
           switch (error.status) {
-            case 400:
-              Object.keys(error.data).forEach(fieldName => {
-                setError(fieldName, error.data[fieldName])
-              })
-              break
-            case 409:
-            case 500:
+            case 404:
               toast.error(error.data.message)
               break
-            case 404:
+            case 409:
               try {
                 await dispatch(sendOTP({ email: data.email })).unwrap()
                 nextStep()
@@ -76,7 +71,7 @@ const Register = () => {
       case 2:
         try {
           await dispatch(
-            addUser({
+            updateUser({
               username: data.username,
               email: data.email,
               verificationSign: data.verificationSign,
@@ -135,4 +130,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default Forgot

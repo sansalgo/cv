@@ -1,16 +1,14 @@
-import { useFormContext, useFieldArray } from 'react-hook-form'
+import CardFieldArray from '@/components/CardFieldArray'
+import ChipButton from '@/components/ChipButton'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import InputAdornment from '@mui/material/InputAdornment'
-import Card from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
+import InputAdornment from '@mui/material/InputAdornment'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import { Fragment } from 'react'
-import ChipButton from '@/components/ChipButton'
-import CardFieldArray from '@/components/CardFieldArray'
+import { useFieldArray, useFormContext } from 'react-hook-form'
 
 const Projects = () => {
   const { register, control } = useFormContext()
