@@ -1,0 +1,15 @@
+export default {
+  primary: {
+    main: '#001f59'
+  },
+  secondary: {
+    main: '#666'
+  },
+  background: {
+    default: '#e2e2e2',
+    paper: '#e2e2e2'
+  },
+  blue: '#0039ac',
+  orange: '#f3890b',
+  gray: '#2d2d2d'
+}
