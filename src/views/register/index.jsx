@@ -36,9 +36,8 @@ const Register = () => {
     switch (currentStep) {
       case 0:
         const credentials = { email: data.email, username: data.username }
-        const errorOptions = { retrievalError: false }
         try {
-          await dispatch(checkUser({ ...credentials, errorOptions })).unwrap()
+          await dispatch(checkUser({ ...credentials })).unwrap()
         } catch (error) {
           switch (error.status) {
             case 400:

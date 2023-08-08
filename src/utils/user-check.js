@@ -5,21 +5,20 @@ const defaultErrorOptions = { accountError: true, conflictError: true, retrieval
 
 const userCheck = async ({ username, email, errorOptions = {}}, ) => {
   errorOptions = { ...defaultErrorOptions, ...errorOptions }
-  console.log(errorOptions)
   try {
     await connectToDatabase()
-    let user = await User.findOne({ username, email }).exec()
+    let user = await User.findOne({ username, email })
     if (user && errorOptions.conflictError) {
       return { status: 409, json: { message: 'User already exists. Please go to login page to login' } }
     }
-    user = await User.findOne({ username }).exec()
+    user = await User.findOne({ username })
     if (user && errorOptions.accountError) {
       return {
         status: 400,
         json: { username: { message: 'Username already exists. Please choose a different username' } }
       }
     }
-    user = await User.findOne({ email }).exec()
+    user = await User.findOne({ email })
     if (user && errorOptions.accountError) {
       return {
         status: 400,
