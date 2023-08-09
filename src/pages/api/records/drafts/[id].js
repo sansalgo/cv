@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     }
     switch (req.method) {
       case 'PUT':
-        const updatedDraftRecord = await Record.findOneAndUpdate({ _id: id }, formatRecord(req.body))
+        const updatedDraftRecord = await Record.findOneAndUpdate({ _id: id }, req.body)
         if (updatedDraftRecord) {
           res.status(200).json({ message: 'Draft updated successfully' })
         }
