@@ -11,9 +11,7 @@ import ConditionalRender from './ConditionalRender'
 
 const Layout = ({ children }) => {
   const router = useRouter()
-  const { data: session } = useSession()
-
-  const showAppBar = ['/login', '/register'].every(path => router.pathname !== path)
+  // const { data: session } = useSession()
 
   const AppBar = styled(MuiAppBar)(() => ({
     backgroundColor: 'transparent'
@@ -47,17 +45,15 @@ const Layout = ({ children }) => {
   return (
     <Container maxWidth='lg'>
       <Box sx={{ flexGrow: 1 }}>
-        <ConditionalRender value={showAppBar}>
-          <AppBar position='static'>
-            <Toolbar>
-              <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <ConditionalRender value={session}>
+        <AppBar position='static'>
+          <Toolbar>
+            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              {/* <ConditionalRender value={session}>
                   <ProfileChip />
-                </ConditionalRender>
-              </Box>
-            </Toolbar>
-          </AppBar>
-        </ConditionalRender>
+                </ConditionalRender> */}
+            </Box>
+          </Toolbar>
+        </AppBar>
       </Box>
       <ContentWrapper>{children}</ContentWrapper>
     </Container>

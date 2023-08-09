@@ -41,7 +41,11 @@ const recordSchema = new Schema(
     skills: [String],
     projects: [String],
     languages: [String],
-    achievement: [String]
+    achievement: [String],
+    draft: {
+      type: Boolean,
+      default: true
+    }
   },
   {
     timestamps: true,

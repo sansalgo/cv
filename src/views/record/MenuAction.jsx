@@ -35,7 +35,7 @@ const MenuAction = ({ id }) => {
 
   const handlePreview = () => {
     router.push({
-      pathname: `/preview`,
+      pathname: `/preview/${id}`,
       query: { id }
     })
   }

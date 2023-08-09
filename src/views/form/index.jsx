@@ -19,17 +19,10 @@ import Languages from './Languages'
 import ProfileSummary from './ProfileSummary'
 import Projects from './Projects'
 import Skills from './Skills'
+import axios from 'axios'
+import formatRecord from '@/utils/format-record'
 
 const Form = ({ record }) => {
-  //   const dispatch = useDispatch();
-  const DocumentWrapper = styled(Box)(({ theme }) => ({
-    '& .react-pdf__Page__canvas': {
-      width: '100%',
-      borderRadius: theme.shape.borderRadius,
-      border: `1px solid ${theme.palette.divider}`
-    }
-  }))
-
   const methods = useForm({
     defaultValues: {
       employmentHistory: [
@@ -57,19 +50,18 @@ const Form = ({ record }) => {
 
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const id = router.query.id
 
   useEffect(() => {
     if (record) {
       methods.reset(record)
     }
-  })
+  }, [])
 
   const onSubmit = async data => {
-    console.log(data)
-    // if (!value) return null
-    localStorage.setItem('record', JSON.stringify(data))
+    await axios.put(`/api/records/drafts/${id}`, formatRecord(data))
 
-    router.push(`/preview`)
+    router.push(`/preview/${id}`)
   }
 
   return (

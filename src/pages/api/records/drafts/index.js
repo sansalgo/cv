@@ -18,12 +18,12 @@ export default async function handler(req, res) {
           { user: session.user.id, draft: true },
           { draft: true },
           { new: true, upsert: true }
-        ).exec()
+        )
         res.status(200).json(draftRecord)
         break
       default:
         res.setHeader('Allow', ['GET'])
-        res.status(405).json({ message: `Method ${req.method} not allowed.` })
+        res.status(405).json({ message: `Method ${req.method} not allowed` })
         break
     }
   } catch (error) {

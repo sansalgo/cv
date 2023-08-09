@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     switch (req.method) {
       case 'GET':
         try {
-          const record = await Record.findOne({ _id: id }).exec()
+          const record = await Record.findOne({ _id: id })
           if (!record) {
             return res.status(404).json({ message: 'Record not found' })
           }
