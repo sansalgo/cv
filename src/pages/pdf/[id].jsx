@@ -22,7 +22,6 @@ const extendTheme = theme =>
           ul: {
             paddingLeft: '1.2rem',
             color: 'rgb(102, 102, 102)'
-            // margin
           },
           'li::marker': {
             fontSize: '10pt'

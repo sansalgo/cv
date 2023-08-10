@@ -37,7 +37,7 @@ const Intro = ({ data }) => {
           <IconText icon={<LinkedInIcon />} text={accessObj(data)('intro.linkedin')} />
         </Grid>
         <Grid item>
-          <IconText icon={<GitHubIcon />} text={accessObj(data)('test')} />
+          <IconText icon={<GitHubIcon />} text={accessObj(data)('intro.github')} />
         </Grid>
       </Grid>
     </Box>
