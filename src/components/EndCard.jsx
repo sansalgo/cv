@@ -15,10 +15,10 @@ const EndCardWrapper = styled(Box)(() => ({
   }
 }))
 
-const EndCard = ({ children }) => {
+const EndCard = ({ children, ...rest }) => {
   const justifyContent = Children.count(children) > 1 ? 'space-between' : 'end'
   return (
-    <EndCardWrapper>
+    <EndCardWrapper {...rest}>
       <Card variant='outlined'>
         <CardContent>
           <Box sx={{ justifyContent }}>{children}</Box>

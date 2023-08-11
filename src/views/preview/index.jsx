@@ -9,6 +9,9 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import EndCard from '@/components/EndCard'
 import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
+
 // import { useFormContext, useWatch } from 'react-hook-form'
 
 pdfjs.GlobalWorkerOptions.workerSrc = src
@@ -20,11 +23,28 @@ export default ({ record }) => {
   const router = useRouter()
   const id = router.query.id
 
+  const DocumentWrapper = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    '& .react-pdf__Document': {
+      borderRadius: theme.shape.borderRadius,
+      '& .react-pdf__Page': {
+        '& .react-pdf__Page__canvas': {
+          maxWidth: '100%',
+          height: 'auto !important'
+        }
+      }
+    }
+  }))
+
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages)
   }
-  const onSubmit = () => {
-    console.log('submit')
+
+  const onSubmit = async () => {
+    await axios.put(`/api/records/drafts/${id}`, { draft: false })
+
+    router.push(`/`)
   }
 
   const gotoForm = () => {
@@ -57,15 +77,23 @@ export default ({ record }) => {
     }
   }, [])
 
-  return (
+  return pdfBlobUrl ? (
     <div>
-      <Document file={pdfBlobUrl} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
-      </Document>
-      <EndCard>
-        <Button variant='outlined' onClick={gotoForm}>back</Button>
-        <Button variant='contained' onClick={onSubmit}>save</Button>
+      <DocumentWrapper>
+        <Document file={pdfBlobUrl} onLoadSuccess={onDocumentLoadSuccess}>
+          <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
+        </Document>
+      </DocumentWrapper>
+      <EndCard sx={{ marginTop: '10px' }}>
+        <Button variant='outlined' onClick={gotoForm}>
+          back
+        </Button>
+        <Button variant='contained' onClick={onSubmit}>
+          save
+        </Button>
       </EndCard>
     </div>
+  ) : (
+    'loadConfig...'
   )
 }
