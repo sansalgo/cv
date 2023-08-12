@@ -1,10 +1,12 @@
-import { Fragment } from 'react'
-import { accessObj } from './utils'
-import Divider from '@mui/material/Divider'
 import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
+import { usePDFData } from './PDFDataContext'
+import { accessObj } from './utils'
 
-const Achievement = ({ data }) => {
+const Achievement = () => {
+  const data = usePDFData()
+  const getValue = accessObj(data)
   return (
     <Box component='section'>
       <Typography variant='h2' className='achievement__heading'>
@@ -12,7 +14,7 @@ const Achievement = ({ data }) => {
       </Typography>
       <Divider />
       <ul>
-        {accessObj(data)('achievement')?.map((element, index) => {
+        {getValue('achievement')?.map((element, index) => {
           return (
             <li key={index}>
               <Typography> {element}</Typography>

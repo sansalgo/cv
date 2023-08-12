@@ -4,40 +4,38 @@ import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded'
-import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
-import { Fragment } from 'react'
+import { usePDFData } from './PDFDataContext'
 import { accessObj } from './utils'
-import { useSelector } from 'react-redux'
 
-const Intro = ({ data }) => {
-  // const { record } = useSelector(state => state.record)
-  // const record = JSON.parse(localStorage.getItem('record'))
-  // console.log(record)
+const Intro = () => {
+  const data = usePDFData()
+  const getValue = accessObj(data)
   return (
     <Box>
       <Typography variant='h1'>
-        {accessObj(data)('intro.firstName')?.toUpperCase()} {accessObj(data)('intro.lastName')?.toUpperCase()}
+        {getValue('intro.firstName')?.toUpperCase()} {getValue('intro.lastName')?.toUpperCase()}
       </Typography>
-      <Typography variant='h3' sx={{ fontFamily: 'Lato' }}>
-        {accessObj(data)('intro.position')?.toUpperCase()}
+      <Typography variant='h3'>
+        {getValue('intro.position')?.toUpperCase()}
       </Typography>
       <Grid container direction='row' columnSpacing={2} rowSpacing={-1}>
         <Grid item>
-          <IconText icon={<AlternateEmailRoundedIcon />} text={accessObj(data)('intro.email')} />
+          <IconText icon={<AlternateEmailRoundedIcon />} text={getValue('intro.email')} />
         </Grid>
         <Grid item>
-          <IconText icon={<PhoneRoundedIcon />} text={accessObj(data)('intro.phone')} />
+          <IconText icon={<PhoneRoundedIcon />} text={getValue('intro.phone')} />
         </Grid>
         <Grid item>
-          <IconText icon={<LocationOnRoundedIcon />} text={accessObj(data)('intro.city')} />
+          <IconText icon={<LocationOnRoundedIcon />} text={getValue('intro.city')} />
         </Grid>
         <Grid item>
-          <IconText icon={<LinkedInIcon />} text={accessObj(data)('intro.linkedin')} />
+          <IconText icon={<LinkedInIcon />} text={getValue('intro.linkedin')} />
         </Grid>
         <Grid item>
-          <IconText icon={<GitHubIcon />} text={accessObj(data)('intro.github')} />
+          <IconText icon={<GitHubIcon />} text={getValue('intro.github')} />
         </Grid>
       </Grid>
     </Box>
