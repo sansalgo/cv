@@ -1,6 +1,10 @@
 export const accessObj = data => path => {
   return path.split('.').reduce((previousValue, currentValue) => {
-    return previousValue && previousValue[currentValue]
+    if (previousValue) {
+      return previousValue[currentValue]
+    } else {
+      return undefined
+    }
   }, data)
 }
 

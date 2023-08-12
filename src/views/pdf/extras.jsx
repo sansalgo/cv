@@ -1,11 +1,12 @@
-import { accessObj } from './utils'
+import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import { Fragment } from 'react'
+import { usePDFData } from './PDFDataContext'
+import { accessObj } from './utils'
 
-const Extras = ({ data }) => {
+const Extras = () => {
+  const data = usePDFData()
+  const getValue = accessObj(data)
   return (
     <Box component='section'>
       <Typography variant='h2' className='extras__heading'>
@@ -13,7 +14,7 @@ const Extras = ({ data }) => {
       </Typography>
       <Divider />
       <ul>
-        {accessObj(data)('extras')?.map((element, index) => {
+        {getValue('extras')?.map((element, index) => {
           return (
             <li key={index}>
               <Typography>{element}</Typography>

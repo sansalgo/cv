@@ -1,6 +1,7 @@
 import PDF from '@/views/pdf'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme, styled } from '@mui/material/styles'
+import axios from 'axios'
 
 const extendTheme = theme =>
   createTheme({
@@ -163,11 +164,24 @@ const StyledLayout = styled('div')(({ theme }) => ({
   alignItems: 'center'
 }))
 
-const PDFPage = () => (
+const PDFPage = ({ record }) => (
   <ThemeProvider theme={theme => extendTheme(theme)}>
     <CssBaseline />
-    <PDF />
+    <PDF record={record} />
   </ThemeProvider>
 )
 export default PDFPage
+
 PDFPage.getLayout = page => page
+
+export const getServerSideProps = async ({ params, req }) => {
+  const { data: record } = await axios.get(`http://localhost:3000/api/records/${params.id}`, {
+    headers: {
+      cookie: req.headers.cookie
+    }
+  })
+
+  return {
+    props: { record }
+  }
+}

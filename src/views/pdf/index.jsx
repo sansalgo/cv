@@ -1,30 +1,17 @@
-import Intro from '@/views/pdf/intro'
-import ProfileSummary from '@/views/pdf/profileSummary'
-import Achievement from '@/views/pdf/achievement'
-import Education from '@/views/pdf/education'
-import EmploymentHistory from '@/views/pdf/employmentHistory'
-import Extras from '@/views/pdf/extras'
-import Languages from '@/views/pdf/languages'
-import Projects from '@/views/pdf/projects'
-import Skills from '@/views/pdf/skills'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
+import Achievement from '@/views/pdf/Achievement'
+import Education from '@/views/pdf/Education'
+import EmploymentHistory from '@/views/pdf/EmploymentHistory'
+import Extras from '@/views/pdf/Extras'
+import Intro from '@/views/pdf/Intro'
+import Languages from '@/views/pdf/Languages'
+import ProfileSummary from '@/views/pdf/ProfileSummary'
+import Projects from '@/views/pdf/Projects'
+import Skills from '@/views/pdf/Skills'
 import Container from '@mui/material/Container'
-import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import { setRecord } from '@/store/record'
+import { PDFDataProvider } from './PDFDataContext'
 
-const PDF = () => {
-  // const dispatch = useDispatch()
-  // //   const state = useSelector((state) => state.cv.record[0])
-  // useEffect(() => {
-  //   // dispatch(setRecord(JSON.parse(localStorage.getItem('record'))))
-  //   // console.log('testing...')
-  //   console.log(localStorage.getItem('record'))
-  // }, [])
+const PDF = ({ record }) => {
 
   const data = {
     _id: {
@@ -155,51 +142,28 @@ const PDF = () => {
     __v: 0
   }
 
-  useEffect(() => {
-    // dispatch(setRecord(JSON.parse(localStorage.getItem('record'))))
-    // console.log('testing...')
-    data['test'] = localStorage.getItem('record')
-  }, [])
-
   return (
-    // <ThemeProvider theme={theme}>
-    //   <CssBaseline />
-    <Container maxWidth='lg'>
-      <Grid container columnSpacing={3} rowSpacing={1.5}>
-        <Grid item xs={12}>
-          <Intro data={data} />
+    <PDFDataProvider data={record}>
+      <Container maxWidth='lg'>
+        <Grid container columnSpacing={3} rowSpacing={1.5}>
+          <Grid item xs={12}>
+            <Intro data={data} />
+          </Grid>
+          <Grid item xs={4}>
+            <Skills data={data} />
+            <Projects data={data} />
+            <Languages data={data} />
+            <Achievement data={data} />
+          </Grid>
+          <Grid item xs={8}>
+            <ProfileSummary data={data} />
+            <EmploymentHistory data={data} />
+            <Education data={data} />
+            <Extras data={data} />
+          </Grid>
         </Grid>
-        <Grid item xs={4}>
-          <Skills data={data} />
-          <Projects data={data} />
-          <Languages data={data} />
-          <Achievement data={data} />
-        </Grid>
-        <Grid item xs={8}>
-          <ProfileSummary data={data} />
-
-          <EmploymentHistory data={data} />
-
-          <Education data={data} />
-
-          <Extras data={data} />
-        </Grid>
-      </Grid>
-
-      {/* <div className="col-md-4 order-md-1 order-2">
-            <Skills data={state} />
-            <Projects data={state} />
-            <Languages data={state} />
-            <Achievement data={state} />
-          </div>
-          <div className="col-md-8 order-md-2 order-1">
-            <ProfileSummary data={state} />
-            <EmploymentHistory data={state} />
-            <Education data={state} />
-            <Extras data={state} />
-          </div> */}
-    </Container>
-    // </ThemeProvider>
+      </Container>
+    </PDFDataProvider>
   )
 }
 
