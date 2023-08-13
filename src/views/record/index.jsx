@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
+import Button from '@mui/material/Button'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -9,25 +10,37 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Pagination from '@mui/material/Pagination'
 import EndCard from '@/components/EndCard'
+import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import formatDateTime from '@/utils/format-date-time'
 
 import Stack from '@mui/material/Stack'
 import MenuAction from './MenuAction'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 const Record = () => {
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(6)
   const { records } = useSelector(state => state.record)
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
 
+  const createNewRecord = () => {
+    startTransition(async () => {
+      const response = await axios.get(`/api/records/drafts`)
+      router.push(`/form/${response.data._id}`)
+    })
+  }
+
   const rows = records.map((value, index) => ({
     _id: value._id,
     index: index + 1,
-    name: `${value.intro.firstName} ${value.intro.lastName}`,
+    name: value.fileName,
     dateCreated: formatDateTime(value.createdAt),
     dateModified: formatDateTime(value.updatedAt)
   }))
@@ -39,6 +52,11 @@ const Record = () => {
 
   return (
     <Grid container spacing={2} direction='column'>
+      <Grid item display='flex' justifyContent='flex-end'>
+        <Button variant='contained' onClick={createNewRecord} startIcon={<AddRoundedIcon color='white' />}>
+          New Record
+        </Button>
+      </Grid>
       <Grid item>
         <TableContainer component={Paper}>
           <Table>
