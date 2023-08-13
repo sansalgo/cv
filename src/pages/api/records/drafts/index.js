@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         const draftRecord = await Record.findOneAndUpdate(
           { user: session.user.id, draft: true },
           { draft: true },
-          { new: true, upsert: true }
+          { new: true, upsert: true, runValidators: true }
         )
         res.status(200).json(draftRecord)
         break
