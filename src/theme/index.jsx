@@ -88,6 +88,13 @@ const theme = createTheme({
         }
       }
     },
+    MuiCardHeader: {
+      styleOverrides: {
+        action: {
+          margin: 0
+        }
+      }
+    },
     MuiFormControl: {
       styleOverrides: {
         root: {

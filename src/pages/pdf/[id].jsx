@@ -1,6 +1,6 @@
 import PDF from '@/views/pdf'
 import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider, createTheme, styled } from '@mui/material/styles'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 import axios from 'axios'
 
 const extendTheme = theme =>
@@ -158,11 +158,7 @@ const extendTheme = theme =>
       }
     }
   })
-const StyledLayout = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-}))
+
 
 const PDFPage = ({ record }) => (
   <ThemeProvider theme={theme => extendTheme(theme)}>

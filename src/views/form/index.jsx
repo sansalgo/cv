@@ -54,6 +54,8 @@ const Form = ({ record }) => {
 
   useEffect(() => {
     if (record) {
+      record.employmentHistory && !record.employmentHistory.length && delete record.employmentHistory
+      record.education && !record.education.length && delete record.education
       methods.reset(record)
     }
   }, [])
@@ -68,6 +70,12 @@ const Form = ({ record }) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
+        <Grid item>
+          <Box component='div' contentEditable>
+            {record.fileName}
+          </Box>
+
+        </Grid>
           <Grid item xs={12}>
             <Intro />
           </Grid>
@@ -88,35 +96,6 @@ const Form = ({ record }) => {
               <Extras />
             </Stack>
           </Grid>
-
-          {/* <div className="col-md-4 order-md-1 order-2">
-            <div className="card mb-4">
-              <Skills />
-            </div>
-            <div className="card mb-4">
-              <Projects />
-            </div>
-            <div className="card mb-4">
-              <Languages />
-            </div>
-            <div className="card mb-4">
-              <Achievement />
-            </div>
-          </div> */}
-          {/* <div className="col-md-8 order-md-2 order-1">
-            <div className="card mb-4">
-              <ProfileSummary />
-            </div>
-            <div className="card mb-4">
-              <EmploymentHistory />
-            </div>
-            <div className="card mb-4">
-              <Education />
-            </div>
-            <div className="card mb-4">
-              <Extras />
-            </div>
-          </div> */}
           <Grid item xs={12} order={{ xs: 3 }} justifyContent='center'>
             <EndCard>
               <Button type='submit' disabled={loading} variant='contained'>
