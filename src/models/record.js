@@ -69,6 +69,7 @@ const recordSchema = new Schema(
 )
 
 recordSchema.pre('findOneAndUpdate', async function (next) {
+  console.log(this)
   let currentFileName = generateUniqueFileName()
   while (true) {
     const existingRecord = await this.model.findOne({ fileName: currentFileName })

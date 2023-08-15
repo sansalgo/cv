@@ -95,7 +95,7 @@ const Register = () => {
   return (
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
-        <ConditionalRender value={currentStep === 0}>
+        <ConditionalRender condition={currentStep === 0}>
           <Box display='flex' justifyContent='space-between' alignItems='center'>
             <Typography>
               Already have a account?&nbsp;
@@ -108,7 +108,7 @@ const Register = () => {
             </Button>
           </Box>
         </ConditionalRender>
-        <ConditionalRender value={currentStep === 1}>
+        <ConditionalRender condition={currentStep === 1}>
           <Box display='flex' justifyContent='space-between' alignItems='center'>
             <Typography id='resendOTPButton'>Resend OTP</Typography>
             <Button type='submit' variant='contained' color='primary'>
@@ -116,7 +116,7 @@ const Register = () => {
             </Button>
           </Box>
         </ConditionalRender>
-        <ConditionalRender value={currentStep === 2}>
+        <ConditionalRender condition={currentStep === 2}>
           <Box display='flex' justifyContent='space-between' alignItems='center'>
             <Typography>
               Already have a account?&nbsp;

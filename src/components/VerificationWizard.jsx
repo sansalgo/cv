@@ -90,13 +90,13 @@ const VerificationWizard = ({ currentStep, onSubmit, children }) => {
         <ContainerCenter>
           <Card variant='outlined'>
             <CardContent>
-              <ConditionalRender value={currentStep === 0}>
+              <ConditionalRender condition={currentStep === 0}>
                 <UserVerification onSubmit={onSubmit} />
               </ConditionalRender>
-              <ConditionalRender value={currentStep === 1}>
+              <ConditionalRender condition={currentStep === 1}>
                 <OTPVerification onSubmit={onSubmit} />
               </ConditionalRender>
-              <ConditionalRender value={currentStep === 2}>
+              <ConditionalRender condition={currentStep === 2}>
                 <PasswordEntry onSubmit={onSubmit} />
               </ConditionalRender>
               {children}

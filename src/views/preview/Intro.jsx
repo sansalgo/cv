@@ -33,19 +33,19 @@ const Intro = () => {
       </Text>
       <Text style={styles.subtitle}>{data.position}</Text>
       <View style={styles.list}>
-        <ConditionalRender value={data.email}>
+        <ConditionalRender condition={data.email}>
           <IconText icon='@' text={data.email} />
         </ConditionalRender>
-        <ConditionalRender value={data.phone}>
+        <ConditionalRender condition={data.phone}>
           <IconText icon='phone-flip' text={data.phone} />
         </ConditionalRender>
-        <ConditionalRender value={data.city}>
+        <ConditionalRender condition={data.city}>
           <IconText icon='location-pin' text={data.city} />
         </ConditionalRender>
-        <ConditionalRender value={data.linkedin}>
+        <ConditionalRender condition={data.linkedin}>
           <IconText icon='linkedin' text={data.linkedin} fontStyle='brand' />
         </ConditionalRender>
-        <ConditionalRender value={data.github}>
+        <ConditionalRender condition={data.github}>
           <IconText icon='github' text={data.github} fontStyle='brand' />
         </ConditionalRender>
       </View>

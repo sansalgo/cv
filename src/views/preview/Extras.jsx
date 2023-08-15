@@ -15,7 +15,7 @@ const Extras = () => {
     <Section>
       <SectionTitle title='EXTRAS' />
       <SSContainer>
-        <ConditionalRender value={data.extras}>
+        <ConditionalRender condition={data.extras}>
           {data.extras.map((value, index) => (
             <Fragment key={index}>{value.value && <PointText>{value.value}</PointText>}</Fragment>
           ))}

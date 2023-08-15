@@ -28,14 +28,14 @@ const EmploymentHistory = () => {
       {data.employmentHistory.map((value, index) => (
         <Fragment key={index}>
           <SSContainer>
-            <ConditionalRender value={value.position}>
-              <ConditionalRender value={value.companyName}>
+            <ConditionalRender condition={value.position}>
+              <ConditionalRender condition={value.companyName}>
                 <DividerSubtitle beforeText={value.position} afterText={value.companyName} />
               </ConditionalRender>
             </ConditionalRender>
-            <ConditionalRender value={value.startDate}>
-              <ConditionalRender value={value.endDate}>
-                <ConditionalRender value={value.location}>
+            <ConditionalRender condition={value.startDate}>
+              <ConditionalRender condition={value.endDate}>
+                <ConditionalRender condition={value.location}>
                   <DatePlaceRow
                     style={styles.datePlaceRow}
                     date={`${value.startDate} - ${value.endDate}`}
@@ -44,7 +44,7 @@ const EmploymentHistory = () => {
                 </ConditionalRender>
               </ConditionalRender>
             </ConditionalRender>
-            <ConditionalRender value={value.description}>
+            <ConditionalRender condition={value.description}>
               <View style={styles.description}>
                 <Text>Description:</Text>
                 <Text>{value.description}</Text>

@@ -19,7 +19,7 @@ const ProfileSummary = () => {
     <Section>
       <SectionTitle title='PROFILE SUMMARY' />
       <SSContainer>
-        <ConditionalRender value={data.profileSummary}>
+        <ConditionalRender condition={data.profileSummary}>
           <Text style={styles.summary}>{data.profileSummary}</Text>
         </ConditionalRender>
       </SSContainer>
