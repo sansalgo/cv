@@ -21,18 +21,18 @@ const Education = () => {
   return (
     <Section>
       <SectionTitle title='EDUCATION' />
-      <ConditionalRender value={data.education}>
+      <ConditionalRender condition={data.education}>
         {data.education.map((value, index) => (
           <Fragment key={index}>
             <SSContainer>
-              <ConditionalRender value={value.course}>
-                <ConditionalRender value={value.institution}>
+              <ConditionalRender condition={value.course}>
+                <ConditionalRender condition={value.institution}>
                   <DividerSubtitle beforeText={value.course} afterText={value.institution} />
                 </ConditionalRender>
               </ConditionalRender>
-              <ConditionalRender value={value.startDate}>
-                <ConditionalRender value={value.endDate}>
-                  <ConditionalRender value={value.location}>
+              <ConditionalRender condition={value.startDate}>
+                <ConditionalRender condition={value.endDate}>
+                  <ConditionalRender condition={value.location}>
                     <DatePlaceRow
                       style={styles.datePlaceRow}
                       date={`${value.startDate} - ${value.endDate}`}
@@ -41,7 +41,7 @@ const Education = () => {
                   </ConditionalRender>
                 </ConditionalRender>
               </ConditionalRender>
-              <ConditionalRender value={value.percentage}>
+              <ConditionalRender condition={value.percentage}>
                 <PointText>Percentage : {value.percentage}</PointText>
               </ConditionalRender>
             </SSContainer>

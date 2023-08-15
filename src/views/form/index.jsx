@@ -21,6 +21,7 @@ import Projects from './Projects'
 import Skills from './Skills'
 import axios from 'axios'
 import formatRecord from '@/utils/format-record'
+import FileName from './FileName'
 
 const Form = ({ record }) => {
   const methods = useForm({
@@ -70,12 +71,9 @@ const Form = ({ record }) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
-        <Grid item>
-          <Box component='div' contentEditable>
-            {record.fileName}
-          </Box>
-
-        </Grid>
+          <Grid item xs={12}>
+            <FileName />
+          </Grid>
           <Grid item xs={12}>
             <Intro />
           </Grid>

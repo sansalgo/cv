@@ -31,7 +31,7 @@ const Skills = () => {
       <SectionTitle title='SKILLS' />
       <SSContainer>
         <View style={styles.container}>
-          <ConditionalRender value={data.skills}>
+          <ConditionalRender condition={data.skills}>
             {data.skills.map((value, index) => (
               <Fragment key={index}>{value.value && <Text style={styles.roundedLabel}>{value.value}</Text>}</Fragment>
             ))}

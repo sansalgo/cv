@@ -15,7 +15,7 @@ const Languages = () => {
     <Section>
       <SectionTitle title='LANGUAGES' />
       <SSContainer>
-        <ConditionalRender value={data.languages}>
+        <ConditionalRender condition={data.languages}>
           {data.languages.map((value, index) => (
             <Fragment key={index}>{value.value && <PointText>{value.value}</PointText>}</Fragment>
           ))}
