@@ -8,7 +8,7 @@ import InputAdornment from '@mui/material/InputAdornment'
 import Button from '@mui/material/Button'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
-import ChipButton from '@/components/chipButton'
+import ChipButton from '@/components/ChipButton'
 import WestRoundedIcon from '@mui/icons-material/WestRounded'
 import EastRoundedIcon from '@mui/icons-material/EastRounded'
 
