@@ -18,12 +18,14 @@ import MenuAction from './MenuAction'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import FileName from './FileName'
 
 const Record = () => {
   const [page, setPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(6)
   const { records } = useSelector(state => state.record)
   const [isPending, startTransition] = useTransition()
+  const [nameEditableId, setNameEditableId] = useState(null)
   const router = useRouter()
 
   const handleChangePage = (event, newPage) => {
@@ -73,10 +75,14 @@ const Record = () => {
               {displayedRows.map(row => (
                 <TableRow key={row.index}>
                   <TableCell>{row.index}</TableCell>
-                  <TableCell>{row.name}</TableCell>
+                  <TableCell>
+                    <FileName isEditable={nameEditableId === row._id} setNameEditableId={setNameEditableId}>
+                      {row.name}
+                    </FileName>
+                  </TableCell>
                   <TableCell>{row.dateCreated}</TableCell>
                   <TableCell>{row.dateModified}</TableCell>
-                  <TableCell>{<MenuAction id={row._id} />}</TableCell>
+                  <TableCell>{<MenuAction id={row._id} setNameEditableId={setNameEditableId} />}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -1,8 +1,8 @@
 import connectToDatabase from '@/lib/mongodb'
 import Record from '@/models/record'
-import formatRecord from '@/utils/format-record'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth/[...nextauth]'
+import generateUniqueFileName from '@/utils/generate-unique-file-name'
 
 export default async function handler(req, res) {
   try {
@@ -19,6 +19,20 @@ export default async function handler(req, res) {
           { draft: true },
           { new: true, upsert: true, runValidators: true }
         )
+
+        if (!draftRecord.fileName) {
+          let currentFileName = generateUniqueFileName()
+          while (true) {
+            const existingRecord = await Record.findOne({ fileName: currentFileName })
+            if (existingRecord) {
+              currentFileName = generateUniqueFileName()
+              continue
+            }
+            break
+          }
+          draftRecord.fileName = currentFileName
+          await draftRecord.save()
+        }
         res.status(200).json(draftRecord)
         break
       default:

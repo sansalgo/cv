@@ -9,8 +9,8 @@ import Button from '@mui/material/Button'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import ChipButton from '@/components/ChipButton'
-import WestRoundedIcon from '@mui/icons-material/WestRounded'
-import EastRoundedIcon from '@mui/icons-material/EastRounded'
+import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded'
 
 const FileName = () => {
   const { register, getValues } = useFormContext()
@@ -28,7 +28,7 @@ const FileName = () => {
               placeholder='Filename'
               endAdornment={
                 <InputAdornment position='end'>
-                  <ChipButton label={<EastRoundedIcon />} onClick={() => setIsContentEditable(false)} />
+                  <ChipButton label={<DoneRoundedIcon />} onClick={() => setIsContentEditable(false)} />
                 </InputAdornment>
               }
               {...register('fileName')}
@@ -36,7 +36,10 @@ const FileName = () => {
           </FormControl>
           <Stack direction='row' justifyContent='space-between' alignItems='center'>
             {getValues('fileName')}
-            <ChipButton label={<WestRoundedIcon />} onClick={() => setIsContentEditable(true)} />
+            <ChipButton
+              label={<DriveFileRenameOutlineRoundedIcon fontSize='small' />}
+              onClick={() => setIsContentEditable(true)}
+            />
           </Stack>
         </ConditionalRender>
       </CardContent>

@@ -41,7 +41,8 @@ const theme = createTheme({
     MuiChip: {
       defaultProps: {
         variant: 'outlined',
-        color: 'primary'
+        color: 'primary',
+        size: 'small'
       },
       styleOverrides: {
         root: {
@@ -53,7 +54,8 @@ const theme = createTheme({
     },
     MuiOutlinedInput: {
       defaultProps: {
-        autoComplete: 'off'
+        autoComplete: 'off',
+        size: 'small'
       },
       styleOverrides: {
         root: {

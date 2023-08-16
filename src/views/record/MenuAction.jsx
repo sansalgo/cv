@@ -13,6 +13,7 @@ import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded'
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
@@ -20,13 +21,17 @@ import { deleteRecord, getRecord } from '@/store/record'
 import { pdf } from '@react-pdf/renderer'
 import PDFDocument from '../preview/PDFDocument'
 
-const MenuAction = ({ id }) => {
+const MenuAction = ({ id, setNameEditableId }) => {
   const [open, setOpen] = useState(false)
   const anchorRef = useRef(null)
   const router = useRouter()
   const dispatch = useDispatch()
   const handleToggle = () => {
     setOpen(!open)
+  }
+
+  const handleFileRename = () => {
+    setNameEditableId(id)
   }
 
   const handleEdit = () => {
@@ -94,6 +99,11 @@ const MenuAction = ({ id }) => {
                   divider={<Divider orientation='vertical' variant='middle' />}
                   autoFocusItem={open}
                 >
+                  <MenuItem>
+                    <IconButton onClick={handleFileRename}>
+                      <DriveFileRenameOutlineRoundedIcon />
+                    </IconButton>
+                  </MenuItem>
                   <MenuItem onClick={handleEdit}>
                     <IconButton>
                       <ModeEditRoundedIcon />
