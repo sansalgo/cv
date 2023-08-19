@@ -1,10 +1,10 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import GlobalStyling from './globalStyles'
 import GlobalStyles from '@mui/material/GlobalStyles'
 import palette from './palette'
 
-const theme = createTheme({
+let theme = createTheme({
   palette,
   typography: {
     fontFamily: 'Lato'
@@ -35,7 +35,8 @@ const theme = createTheme({
     },
     MuiSvgIcon: {
       defaultProps: {
-        color: 'primary'
+        color: 'primary',
+        fontSize: 'small'
       }
     },
     MuiChip: {
@@ -116,6 +117,8 @@ const theme = createTheme({
     }
   }
 })
+
+theme = responsiveFontSizes(theme)
 
 export default ({ children }) => (
   <ThemeProvider theme={theme}>
