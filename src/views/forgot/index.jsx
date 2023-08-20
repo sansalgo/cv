@@ -92,38 +92,44 @@ const Forgot = () => {
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
         <ConditionalRender condition={currentStep === 0}>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography>
-              Already have a account?&nbsp;
-              <Link component={LinkBehavior} href='/login'>
-                Login
-              </Link>
-            </Typography>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
-            </Button>
-          </Box>
+          {() => (
+            <Box display='flex' justifyContent='space-between' alignItems='center'>
+              <Typography>
+                Already have a account?&nbsp;
+                <Link component={LinkBehavior} href='/login'>
+                  Login
+                </Link>
+              </Typography>
+              <Button type='submit' variant='contained' color='primary'>
+                Register
+              </Button>
+            </Box>
+          )}
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 1}>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography id='resendOTPButton'>Resend OTP</Typography>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
-            </Button>
-          </Box>
+          {() => (
+            <Box display='flex' justifyContent='space-between' alignItems='center'>
+              <Typography id='resendOTPButton'>Resend OTP</Typography>
+              <Button type='submit' variant='contained' color='primary'>
+                Register
+              </Button>
+            </Box>
+          )}
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 2}>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography>
-              Already have a account?&nbsp;
-              <Link component={LinkBehavior} href='/login'>
-                Login
-              </Link>
-            </Typography>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
-            </Button>
-          </Box>
+          {() => (
+            <Box display='flex' justifyContent='space-between' alignItems='center'>
+              <Typography>
+                Already have a account?&nbsp;
+                <Link component={LinkBehavior} href='/login'>
+                  Login
+                </Link>
+              </Typography>
+              <Button type='submit' variant='contained' color='primary'>
+                Register
+              </Button>
+            </Box>
+          )}
         </ConditionalRender>
       </VerificationWizard>
     </FormProvider>

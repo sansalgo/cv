@@ -9,6 +9,11 @@ let theme = createTheme({
   typography: {
     fontFamily: 'Lato'
   },
+  typography: {
+    button: {
+      textTransform: 'none'
+    }
+  },
 
   components: {
     MuiPaper: {
@@ -37,6 +42,13 @@ let theme = createTheme({
       defaultProps: {
         color: 'primary',
         fontSize: 'small'
+      }
+    },
+    MuiCheckbox: {
+      defaultProps: {
+        disableRipple: true,
+        disableFocusRipple: true,
+        disableTouchRipple: true
       }
     },
     MuiChip: {
@@ -111,7 +123,7 @@ let theme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          fontSize: '1rem'
+          fontSize: '0.85rem'
         }
       }
     }

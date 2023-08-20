@@ -3,6 +3,7 @@ import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { Children } from 'react'
+import BetweenElse from './BetweenElse'
 
 const EndCardWrapper = styled(Box)(() => ({
   '& .MuiCardContent-root': {
@@ -21,7 +22,7 @@ const EndCard = ({ children, ...rest }) => {
     <EndCardWrapper {...rest}>
       <Card variant='outlined'>
         <CardContent>
-          <Box sx={{ justifyContent }}>{children}</Box>
+          <BetweenElse>{children}</BetweenElse>
         </CardContent>
       </Card>
     </EndCardWrapper>

@@ -14,6 +14,8 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
+import BetweenElse from '@/components/BetweenElse'
 
 const validationSchemas = [
   schema([{ field: 'username' }, { field: 'email' }]),
@@ -25,6 +27,7 @@ const Register = () => {
   const [currentStep, setCurrentStep] = useState(0)
   const methods = useForm({ resolver: yupResolver(validationSchemas[currentStep]) })
   const dispatch = useDispatch()
+  const router = useRouter()
   const { setError, setValue } = methods
 
   const nextStep = () => {
@@ -96,38 +99,41 @@ const Register = () => {
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
         <ConditionalRender condition={currentStep === 0}>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography>
-              Already have a account?&nbsp;
-              <Link component={LinkBehavior} href='/login'>
+          {() => (
+            <BetweenElse>
+              <Button variant='outlined' color='primary' onClick={() => router.push(`/login`)}>
                 Login
-              </Link>
-            </Typography>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
-            </Button>
-          </Box>
+              </Button>
+              <Button type='submit' variant='contained' color='primary'>
+                Register
+              </Button>
+            </BetweenElse>
+          )}
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 1}>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography id='resendOTPButton'>Resend OTP</Typography>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
-            </Button>
-          </Box>
+          {() => (
+            <Box display='flex' justifyContent='space-between' alignItems='center'>
+              <Typography id='resendOTPButton'>Resend OTP</Typography>
+              <Button type='submit' variant='contained' color='primary'>
+                Register
+              </Button>
+            </Box>
+          )}
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 2}>
-          <Box display='flex' justifyContent='space-between' alignItems='center'>
-            <Typography>
-              Already have a account?&nbsp;
-              <Link component={LinkBehavior} href='/login'>
-                Login
-              </Link>
-            </Typography>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
-            </Button>
-          </Box>
+          {() => (
+            <Box display='flex' justifyContent='space-between' alignItems='center'>
+              <Typography>
+                Already have a account?&nbsp;
+                <Link component={LinkBehavior} href='/login'>
+                  Login
+                </Link>
+              </Typography>
+              <Button type='submit' variant='contained' color='primary'>
+                Register
+              </Button>
+            </Box>
+          )}
         </ConditionalRender>
       </VerificationWizard>
     </FormProvider>

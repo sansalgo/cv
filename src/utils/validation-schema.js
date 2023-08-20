@@ -7,11 +7,12 @@ const schema = fields => {
       case 'username':
         switch (level) {
           case 'required':
-            validationSchema[field] = yup.string().required('Username is required')
+            validationSchema[field] = yup.string().trim().required('Username is required')
             break
           default:
             validationSchema[field] = yup
               .string()
+              .trim()
               .required('Username is required')
               .matches(
                 /^[a-z][a-z0-9_]*$/,
@@ -38,6 +39,9 @@ const schema = fields => {
         break
       case 'password':
         switch (level) {
+          case 'required':
+            validationSchema[field] = yup.string().trim().required('Password is required')
+            break
           default:
             validationSchema[field] = yup
               .string()

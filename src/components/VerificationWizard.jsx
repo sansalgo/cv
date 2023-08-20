@@ -15,6 +15,7 @@ import { useFormContext } from 'react-hook-form'
 import OTPInput from '@/components/OTPInput'
 import PasswordInput from '@/components/PasswordInput'
 import { useEffect } from 'react'
+import Box from '@mui/material/Box'
 
 const UserVerification = () => {
   const {
@@ -24,11 +25,15 @@ const UserVerification = () => {
 
   return (
     <Stack spacing={2}>
-      <OutlinedInput fullWidth placeholder='Username' error={!!errors.username} {...register('username')} />
-      <FormHelperText error>{errors.username?.message}</FormHelperText>
-      <OutlinedInput fullWidth placeholder='Email' error={!!errors.email} {...register('email')} />
-      <FormHelperText error>{errors.email?.message}</FormHelperText>
-      <FormHelperText error>{errors.user?.message}</FormHelperText>
+      <Box>
+        <OutlinedInput fullWidth placeholder='Username' error={!!errors.username} {...register('username')} />
+        <FormHelperText error>{errors.username?.message}</FormHelperText>
+      </Box>
+      <Box>
+        <OutlinedInput fullWidth placeholder='Email' error={!!errors.email} {...register('email')} />
+        <FormHelperText error>{errors.email?.message}</FormHelperText>
+        <FormHelperText error>{errors.user?.message}</FormHelperText>
+      </Box>
     </Stack>
   )
 }
@@ -91,13 +96,13 @@ const VerificationWizard = ({ currentStep, onSubmit, children }) => {
           <Card variant='outlined'>
             <CardContent>
               <ConditionalRender condition={currentStep === 0}>
-                <UserVerification onSubmit={onSubmit} />
+                {() => <UserVerification onSubmit={onSubmit} />}
               </ConditionalRender>
               <ConditionalRender condition={currentStep === 1}>
-                <OTPVerification onSubmit={onSubmit} />
+                {() => <OTPVerification onSubmit={onSubmit} />}
               </ConditionalRender>
               <ConditionalRender condition={currentStep === 2}>
-                <PasswordEntry onSubmit={onSubmit} />
+                {() => <PasswordEntry onSubmit={onSubmit} />}
               </ConditionalRender>
               {children}
             </CardContent>

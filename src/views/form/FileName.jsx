@@ -22,25 +22,29 @@ const FileName = () => {
     <Card>
       <CardContent>
         <ConditionalRender condition={isContentEditable}>
-          <FormControl fullWidth>
-            <OutlinedInput
-              type='text'
-              placeholder='Filename'
-              endAdornment={
-                <InputAdornment position='end'>
-                  <ChipButton label={<DoneRoundedIcon />} onClick={() => setIsContentEditable(false)} />
-                </InputAdornment>
-              }
-              {...register('fileName')}
-            />
-          </FormControl>
-          <Stack direction='row' justifyContent='space-between' alignItems='center'>
-            {getValues('fileName')}
-            <ChipButton
-              label={<DriveFileRenameOutlineRoundedIcon fontSize='small' />}
-              onClick={() => setIsContentEditable(true)}
-            />
-          </Stack>
+          {() => (
+            <FormControl fullWidth>
+              <OutlinedInput
+                type='text'
+                placeholder='Filename'
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <ChipButton label={<DoneRoundedIcon />} onClick={() => setIsContentEditable(false)} />
+                  </InputAdornment>
+                }
+                {...register('fileName')}
+              />
+            </FormControl>
+          )}
+          {() => (
+            <Stack direction='row' justifyContent='space-between' alignItems='center'>
+              {getValues('fileName')}
+              <ChipButton
+                label={<DriveFileRenameOutlineRoundedIcon fontSize='small' />}
+                onClick={() => setIsContentEditable(true)}
+              />
+            </Stack>
+          )}
         </ConditionalRender>
       </CardContent>
     </Card>
