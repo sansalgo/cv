@@ -33,7 +33,13 @@ const schema = fields => {
       case 'otp':
         switch (level) {
           default:
-            validationSchema[field] = yup.array().of(yup.string().trim().required('OTP is required'))
+            validationSchema[field] = yup.array().of(
+              yup
+                .string()
+                .trim()
+                .matches(/^\d{1}$/, 'OTP must be a 6-digit number')
+                .required('OTP is required')
+            )
             break
         }
         break

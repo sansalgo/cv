@@ -1,17 +1,36 @@
 import Grid from '@mui/material/Grid'
 import OutlinedInput from '@mui/material/OutlinedInput'
-import { forwardRef, useRef } from 'react'
+import { useState } from 'react'
 
-const OTPInput = ({ length, name, register,  errors }) => {
-  const { current } = useRef([])
+const OTPInput = ({ length, name, register, errors }) => {
   const inputLength = [...Array(length).keys()]
+  const [isBackspace, setIsBackspace] = useState(false)
 
-  const handleChange = (event, index) => {
-    const { value } = event.target
-    if (value.length === 0 && index > 0) {
-      current[index - 1].focus()
-    } else if (value.length === 1 && index < current.length - 1) {
-      current[index + 1].focus()
+  const handleChange = event => {
+    if (!isBackspace) {
+      const form = event.target.form
+      const index = [...form].indexOf(event.target)
+      if (form[index].value && form[index].value.length) {
+        form.elements[index + 2].focus()
+      }
+    }
+  }
+
+  console.log(isBackspace)
+
+  const handleKeyDown = event => {
+    if (event.key === 'Backspace') {
+      setIsBackspace(true)
+
+      const form = event.target.form
+      const index = [...form].indexOf(event.target)
+      if (index >= 1) {
+        if (!(form[index].value && form[index].value.length)) {
+          form.elements[index - 2].focus()
+        }
+      }
+    } else {
+      setIsBackspace(false)
     }
   }
 
@@ -20,10 +39,10 @@ const OTPInput = ({ length, name, register,  errors }) => {
       {inputLength.map(index => (
         <Grid item xs={2} key={index}>
           <OutlinedInput
-            error={!!errors.otp && !!errors.otp[index]}
+            error={!!errors[name] && !!errors[name][index]}
             inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
-            {...register(name + `[${index}]`, { onChange: event => handleChange(event, index) })}
-            inputRef={event => (current[index] = event)}
+            {...register(name + `[${index}]`, { onChange: event => handleChange(event) })}
+            onKeyDown={event => handleKeyDown(event)}
           />
         </Grid>
       ))}

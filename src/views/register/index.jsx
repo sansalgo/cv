@@ -24,7 +24,7 @@ const validationSchemas = [
 ]
 
 const Register = () => {
-  const [currentStep, setCurrentStep] = useState(0)
+  const [currentStep, setCurrentStep] = useState(1)
   const methods = useForm({ resolver: yupResolver(validationSchemas[currentStep]) })
   const dispatch = useDispatch()
   const router = useRouter()
@@ -101,7 +101,7 @@ const Register = () => {
         <ConditionalRender condition={currentStep === 0}>
           {() => (
             <BetweenElse>
-              <Button variant='outlined' color='primary' onClick={() => router.push(`/login`)}>
+              <Button variant='outlined' color='secondary' onClick={() => router.push(`/login`)}>
                 Login
               </Button>
               <Button type='submit' variant='contained' color='primary'>
@@ -112,27 +112,26 @@ const Register = () => {
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 1}>
           {() => (
-            <Box display='flex' justifyContent='space-between' alignItems='center'>
-              <Typography id='resendOTPButton'>Resend OTP</Typography>
-              <Button type='submit' variant='contained' color='primary'>
-                Register
+            <BetweenElse>
+              <Button variant='outlined' color='secondary'>
+                Resend
               </Button>
-            </Box>
+              <Button type='submit' variant='contained' color='primary'>
+                Verify
+              </Button>
+            </BetweenElse>
           )}
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 2}>
           {() => (
-            <Box display='flex' justifyContent='space-between' alignItems='center'>
-              <Typography>
-                Already have a account?&nbsp;
-                <Link component={LinkBehavior} href='/login'>
-                  Login
-                </Link>
-              </Typography>
+            <BetweenElse>
+              <Button variant='outlined' color='secondary'>
+                Cancel
+              </Button>
               <Button type='submit' variant='contained' color='primary'>
                 Register
               </Button>
-            </Box>
+            </BetweenElse>
           )}
         </ConditionalRender>
       </VerificationWizard>

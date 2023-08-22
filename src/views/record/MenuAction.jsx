@@ -19,7 +19,6 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { deleteRecord, getRecord } from '@/store/record'
 import { pdf } from '@react-pdf/renderer'
-import PDFDocument from '../preview/PDFDocument'
 
 const MenuAction = ({ id, setNameEditableId }) => {
   const [open, setOpen] = useState(false)
@@ -46,19 +45,19 @@ const MenuAction = ({ id, setNameEditableId }) => {
   }
 
   const handleDownload = () => {
-    const a = document.createElement('a')
-    dispatch(getRecord(id))
-      .unwrap()
-      .then(async record => {
-        const blob = await pdf(<PDFDocument record={record} />).toBlob()
-        const href = URL.createObjectURL(blob)
-        a.href = href
-        a.setAttribute("download", 'test.pdf')
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(href)
-      })
+    // const a = document.createElement('a')
+    // dispatch(getRecord(id))
+    //   .unwrap()
+    //   .then(async record => {
+    //     const blob = await pdf(<PDFDocument record={record} />).toBlob()
+    //     const href = URL.createObjectURL(blob)
+    //     a.href = href
+    //     a.setAttribute("download", 'test.pdf')
+    //     document.body.appendChild(a)
+    //     a.click()
+    //     document.body.removeChild(a)
+    //     URL.revokeObjectURL(href)
+    //   })
   }
 
   const handelDelete = () => {

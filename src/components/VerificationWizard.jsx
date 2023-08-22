@@ -17,7 +17,7 @@ import PasswordInput from '@/components/PasswordInput'
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 
-const UserVerification = () => {
+const UserVerification = ({ children }) => {
   const {
     register,
     formState: { errors }
@@ -34,11 +34,12 @@ const UserVerification = () => {
         <FormHelperText error>{errors.email?.message}</FormHelperText>
         <FormHelperText error>{errors.user?.message}</FormHelperText>
       </Box>
+      {children}
     </Stack>
   )
 }
 
-const OTPVerification = () => {
+const OTPVerification = ({ children }) => {
   const dispatch = useDispatch()
   const {
     register,
@@ -52,24 +53,27 @@ const OTPVerification = () => {
       .then(() => toast.success('OTP send successfully'))
   }
 
-  useEffect(() => {
-    const resendOTPButton = document.getElementById('resendOTPButton')
-    resendOTPButton.addEventListener('click', resendOTP)
+  // useEffect(() => {
+  //   const resendOTPButton = document.getElementById('resendOTPButton')
+  //   resendOTPButton.addEventListener('click', resendOTP)
 
-    return () => {
-      resendOTPButton.removeEventListener('click', resendOTP)
-    }
-  })
+  //   return () => {
+  //     resendOTPButton.removeEventListener('click', resendOTP)
+  //   }
+  // })
 
   return (
     <Stack spacing={2}>
-      <OTPInput length={6} name='otp' register={register} errors={errors} />
-      <FormHelperText error>{!!errors.otp && errors.otp.filter(v => !!v)[0].message}</FormHelperText>
+      <Box>
+        <OTPInput length={6} name='otp' register={register} errors={errors} />
+        <FormHelperText error>{!!errors.otp && errors.otp.filter(v => !!v)[0].message}</FormHelperText>
+      </Box>
+      {children}
     </Stack>
   )
 }
 
-const PasswordEntry = () => {
+const PasswordEntry = ({ children }) => {
   const {
     register,
     formState: { errors }
@@ -79,10 +83,15 @@ const PasswordEntry = () => {
 
   return (
     <Stack spacing={2}>
-      <PasswordInput placeholder='Password' name='password' register={register} errors={errors} />
-      <FormHelperText error>{errors.password?.message}</FormHelperText>
-      <PasswordInput placeholder='Confirm Password' name='confirmPassword' register={register} errors={errors} />
-      <FormHelperText error>{errors.confirmPassword?.message}</FormHelperText>
+      <Box>
+        <PasswordInput placeholder='Password' name='password' register={register} errors={errors} />
+        <FormHelperText error>{errors.password?.message}</FormHelperText>
+      </Box>
+      <Box>
+        <PasswordInput placeholder='Confirm Password' name='confirmPassword' register={register} errors={errors} />
+        <FormHelperText error>{errors.confirmPassword?.message}</FormHelperText>
+      </Box>
+      {children}
     </Stack>
   )
 }
@@ -96,15 +105,14 @@ const VerificationWizard = ({ currentStep, onSubmit, children }) => {
           <Card variant='outlined'>
             <CardContent>
               <ConditionalRender condition={currentStep === 0}>
-                {() => <UserVerification onSubmit={onSubmit} />}
+                {() => <UserVerification onSubmit={onSubmit}>{children}</UserVerification>}
               </ConditionalRender>
               <ConditionalRender condition={currentStep === 1}>
-                {() => <OTPVerification onSubmit={onSubmit} />}
+                {() => <OTPVerification onSubmit={onSubmit}>{children}</OTPVerification>}
               </ConditionalRender>
               <ConditionalRender condition={currentStep === 2}>
-                {() => <PasswordEntry onSubmit={onSubmit} />}
+                {() => <PasswordEntry onSubmit={onSubmit}>{children}</PasswordEntry>}
               </ConditionalRender>
-              {children}
             </CardContent>
           </Card>
         </ContainerCenter>
