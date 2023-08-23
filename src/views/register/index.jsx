@@ -9,13 +9,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
-import LinkBehavior from '@/components/LinkBehavior'
+import BetweenElse from '@/components/BetweenElse'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Link from '@mui/material/Link'
-import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/router'
-import BetweenElse from '@/components/BetweenElse'
 
 const validationSchemas = [
   schema([{ field: 'username' }, { field: 'email' }]),
@@ -24,7 +21,7 @@ const validationSchemas = [
 ]
 
 const Register = () => {
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(0)
   const methods = useForm({ resolver: yupResolver(validationSchemas[currentStep]) })
   const dispatch = useDispatch()
   const router = useRouter()
@@ -32,6 +29,10 @@ const Register = () => {
 
   const nextStep = () => {
     setCurrentStep(currentStep + 1)
+  }
+
+  const prevStep = () => {
+    setCurrentStep(currentStep - 1)
   }
 
   const onSubmit = async data => {
@@ -111,11 +112,16 @@ const Register = () => {
           )}
         </ConditionalRender>
         <ConditionalRender condition={currentStep === 1}>
-          {() => (
+          {({ resendOTP }) => (
             <BetweenElse>
-              <Button variant='outlined' color='secondary'>
-                Resend
-              </Button>
+              <Box>
+                <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
+                  Back
+                </Button>
+                <Button variant='outlined' onClick={resendOTP} color='secondary'>
+                  Resend
+                </Button>
+              </Box>
               <Button type='submit' variant='contained' color='primary'>
                 Verify
               </Button>
@@ -125,9 +131,6 @@ const Register = () => {
         <ConditionalRender condition={currentStep === 2}>
           {() => (
             <BetweenElse>
-              <Button variant='outlined' color='secondary'>
-                Cancel
-              </Button>
               <Button type='submit' variant='contained' color='primary'>
                 Register
               </Button>

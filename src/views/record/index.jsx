@@ -61,7 +61,7 @@ const Record = () => {
       </Grid>
       <Grid item>
         <TableContainer component={Paper}>
-          <Table>
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
                 <TableCell>Index</TableCell>

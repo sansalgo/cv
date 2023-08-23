@@ -16,8 +16,6 @@ const OTPInput = ({ length, name, register, errors }) => {
     }
   }
 
-  console.log(isBackspace)
-
   const handleKeyDown = event => {
     if (event.key === 'Backspace') {
       setIsBackspace(true)

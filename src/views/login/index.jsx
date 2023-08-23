@@ -71,7 +71,7 @@ const Login = () => {
                   </Link>
                 </BetweenElse>
                 <BetweenElse>
-                  <Button variant='outlined' onClick={() => router.push(`/register`)}>
+                  <Button variant='outlined' color='secondary' onClick={() => router.push(`/register`)}>
                     Register
                   </Button>
                   <Button type='submit' variant='contained' color='primary'>

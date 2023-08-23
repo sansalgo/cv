@@ -14,8 +14,8 @@ import { useFormContext } from 'react-hook-form'
 
 import OTPInput from '@/components/OTPInput'
 import PasswordInput from '@/components/PasswordInput'
-import { useEffect } from 'react'
 import Box from '@mui/material/Box'
+import { Children, cloneElement } from 'react'
 
 const UserVerification = ({ children }) => {
   const {
@@ -62,13 +62,17 @@ const OTPVerification = ({ children }) => {
   //   }
   // })
 
+  const childrenWithProps = Children.map(children, child => {
+    return cloneElement(child, { resendOTP })
+  })
+
   return (
     <Stack spacing={2}>
       <Box>
         <OTPInput length={6} name='otp' register={register} errors={errors} />
         <FormHelperText error>{!!errors.otp && errors.otp.filter(v => !!v)[0].message}</FormHelperText>
       </Box>
-      {children}
+      {childrenWithProps}
     </Stack>
   )
 }
