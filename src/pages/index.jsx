@@ -23,7 +23,6 @@ const extendTheme = theme =>
         styleOverrides: {
           root: {
             borderBottom: `1px solid ${theme.palette.divider}`,
-            textAlign: 'center'
           }
         }
       },

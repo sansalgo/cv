@@ -1,6 +1,7 @@
 export default {
   primary: {
-    main: '#001f59'
+    main: '#001f59',
+    rgb: '0, 31, 89'
   },
   secondary: {
     main: '#666'

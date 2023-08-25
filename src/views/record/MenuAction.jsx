@@ -1,27 +1,27 @@
-import Grow from '@mui/material/Grow'
-import Popper from '@mui/material/Popper'
-import Paper from '@mui/material/Paper'
-import MenuList from '@mui/material/MenuList'
-import MenuItem from '@mui/material/MenuItem'
-import Divider from '@mui/material/Divider'
-import ClickAwayListener from '@mui/material/ClickAwayListener'
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { Fragment, useRef, useState } from 'react'
-import IconButton from '@mui/material/IconButton'
-import Stack from '@mui/material/Stack'
-import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded'
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
-import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded'
+import { deleteRecord } from '@/store/record'
+import { fetchPdfBlob } from '@/utils/fetch-pdf'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded'
+import ModeEditRoundedIcon from '@mui/icons-material/ModeEditRounded'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
+import Divider from '@mui/material/Divider'
+import Grow from '@mui/material/Grow'
+import IconButton from '@mui/material/IconButton'
+import MenuItem from '@mui/material/MenuItem'
+import MenuList from '@mui/material/MenuList'
+import Paper from '@mui/material/Paper'
+import Popper from '@mui/material/Popper'
+import Stack from '@mui/material/Stack'
 import { useRouter } from 'next/router'
-import axios from 'axios'
+import { Fragment, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { deleteRecord, getRecord } from '@/store/record'
-import { pdf } from '@react-pdf/renderer'
 
-const MenuAction = ({ id, setNameEditableId }) => {
+const MenuAction = ({ row, setNameEditableId }) => {
   const [open, setOpen] = useState(false)
+
   const anchorRef = useRef(null)
   const router = useRouter()
   const dispatch = useDispatch()
@@ -30,38 +30,35 @@ const MenuAction = ({ id, setNameEditableId }) => {
   }
 
   const handleFileRename = () => {
-    setNameEditableId(id)
+    setNameEditableId(row._id)
   }
 
   const handleEdit = () => {
-    router.push(`/form/${id}`)
+    router.push(`/form/${row._id}`)
   }
 
   const handlePreview = () => {
     router.push({
-      pathname: `/preview/${id}`,
-      query: { id }
+      pathname: `/preview/${row._id}`
     })
   }
 
-  const handleDownload = () => {
-    // const a = document.createElement('a')
-    // dispatch(getRecord(id))
-    //   .unwrap()
-    //   .then(async record => {
-    //     const blob = await pdf(<PDFDocument record={record} />).toBlob()
-    //     const href = URL.createObjectURL(blob)
-    //     a.href = href
-    //     a.setAttribute("download", 'test.pdf')
-    //     document.body.appendChild(a)
-    //     a.click()
-    //     document.body.removeChild(a)
-    //     URL.revokeObjectURL(href)
-    //   })
+  const handleDownload = async () => {
+    await fetchPdfBlob(row._id).then(blob => {
+      if (blob) {
+        const link = document.createElement('a')
+        link.href = blob
+        link.download = `${row.name}.pdf`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(blob)
+      }
+    })
   }
 
   const handelDelete = () => {
-    dispatch(deleteRecord(id))
+    dispatch(deleteRecord(row._id))
   }
 
   const handleClose = event => {

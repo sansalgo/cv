@@ -35,7 +35,8 @@ let theme = createTheme({
     },
     MuiButtonBase: {
       defaultProps: {
-        disableRipple: true
+        disableRipple: true,
+        disableTouchRipple: true
       }
     },
     MuiSvgIcon: {
@@ -73,7 +74,7 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           '&:hover:not(.Mui-focused):not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'rgba(0, 31, 90, 0.50)'
+            borderColor: `rgba(${palette.primary.rgb}, 0.50)`
           }
         }
       }
@@ -113,7 +114,7 @@ let theme = createTheme({
     MuiFormControl: {
       styleOverrides: {
         root: {
-          '& .MuiFormHelperText-root': {
+          '&.MuiFormHelperText-root': {
             marginLeft: 0,
             marginRight: 0
           }
@@ -124,6 +125,16 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           fontSize: '0.85rem'
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow: 'unset',
+          '&:hover': {
+            boxShadow: 'unset'
+          }
         }
       }
     }
