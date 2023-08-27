@@ -104,23 +104,21 @@ const VerificationWizard = ({ currentStep, onSubmit, children }) => {
   const { handleSubmit } = useFormContext()
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Container maxWidth='sm'>
-        <ContainerCenter>
-          <Card variant='outlined'>
-            <CardContent>
-              <ConditionalRender condition={currentStep === 0}>
-                {() => <UserVerification onSubmit={onSubmit}>{children}</UserVerification>}
-              </ConditionalRender>
-              <ConditionalRender condition={currentStep === 1}>
-                {() => <OTPVerification onSubmit={onSubmit}>{children}</OTPVerification>}
-              </ConditionalRender>
-              <ConditionalRender condition={currentStep === 2}>
-                {() => <PasswordEntry onSubmit={onSubmit}>{children}</PasswordEntry>}
-              </ConditionalRender>
-            </CardContent>
-          </Card>
-        </ContainerCenter>
-      </Container>
+      <ContainerCenter maxWidth='sm'>
+        <Card variant='outlined'>
+          <CardContent>
+            <ConditionalRender condition={currentStep === 0}>
+              {() => <UserVerification onSubmit={onSubmit}>{children}</UserVerification>}
+            </ConditionalRender>
+            <ConditionalRender condition={currentStep === 1}>
+              {() => <OTPVerification onSubmit={onSubmit}>{children}</OTPVerification>}
+            </ConditionalRender>
+            <ConditionalRender condition={currentStep === 2}>
+              {() => <PasswordEntry onSubmit={onSubmit}>{children}</PasswordEntry>}
+            </ConditionalRender>
+          </CardContent>
+        </Card>
+      </ContainerCenter>
     </form>
   )
 }

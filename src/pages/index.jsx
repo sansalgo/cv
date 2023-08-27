@@ -22,7 +22,7 @@ const extendTheme = theme =>
       MuiTableCell: {
         styleOverrides: {
           root: {
-            borderBottom: `1px solid ${theme.palette.divider}`,
+            borderBottom: `1px solid ${theme.palette.divider}`
           }
         }
       },
@@ -46,15 +46,16 @@ const extendTheme = theme =>
 export default () => (
   <ThemeProvider theme={theme => extendTheme(theme)}>
     <CssBaseline />
-    <Record/>
+    <Record />
   </ThemeProvider>
 )
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req }) => {
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, query }) => {
   const { data: records } = await axios.get(`http://localhost:3000/api/records`, {
     headers: {
       cookie: req.headers.cookie
-    }
+    },
+    params: query
   })
 
   store.dispatch(setRecords(records))

@@ -18,6 +18,7 @@ import Stack from '@mui/material/Stack'
 import { useRouter } from 'next/router'
 import { Fragment, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import FileRename from './FileRename'
 
 const MenuAction = ({ row, setNameEditableId }) => {
   const [open, setOpen] = useState(false)
@@ -96,8 +97,9 @@ const MenuAction = ({ row, setNameEditableId }) => {
                   autoFocusItem={open}
                 >
                   <MenuItem>
-                    <IconButton onClick={handleFileRename}>
-                      <DriveFileRenameOutlineRoundedIcon />
+                    <IconButton >
+                      {/* <DriveFileRenameOutlineRoundedIcon /> */}
+                      <FileRename />
                     </IconButton>
                   </MenuItem>
                   <MenuItem onClick={handleEdit}>

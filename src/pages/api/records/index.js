@@ -3,6 +3,7 @@ import Record from '@/models/record'
 import formatRecord from '@/utils/format-record'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]'
+import paginate from '@/utils/paginate'
 
 export default async function handler(req, res) {
   try {
@@ -14,8 +15,19 @@ export default async function handler(req, res) {
     }
     switch (req.method) {
       case 'GET':
-        const records = await Record.find()
-        res.status(200).json(records)
+        const page = parseInt(req.query.page) || 1
+        const pageSize = parseInt(req.query.page_size) || 6
+
+        const records = await Record.find({ user: session.user.id })
+        const paginatedRecords = paginate(records, page, pageSize)
+
+        const resObj = {
+          count: records.length,
+          page,
+          page_size: pageSize,
+          results: paginatedRecords
+        }
+        res.status(200).json(resObj)
         break
       case 'POST':
         req.body.user = session.user.id

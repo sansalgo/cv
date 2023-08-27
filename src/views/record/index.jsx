@@ -20,19 +20,30 @@ import { useSelector } from 'react-redux'
 import FileName from './FileName'
 import MenuAction from './MenuAction'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { useTheme } from '@emotion/react'
+import { styled } from '@mui/material/styles'
+
+const StyledEndCard = styled(EndCard)(({ theme }) => ({
+  '& .MuiBox-root': {
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center'
+    }
+  }
+}))
 
 const Record = () => {
-  const [page, setPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(6)
-  const { records } = useSelector(state => state.record)
+  const {
+    records: { count, page, page_size, results }
+  } = useSelector(state => state.record)
   const [isPending, startTransition] = useTransition()
   const [nameEditableId, setNameEditableId] = useState(null)
-  const width = useMediaQuery('(min-width:600px)')
+  const theme = useTheme()
+  const down_sm = useMediaQuery('(max-width: 599.95px)')
 
   const router = useRouter()
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
+    router.push({ pathname: `/`, query: { page: newPage, page_size } })
   }
 
   const createNewRecord = () => {
@@ -42,20 +53,13 @@ const Record = () => {
     })
   }
 
-  const rows = [records, records, records, records, records, records, records, records, records, records]
-    .flat()
-    .map((value, index) => ({
-      _id: value._id,
-      index: index + 1,
-      name: value.fileName,
-      dateCreated: formatDateTime(value.createdAt),
-      dateModified: formatDateTime(value.updatedAt)
-    }))
-
-  const firstItemIndex = (page - 1) * rowsPerPage
-  const lastItemIndex = firstItemIndex + rowsPerPage
-
-  const displayedRows = rows.slice(firstItemIndex, lastItemIndex)
+  const rows = results.map((value, index) => ({
+    _id: value._id,
+    index: (page - 1) * page_size + (index + 1),
+    name: value.fileName,
+    dateCreated: formatDateTime(value.createdAt),
+    dateModified: formatDateTime(value.updatedAt)
+  }))
 
   return (
     <Stack spacing={2}>
@@ -68,7 +72,7 @@ const Record = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Index</TableCell>
+              <TableCell align='center'>Index</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Date Created</TableCell>
               <TableCell>Date Modified</TableCell>
@@ -76,9 +80,9 @@ const Record = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {displayedRows.map(row => (
+            {rows.map(row => (
               <TableRow key={row.index}>
-                <TableCell>{row.index}</TableCell>
+                <TableCell align='center'>{row.index}</TableCell>
                 <TableCell>
                   <FileName isEditable={nameEditableId === row._id} setNameEditableId={setNameEditableId}>
                     {row.name}
@@ -92,16 +96,16 @@ const Record = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <EndCard>
+      <StyledEndCard>
         <Pagination
-          count={Math.ceil(rows.length / rowsPerPage)}
+          count={Math.ceil(count / page_size)}
           page={page}
-          size={width ? 'medium' : 'small'}
+          size={down_sm ? 'small' : 'medium'}
           onChange={handleChangePage}
           variant='outlined'
           shape='rounded'
         />
-      </EndCard>
+      </StyledEndCard>
     </Stack>
   )
 }

@@ -51,38 +51,36 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Container maxWidth='sm'>
-        <ContainerCenter>
-          <Card variant='outlined'>
-            <CardContent>
-              <Stack spacing={2}>
-                <Box>
-                  <OutlinedInput fullWidth placeholder='Username' error={!!errors.username} {...register('username')} />
-                  <FormHelperText error>{errors.username?.message}</FormHelperText>
-                </Box>
-                <Box>
-                  <PasswordInput placeholder='Password' name='password' register={register} errors={errors} />
-                  <FormHelperText error>{errors.password?.message}</FormHelperText>
-                </Box>
-                <BetweenElse>
-                  <FormControlLabel control={<Checkbox sx={{ p: 0, px: '9px' }} />} label='Remember Me' />
-                  <Link component={LinkBehavior} href='/forgot'>
-                    Forgot Password?
-                  </Link>
-                </BetweenElse>
-                <BetweenElse>
-                  <Button variant='outlined' color='secondary' onClick={() => router.push(`/register`)}>
-                    Register
-                  </Button>
-                  <Button type='submit' variant='contained' color='primary'>
-                    Login
-                  </Button>
-                </BetweenElse>
-              </Stack>
-            </CardContent>
-          </Card>
-        </ContainerCenter>
-      </Container>
+      <ContainerCenter maxWidth='sm'>
+        <Card variant='outlined'>
+          <CardContent>
+            <Stack spacing={2}>
+              <Box>
+                <OutlinedInput fullWidth placeholder='Username' error={!!errors.username} {...register('username')} />
+                <FormHelperText error>{errors.username?.message}</FormHelperText>
+              </Box>
+              <Box>
+                <PasswordInput placeholder='Password' name='password' register={register} errors={errors} />
+                <FormHelperText error>{errors.password?.message}</FormHelperText>
+              </Box>
+              <BetweenElse>
+                <FormControlLabel control={<Checkbox sx={{ p: 0, px: '9px' }} />} label='Remember Me' />
+                <Link component={LinkBehavior} href='/forgot'>
+                  Forgot Password?
+                </Link>
+              </BetweenElse>
+              <BetweenElse>
+                <Button variant='outlined' color='secondary' onClick={() => router.push(`/register`)}>
+                  Register
+                </Button>
+                <Button type='submit' variant='contained' color='primary'>
+                  Login
+                </Button>
+              </BetweenElse>
+            </Stack>
+          </CardContent>
+        </Card>
+      </ContainerCenter>
     </form>
   )
 }

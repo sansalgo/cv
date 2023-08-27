@@ -15,11 +15,10 @@ const FileName = ({ isEditable, setNameEditableId, children }) => {
         <OutlinedInput
           type='text'
           placeholder='Filename'
-          size='small'
           defaultValue={children}
           endAdornment={
             <InputAdornment position='end'>
-              <ChipButton size='small' label={<DoneRoundedIcon />} onClick={() => setNameEditableId(null)} />
+              <ChipButton label={<DoneRoundedIcon />} onClick={() => setNameEditableId(null)} />
               {/* <DoneRoundedIcon /> */}
             </InputAdornment>
           }

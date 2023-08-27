@@ -1,8 +1,7 @@
+import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { Children } from 'react'
 import BetweenElse from './BetweenElse'
 
 const EndCardWrapper = styled(Box)(() => ({
@@ -17,7 +16,6 @@ const EndCardWrapper = styled(Box)(() => ({
 }))
 
 const EndCard = ({ children, ...rest }) => {
-  const justifyContent = Children.count(children) > 1 ? 'space-between' : 'end'
   return (
     <EndCardWrapper {...rest}>
       <Card variant='outlined'>
