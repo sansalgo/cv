@@ -17,6 +17,13 @@ export default async function handler(req, res) {
           return res.status(400).json({ message: 'Invalid ID provided' })
         }
         break
+      case 'PUT':
+        const updatedRecord = await Record.findOneAndUpdate({ _id: id }, req.body)
+        if (!updatedRecord) {
+          return res.status(404).json({ message: 'Record not found' })
+        }
+        res.status(200).json({ message: 'Record updated successfully' })
+        break
       case 'DELETE':
         try {
           await Record.findByIdAndDelete({ _id: id })

@@ -1,9 +1,5 @@
 const GlobalStyles = theme => {
   return {
-    // '@page': {
-    //   size: 'A4',
-    //   margin: '10cm'
-    // },
     '#nprogress': {
       pointerEvents: 'none',
       '& .bar': {

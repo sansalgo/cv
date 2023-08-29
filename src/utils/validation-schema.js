@@ -19,7 +19,7 @@ const schema = fields => {
                 'Username must be lowercase and can contain only letters, numbers and underscores'
               )
               .min(3, 'Username must be at least 3 characters long')
-              .max(20, 'Username cannot exceed 13 characters')
+              .max(13, 'Username cannot exceed 13 characters')
             break
         }
         break
@@ -77,6 +77,11 @@ const schema = fields => {
           default:
             validationSchema[field] = yup.string().trim().required('Verification sign is required')
             break
+        }
+      case 'fileName':
+        switch (level) {
+          default:
+            validationSchema[field] = yup.string().trim().required('Filename is required')
         }
       default:
         break

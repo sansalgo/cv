@@ -7,9 +7,14 @@ export const getRecords = createAsyncThunk('record/getRecords', async () => {
   return response.data
 })
 
-export const getRecord = createAsyncThunk('record/getRecord', async (id) => {
+export const getRecord = createAsyncThunk('record/getRecord', async id => {
   const response = await axios.get(`http://localhost:3000/api/records/${id}`)
   return response.data
+})
+
+export const renameRecord = createAsyncThunk('record/renameRecord', async (id, { dispatch }) => {
+  await axios.put(`/api/records/${id}`, { fileName: data.fileName })
+  dispatch(getRecords())
 })
 
 export const deleteRecord = createAsyncThunk('record/deleteRecord', async (id, { dispatch }) => {

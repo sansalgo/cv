@@ -51,7 +51,7 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <ContainerCenter maxWidth='sm'>
+      <ContainerCenter maxWidth='xs'>
         <Card variant='outlined'>
           <CardContent>
             <Stack spacing={2}>

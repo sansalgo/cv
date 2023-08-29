@@ -104,7 +104,7 @@ const VerificationWizard = ({ currentStep, onSubmit, children }) => {
   const { handleSubmit } = useFormContext()
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <ContainerCenter maxWidth='sm'>
+      <ContainerCenter maxWidth='xs'>
         <Card variant='outlined'>
           <CardContent>
             <ConditionalRender condition={currentStep === 0}>

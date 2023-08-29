@@ -4,7 +4,7 @@ import GlobalStyling from './globalStyles'
 import GlobalStyles from '@mui/material/GlobalStyles'
 import palette from './palette'
 
-let theme = createTheme({
+const theme = createTheme({
   palette,
   typography: {
     fontFamily: 'Lato'
@@ -114,7 +114,7 @@ let theme = createTheme({
     MuiFormControl: {
       styleOverrides: {
         root: {
-          '&.MuiFormHelperText-root': {
+          '& .MuiFormHelperText-root': {
             marginLeft: 0,
             marginRight: 0
           }
@@ -137,11 +137,19 @@ let theme = createTheme({
           }
         }
       }
+    },
+    MuiDialog: {
+      styleOverrides: {
+        container: {
+          '& .MuiDialog-paperFullWidth': {
+            width: '100%',
+            margin: '1rem'
+          }
+        }
+      }
     }
   }
 })
-
-theme = responsiveFontSizes(theme)
 
 export default ({ children }) => (
   <ThemeProvider theme={theme}>
