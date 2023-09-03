@@ -1,5 +1,6 @@
 import CardFieldArray from '@/components/CardFieldArray'
 import ChipButton from '@/components/ChipButton'
+import InputErrorHelper from '@/components/InputErrorHelper'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import CardContent from '@mui/material/CardContent'
@@ -12,7 +13,11 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 // import CardActionHeader from './components/cardActionHeader'
 
 const Languages = () => {
-  const { register, control } = useFormContext()
+  const {
+    register,
+    control,
+    formState: { errors }
+  } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'languages'
@@ -31,16 +36,20 @@ const Languages = () => {
                 <Fragment key={item.id}>
                   <Grid item xs={12}>
                     <FormControl fullWidth>
-                      <OutlinedInput
-                        type='text'
-                        placeholder='Language'
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <ChipButton onClick={() => remove(index)} label={<RemoveRoundedIcon />} />
-                          </InputAdornment>
-                        }
-                        {...register(`languages.${index}.value`)}
-                      />
+                      <InputErrorHelper errorMessage={errors?.languages?.[index]?.value?.message}>
+                        <OutlinedInput
+                          error={!!errors?.languages?.[index]?.value?.message}
+                          fullWidth
+                          type='text'
+                          placeholder='Language'
+                          endAdornment={
+                            <InputAdornment position='end'>
+                              <ChipButton onClick={() => remove(index)} label={<RemoveRoundedIcon />} />
+                            </InputAdornment>
+                          }
+                          {...register(`languages.${index}.value`)}
+                        />
+                      </InputErrorHelper>
                     </FormControl>
                   </Grid>
                 </Fragment>

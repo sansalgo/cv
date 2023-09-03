@@ -13,9 +13,14 @@ import ChipButton from '@/components/ChipButton'
 
 import DatePickerWrapper from '@/components/DatePickerWrapper'
 import 'react-datepicker/dist/react-datepicker.css'
+import InputErrorHelper from '@/components/InputErrorHelper'
 
 const EmploymentHistory = () => {
-  const { register, control } = useFormContext()
+  const {
+    register,
+    control,
+    formState: { errors }
+  } = useFormContext()
   const { fields, remove, append } = useFieldArray({
     control,
     name: 'employmentHistory'
@@ -37,18 +42,24 @@ const EmploymentHistory = () => {
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <OutlinedInput
-                          fullWidth
-                          placeholder='Position'
-                          {...register(`employmentHistory.${index}.position`)}
-                        />
+                        <InputErrorHelper errorMessage={errors?.employmentHistory?.[index]?.position?.message}>
+                          <OutlinedInput
+                            error={!!errors?.employmentHistory?.[index]?.position?.message}
+                            fullWidth
+                            placeholder='Position'
+                            {...register(`employmentHistory.${index}.position`)}
+                          />
+                        </InputErrorHelper>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <OutlinedInput
-                          fullWidth
-                          placeholder='Company Name'
-                          {...register(`employmentHistory.${index}.companyName`)}
-                        />
+                        <InputErrorHelper errorMessage={errors?.employmentHistory?.[index]?.companyName?.message}>
+                          <OutlinedInput
+                            error={!!errors?.employmentHistory?.[index]?.companyName?.message}
+                            fullWidth
+                            placeholder='Company Name'
+                            {...register(`employmentHistory.${index}.companyName`)}
+                          />
+                        </InputErrorHelper>
                       </Grid>
 
                       <Grid item xs={12} sm={6}>
@@ -88,21 +99,27 @@ const EmploymentHistory = () => {
                         </DatePickerWrapper>
                       </Grid>
                       <Grid item xs={12} sm={12}>
-                        <OutlinedInput
-                          fullWidth
-                          placeholder='Location'
-                          {...register(`employmentHistory.${index}.location`)}
-                        />
+                        <InputErrorHelper errorMessage={errors?.employmentHistory?.[index]?.location?.message}>
+                          <OutlinedInput
+                            error={!!errors?.employmentHistory?.[index]?.location?.message}
+                            fullWidth
+                            placeholder='Location'
+                            {...register(`employmentHistory.${index}.location`)}
+                          />
+                        </InputErrorHelper>
                       </Grid>
 
                       <Grid item xs={12}>
-                        <OutlinedInput
-                          fullWidth
-                          multiline
-                          minRows={3}
-                          placeholder='Description'
-                          {...register(`employmentHistory.${index}.description`)}
-                        />
+                        <InputErrorHelper errorMessage={errors?.employmentHistory?.[index]?.description?.message}>
+                          <OutlinedInput
+                            error={!!errors?.employmentHistory?.[index]?.description?.message}
+                            fullWidth
+                            multiline
+                            minRows={3}
+                            placeholder='Description'
+                            {...register(`employmentHistory.${index}.description`)}
+                          />
+                        </InputErrorHelper>
                       </Grid>
                     </Grid>
                   </CardContent>

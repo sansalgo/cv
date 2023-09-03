@@ -22,9 +22,104 @@ import Skills from './Skills'
 import axios from 'axios'
 import formatRecord from '@/utils/format-record'
 import FileName from './FileName'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+const validationSchema = yup.object().shape({
+  fileName: yup.string().required('File name is required'),
+  intro: yup.object().shape({
+    firstName: yup.string().trim().required('First name is required'),
+    lastName: yup.string().trim().required('Last name is required'),
+    position: yup.string().trim().required('Position is required'),
+    email: yup.string().trim().email('Invalid email address').required('Email is required'),
+    phone: yup
+      .string()
+      .trim()
+      .matches(/^[0-9]+$/, 'Phone number must be numeric')
+      .required('Phone is required'),
+    city: yup.string().trim().required('City is required'),
+    linkedin: yup.string().trim().url('Invalid LinkedIn URL').required('LinkedIn is required'),
+    github: yup.string().trim().url('Invalid GitHub URL').required('GitHub is required')
+  }),
+  profileSummary: yup.string().trim().required('Profile summary is required'),
+  employmentHistory: yup
+    .array()
+    .of(
+      yup.object().shape({
+        position: yup.string().trim().required('Position is required'),
+        companyName: yup.string().trim().required('Company name is required'),
+        startDate: yup.date().required('Start date is required'),
+        endDate: yup.date().required('End date is required'),
+        location: yup.string().trim().required('Location is required'),
+        description: yup.string().trim().required('Description is required')
+      })
+    )
+    .required('At least one employment history entry is required'),
+  education: yup
+    .array()
+    .of(
+      yup.object().shape({
+        course: yup.string().trim().required('Course is required'),
+        institution: yup.string().trim().required('Institution name is required'),
+        startDate: yup.date().required('Start date is required'),
+        endDate: yup.date().required('End date is required'),
+        location: yup.string().trim().required('Location is required'),
+        percentage: yup
+          .number()
+          .typeError('Percentage must be a number')
+          .required('Percentage is required')
+          .min(0, 'Percentage cannot be negative')
+          .max(100, 'Percentage cannot be greater than 100')
+      })
+    )
+    .test('atLeastOneEducation', 'At least one education entry is required', function (value) {
+      return value && value.length > 0
+    }),
+  extras: yup
+    .array()
+    .of(
+      yup.object().shape({
+        value: yup.string().trim().required('Extra value is required')
+      })
+    )
+    .required('At least one extra entry is required'),
+  skills: yup
+    .array()
+    .of(
+      yup.object().shape({
+        value: yup.string().trim().required('Skill value is required')
+      })
+    )
+    .required('At least one skill entry is required'),
+  projects: yup
+    .array()
+    .of(
+      yup.object().shape({
+        value: yup.string().trim().required('Project value is required')
+      })
+    )
+    .required('At least one project entry is required'),
+  languages: yup
+    .array()
+    .of(
+      yup.object().shape({
+        value: yup.string().trim().required('Language value is required')
+      })
+    )
+    .required('At least one language entry is required'),
+  achievement: yup
+    .array()
+    .of(
+      yup.object().shape({
+        value: yup.string().trim().required('Achievement value is required')
+      })
+    )
+    .required('At least one achievement entry is required')
+})
 
 const Form = ({ record }) => {
   const methods = useForm({
+    resolver: yupResolver(validationSchema),
     defaultValues: {
       employmentHistory: [
         {
@@ -60,6 +155,8 @@ const Form = ({ record }) => {
       methods.reset(record)
     }
   }, [])
+
+  console.log(methods.formState.errors)
 
   const onSubmit = async data => {
     await axios.put(`/api/records/drafts/${id}`, formatRecord(data))

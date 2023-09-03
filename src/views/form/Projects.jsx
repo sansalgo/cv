@@ -1,5 +1,6 @@
 import CardFieldArray from '@/components/CardFieldArray'
 import ChipButton from '@/components/ChipButton'
+import InputErrorHelper from '@/components/InputErrorHelper'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import CardContent from '@mui/material/CardContent'
@@ -11,7 +12,11 @@ import { Fragment } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 
 const Projects = () => {
-  const { register, control } = useFormContext()
+  const {
+    register,
+    control,
+    formState: { errors }
+  } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'projects'
@@ -29,17 +34,23 @@ const Projects = () => {
               return (
                 <Fragment key={item.id}>
                   <Grid item xs={12}>
-                    <FormControl fullWidth variant='outlined'>
-                      <OutlinedInput
-                        type='text'
-                        placeholder='Project'
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />
-                          </InputAdornment>
-                        }
-                        {...register(`projects.${index}.value`)}
-                      />
+                    <FormControl fullWidth>
+                      <InputErrorHelper errorMessage={errors?.projects?.[index]?.value?.message}>
+                        <OutlinedInput
+                          error={!!errors?.projects?.[index]?.value?.message}
+                          fullWidth
+                          type='text'
+                          placeholder='Project'
+                          multiline
+                          minRows={2}
+                          endAdornment={
+                            <InputAdornment position='end'>
+                              <ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />
+                            </InputAdornment>
+                          }
+                          {...register(`projects.${index}.value`)}
+                        />
+                      </InputErrorHelper>
                     </FormControl>
                   </Grid>
                 </Fragment>

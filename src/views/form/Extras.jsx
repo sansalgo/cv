@@ -11,14 +11,18 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 // import CardActionHeader from './components/cardActionHeader'
 import CardFieldArray from '@/components/CardFieldArray'
 import { FileDownloadOffSharp } from '@mui/icons-material'
+import InputErrorHelper from '@/components/InputErrorHelper'
 
 const Extras = () => {
-  const { register, control } = useFormContext()
+  const {
+    register,
+    control,
+    formState: { errors }
+  } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'extras'
   })
-  console.log(fields)
   return (
     <CardFieldArray
       title='Extras'
@@ -33,16 +37,20 @@ const Extras = () => {
                 <Fragment key={item.id}>
                   <Grid item xs={12}>
                     <FormControl fullWidth>
-                      <OutlinedInput
-                        type='text'
-                        placeholder='Extra'
-                        endAdornment={
-                          <InputAdornment position='end'>
-                            <ChipButton label={<RemoveRounded />} onClick={() => remove(index)} />
-                          </InputAdornment>
-                        }
-                        {...register(`extras.${index}.value`)}
-                      />
+                      <InputErrorHelper errorMessage={errors?.extras?.[index]?.value?.message}>
+                        <OutlinedInput
+                          error={!!errors?.extras?.[index]?.value?.message}
+                          fullWidth
+                          type='text'
+                          placeholder='Extra'
+                          endAdornment={
+                            <InputAdornment position='end'>
+                              <ChipButton label={<RemoveRounded />} onClick={() => remove(index)} />
+                            </InputAdornment>
+                          }
+                          {...register(`extras.${index}.value`)}
+                        />
+                      </InputErrorHelper>
                     </FormControl>
                   </Grid>
                 </Fragment>
