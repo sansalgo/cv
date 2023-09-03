@@ -1,4 +1,3 @@
-import ConditionalRender from '@/components/ConditionalRender'
 import VerificationWizard from '@/components/VerificationWizard'
 import { addUser, checkUser, sendOTP, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
@@ -10,6 +9,7 @@ import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
 import BetweenElse from '@/components/BetweenElse'
+import IndexStepRender from '@/components/IndexStepRender'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
@@ -99,44 +99,36 @@ const Register = () => {
   return (
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
-        <ConditionalRender condition={currentStep === 0}>
-          {() => (
-            <BetweenElse>
-              <Button variant='outlined' color='secondary' onClick={() => router.push(`/login`)}>
-                Login
+        <IndexStepRender stepIndex={currentStep}>
+          <BetweenElse>
+            <Button variant='outlined' color='secondary' onClick={() => router.push(`/login`)}>
+              Login
+            </Button>
+            <Button type='submit' variant='contained' color='primary'>
+              Register
+            </Button>
+          </BetweenElse>
+
+          <BetweenElse>
+            <Box>
+              <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
+                Back
               </Button>
-              <Button type='submit' variant='contained' color='primary'>
-                Register
+              <Button variant='outlined' onClick={resendOTP} color='secondary'>
+                Resend
               </Button>
-            </BetweenElse>
-          )}
-        </ConditionalRender>
-        <ConditionalRender condition={currentStep === 1}>
-          {({ resendOTP }) => (
-            <BetweenElse>
-              <Box>
-                <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
-                  Back
-                </Button>
-                <Button variant='outlined' onClick={resendOTP} color='secondary'>
-                  Resend
-                </Button>
-              </Box>
-              <Button type='submit' variant='contained' color='primary'>
-                Verify
-              </Button>
-            </BetweenElse>
-          )}
-        </ConditionalRender>
-        <ConditionalRender condition={currentStep === 2}>
-          {() => (
-            <BetweenElse>
-              <Button type='submit' variant='contained' color='primary'>
-                Register
-              </Button>
-            </BetweenElse>
-          )}
-        </ConditionalRender>
+            </Box>
+            <Button type='submit' variant='contained' color='primary'>
+              Verify
+            </Button>
+          </BetweenElse>
+
+          <BetweenElse>
+            <Button type='submit' variant='contained' color='primary'>
+              Register
+            </Button>
+          </BetweenElse>
+        </IndexStepRender>
       </VerificationWizard>
     </FormProvider>
   )

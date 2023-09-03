@@ -7,7 +7,6 @@ import Container from '@mui/material/Container'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import ConditionalRender from './ConditionalRender'
 
 const Layout = ({ children }) => {
   const router = useRouter()
@@ -27,20 +26,20 @@ const Layout = ({ children }) => {
     padding: theme.spacing(3, 0)
   }))
 
-  const ProfileChip = () => {
-    const username = session.user.username
-    const avatarLetter = session.user.username[0].toUpperCase()
+  // const ProfileChip = () => {
+  //   const username = session.user.username
+  //   const avatarLetter = session.user.username[0].toUpperCase()
 
-    return (
-      <Chip
-        sx={{ borderRadius: 1 }}
-        variant='outlined'
-        label={username}
-        color='primary'
-        avatar={<Avatar variant='rounded'>{avatarLetter}</Avatar>}
-      />
-    )
-  }
+  //   return (
+  //     <Chip
+  //       sx={{ borderRadius: 1 }}
+  //       variant='outlined'
+  //       label={username}
+  //       color='primary'
+  //       avatar={<Avatar variant='rounded'>{avatarLetter}</Avatar>}
+  //     />
+  //   )
+  // }
 
   return (
     <Container maxWidth='lg'>
@@ -48,9 +47,7 @@ const Layout = ({ children }) => {
         <AppBar position='static'>
           <Toolbar>
             <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              {/* <ConditionalRender value={session}>
-                  <ProfileChip />
-                </ConditionalRender> */}
+              {/* <ProfileChip /> */}
             </Box>
           </Toolbar>
         </AppBar>

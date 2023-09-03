@@ -1,4 +1,3 @@
-import ConditionalRender from '@/components/ConditionalRender'
 import VerificationWizard from '@/components/VerificationWizard'
 import { checkUser, sendOTP, updateUser, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
@@ -10,6 +9,7 @@ import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
 import BetweenElse from '@/components/BetweenElse'
+import IndexStepRender from '@/components/IndexStepRender'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
@@ -99,20 +99,16 @@ const Forgot = () => {
   return (
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
-        <ConditionalRender condition={currentStep === 0}>
-          {() => (
-            <BetweenElse>
-              <Button variant='outlined' color='secondary' onClick={handelCancel}>
-                Login
-              </Button>
-              <Button type='submit' variant='contained' color='primary'>
-                Continue
-              </Button>
-            </BetweenElse>
-          )}
-        </ConditionalRender>
-        <ConditionalRender condition={currentStep === 1}>
-          {({ resendOTP }) => (
+        <IndexStepRender stepIndex={currentStep}>
+          <BetweenElse>
+            <Button variant='outlined' color='secondary' onClick={handelCancel}>
+              Login
+            </Button>
+            <Button type='submit' variant='contained' color='primary'>
+              Continue
+            </Button>
+          </BetweenElse>
+          {resendOTP => (
             <BetweenElse>
               <Box>
                 <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
@@ -127,19 +123,16 @@ const Forgot = () => {
               </Button>
             </BetweenElse>
           )}
-        </ConditionalRender>
-        <ConditionalRender condition={currentStep === 2}>
-          {() => (
-            <BetweenElse>
-              <Button variant='outlined' onClick={handelCancel} color='secondary'>
-                Cancel
-              </Button>
-              <Button type='submit' variant='contained' color='primary'>
-                Reset
-              </Button>
-            </BetweenElse>
-          )}
-        </ConditionalRender>
+
+          <BetweenElse>
+            <Button variant='outlined' onClick={handelCancel} color='secondary'>
+              Cancel
+            </Button>
+            <Button type='submit' variant='contained' color='primary'>
+              Reset
+            </Button>
+          </BetweenElse>
+        </IndexStepRender>
       </VerificationWizard>
     </FormProvider>
   )

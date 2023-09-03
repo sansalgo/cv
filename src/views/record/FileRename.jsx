@@ -1,4 +1,5 @@
 import BetweenElse from '@/components/BetweenElse'
+import { renameRecord } from '@/store/record'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
@@ -11,9 +12,11 @@ import Stack from '@mui/material/Stack'
 import axios from 'axios'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 
-const FileRename = ({id}) => {
+const FileRename = ({ id }) => {
   const [open, setOpen] = useState(false)
+  const dispatch = useDispatch()
   const [isPending, startTransition] = useTransition()
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -24,9 +27,10 @@ const FileRename = ({id}) => {
     formState: { errors }
   } = useForm({ resolver: yupResolver(validationSchema) })
   const onSubmit = data => {
-    startTransition(async () => {
-      await axios.put(`/api/records/drafts/${id}`, { fileName: data.fileName })
-    })
+    dispatch(renameRecord({ id, fileName: data.fileName }))
+    // startTransition(async () => {
+    //   await axios.put(`/api/records/drafts/${id}`, { fileName: data.fileName })
+    // })
   }
   return (
     <div>

@@ -2,8 +2,12 @@ import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { HYDRATE } from 'next-redux-wrapper'
 
-export const getRecords = createAsyncThunk('record/getRecords', async () => {
-  const response = await axios.get(`http://localhost:3000/api/records`)
+export const getRecords = createAsyncThunk('record/getRecords', async (_, { getState }) => {
+  const state = getState()
+  const {
+    records: { page, page_size }
+  } = state.record
+  const response = await axios.get(`http://localhost:3000/api/records`, { params: { page, page_size } })
   return response.data
 })
 
@@ -12,8 +16,8 @@ export const getRecord = createAsyncThunk('record/getRecord', async id => {
   return response.data
 })
 
-export const renameRecord = createAsyncThunk('record/renameRecord', async (id, { dispatch }) => {
-  await axios.put(`/api/records/${id}`, { fileName: data.fileName })
+export const renameRecord = createAsyncThunk('record/renameRecord', async ({ id, fileName }, { dispatch }) => {
+  await axios.put(`/api/records/${id}`, { fileName })
   dispatch(getRecords())
 })
 

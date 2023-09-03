@@ -1,9 +1,7 @@
-import ConditionalRender from '@/components/ConditionalRender'
 import ContainerCenter from '@/components/ContainerCenter'
 import { sendOTP } from '@/store/user'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Container from '@mui/material/Container'
 import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
@@ -16,6 +14,7 @@ import OTPInput from '@/components/OTPInput'
 import PasswordInput from '@/components/PasswordInput'
 import Box from '@mui/material/Box'
 import { Children, cloneElement } from 'react'
+import IndexStepRender from './IndexStepRender'
 
 const UserVerification = ({ children }) => {
   const {
@@ -107,15 +106,11 @@ const VerificationWizard = ({ currentStep, onSubmit, children }) => {
       <ContainerCenter maxWidth='xs'>
         <Card variant='outlined'>
           <CardContent>
-            <ConditionalRender condition={currentStep === 0}>
-              {() => <UserVerification onSubmit={onSubmit}>{children}</UserVerification>}
-            </ConditionalRender>
-            <ConditionalRender condition={currentStep === 1}>
-              {() => <OTPVerification onSubmit={onSubmit}>{children}</OTPVerification>}
-            </ConditionalRender>
-            <ConditionalRender condition={currentStep === 2}>
-              {() => <PasswordEntry onSubmit={onSubmit}>{children}</PasswordEntry>}
-            </ConditionalRender>
+            <IndexStepRender stepIndex={currentStep}>
+              <UserVerification onSubmit={onSubmit}>{children}</UserVerification>
+              <OTPVerification onSubmit={onSubmit}>{children}</OTPVerification>
+              <PasswordEntry onSubmit={onSubmit}>{children}</PasswordEntry>
+            </IndexStepRender>
           </CardContent>
         </Card>
       </ContainerCenter>
