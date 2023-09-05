@@ -16,17 +16,28 @@ const Languages = () => {
   const {
     register,
     control,
+    trigger,
     formState: { errors }
   } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'languages'
   })
+
+  const handleAppend = () => {
+    append()
+    trigger('languages')
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('languages')
+  }
   return (
     <CardFieldArray
       title='Languages'
-      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
+      error={errors?.languages?.type === 'atLeastOneLanguage'}
     >
       {fields.length ? (
         <CardContent>
@@ -44,7 +55,7 @@ const Languages = () => {
                           placeholder='Language'
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton onClick={() => remove(index)} label={<RemoveRoundedIcon />} />
+                              <ChipButton onClick={() => handleRemove(index)} label={<RemoveRoundedIcon />} />
                             </InputAdornment>
                           }
                           {...register(`languages.${index}.value`)}

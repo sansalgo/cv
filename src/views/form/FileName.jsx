@@ -1,3 +1,4 @@
+import BetweenElse from '@/components/BetweenElse'
 import ChipButton from '@/components/ChipButton'
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded'
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
@@ -48,10 +49,10 @@ const FileName = () => {
   return (
     <Card>
       <CardContent>
-        <Stack direction='row' justifyContent='space-between' alignItems='center'>
-          {getValues('fileName')}
+        <BetweenElse>
+          <Box>{getValues('fileName')}</Box>
           <ChipButton label={<DriveFileRenameOutlineRoundedIcon fontSize='small' />} onClick={toggleContentEditable} />
-        </Stack>
+        </BetweenElse>
       </CardContent>
     </Card>
   )

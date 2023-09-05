@@ -54,7 +54,9 @@ const validationSchema = yup.object().shape({
         description: yup.string().trim().required('Description is required')
       })
     )
-    .required('At least one employment history entry is required'),
+    .test('atLeastOneEmploymentHistory', 'At least one employment history entry is required', function (value) {
+      return value && value.length > 0
+    }),
   education: yup
     .array()
     .of(
@@ -82,7 +84,9 @@ const validationSchema = yup.object().shape({
         value: yup.string().trim().required('Extra value is required')
       })
     )
-    .required('At least one extra entry is required'),
+    .test('atLeastOneExtra', 'At least one extra entry is required', function (value) {
+      return value && value.length > 0
+    }),
   skills: yup
     .array()
     .of(
@@ -90,7 +94,9 @@ const validationSchema = yup.object().shape({
         value: yup.string().trim().required('Skill value is required')
       })
     )
-    .required('At least one skill entry is required'),
+    .test('atLeastOneSkill', 'At least one skill entry is required', function (value) {
+      return value && value.length > 0
+    }),
   projects: yup
     .array()
     .of(
@@ -98,7 +104,9 @@ const validationSchema = yup.object().shape({
         value: yup.string().trim().required('Project value is required')
       })
     )
-    .required('At least one project entry is required'),
+    .test('atLeastOneProject', 'At least one project entry is required', function (value) {
+      return value && value.length > 0
+    }),
   languages: yup
     .array()
     .of(
@@ -106,7 +114,9 @@ const validationSchema = yup.object().shape({
         value: yup.string().trim().required('Language value is required')
       })
     )
-    .required('At least one language entry is required'),
+    .test('atLeastOneLanguage', 'At least one language entry is required', function (value) {
+      return value && value.length > 0
+    }),
   achievement: yup
     .array()
     .of(
@@ -114,7 +124,9 @@ const validationSchema = yup.object().shape({
         value: yup.string().trim().required('Achievement value is required')
       })
     )
-    .required('At least one achievement entry is required')
+    .test('atLeastOneAchievement', 'At least one achievement entry is required', function (value) {
+      return value && value.length > 0
+    })
 })
 
 const Form = ({ record }) => {

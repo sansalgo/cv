@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
 import Grid from '@mui/material/Grid'
 import OutlinedInput from '@mui/material/OutlinedInput'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
@@ -27,14 +27,19 @@ const Education = () => {
     name: 'education'
   })
 
-  useEffect(() => {
+  const handleAppend = () => {
+    append()
     trigger('education')
-  }, [fields])
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('education')
+  }
 
   return (
     <CardFieldArray
       title='Education'
-      action={<ChipButton onClick={() => append()} label={<AddRounded />} />}
+      action={<ChipButton onClick={() => handleAppend()} label={<AddRounded />} />}
       fields={fields}
       error={errors?.education?.type === 'atLeastOneEducation'}
     >
@@ -45,7 +50,7 @@ const Education = () => {
               <Fragment key={item.id}>
                 <Grid item>
                   <Card variant='outlined'>
-                    <CardHeader action={<ChipButton onClick={() => remove(index)} label={<RemoveRounded />} />} />
+                    <CardHeader action={<ChipButton onClick={() => handleRemove(index)} label={<RemoveRounded />} />} />
                     <CardContent>
                       <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>

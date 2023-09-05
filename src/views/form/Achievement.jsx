@@ -15,17 +15,28 @@ const Achievement = () => {
   const {
     register,
     control,
+    trigger,
     formState: { errors }
   } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'achievement'
   })
+
+  const handleAppend = () => {
+    append()
+    trigger('achievement')
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('achievement')
+  }
   return (
     <CardFieldArray
       title='Achievement'
-      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
+      error={errors?.achievement?.type === 'atLeastOneAchievement'}
     >
       {fields.length ? (
         <CardContent>
@@ -43,7 +54,7 @@ const Achievement = () => {
                           placeholder='Achievement'
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />
+                              <ChipButton label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />
                             </InputAdornment>
                           }
                           {...register(`achievement.${index}.value`)}

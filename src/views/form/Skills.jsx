@@ -12,17 +12,32 @@ import { Fragment } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 
 const Skills = () => {
-  const { register, control, formState: {errors} } = useFormContext()
+  const {
+    register,
+    control,
+    trigger,
+    formState: { errors }
+  } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'skills'
   })
 
+  const handleAppend = () => {
+    append()
+    trigger('skills')
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('skills')
+  }
+
   return (
     <CardFieldArray
       title='Skills'
-      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
+      error={errors?.skills?.type === 'atLeastOneSkill'}
     >
       {fields.length ? (
         <CardContent>
@@ -40,7 +55,7 @@ const Skills = () => {
                           placeholder='Skill'
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton onClick={() => remove(index)} label={<RemoveRoundedIcon />} />
+                              <ChipButton onClick={() => handleRemove(index)} label={<RemoveRoundedIcon />} />
                             </InputAdornment>
                           }
                           {...register(`skills.${index}.value`)}

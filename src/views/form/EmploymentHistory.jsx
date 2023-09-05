@@ -19,6 +19,7 @@ const EmploymentHistory = () => {
   const {
     register,
     control,
+    trigger,
     formState: { errors }
   } = useFormContext()
   const { fields, remove, append } = useFieldArray({
@@ -26,11 +27,21 @@ const EmploymentHistory = () => {
     name: 'employmentHistory'
   })
 
+  const handleAppend = () => {
+    append()
+    trigger('employmentHistory')
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('employmentHistory')
+  }
+
   return (
     <CardFieldArray
       title='Employment History'
-      action={<ChipButton onClick={() => append()} label={<AddRoundedIcon />} />}
+      action={<ChipButton onClick={() => handleAppend()} label={<AddRoundedIcon />} />}
       fields={fields}
+      error={errors?.employmentHistory?.type === 'atLeastOneEmploymentHistory'}
     >
       <CardContent>
         <Grid container spacing={2}>
@@ -38,7 +49,9 @@ const EmploymentHistory = () => {
             return (
               <Grid item key={item.id}>
                 <Card variant='outlined' key={item.id}>
-                  <CardHeader action={<ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />} />
+                  <CardHeader
+                    action={<ChipButton label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />}
+                  />
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>

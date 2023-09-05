@@ -15,17 +15,29 @@ const Projects = () => {
   const {
     register,
     control,
+    trigger,
     formState: { errors }
   } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'projects'
   })
+
+  const handleAppend = () => {
+    append()
+    trigger('projects')
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('projects')
+  }
+
   return (
     <CardFieldArray
       title='Projects'
-      action={<ChipButton label={<AddRoundedIcon />} onClick={() => append()} />}
+      action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
+      error={errors?.projects?.type === 'atLeastOneProject'}
     >
       {fields.length ? (
         <CardContent>
@@ -45,7 +57,7 @@ const Projects = () => {
                           minRows={2}
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton label={<RemoveRoundedIcon />} onClick={() => remove(index)} />
+                              <ChipButton label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />
                             </InputAdornment>
                           }
                           {...register(`projects.${index}.value`)}

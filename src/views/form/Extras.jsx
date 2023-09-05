@@ -17,17 +17,28 @@ const Extras = () => {
   const {
     register,
     control,
+    trigger,
     formState: { errors }
   } = useFormContext()
   const { append, fields, remove } = useFieldArray({
     control,
     name: 'extras'
   })
+
+  const handleAppend = () => {
+    append()
+    trigger('extras')
+  }
+  const handleRemove = index => {
+    remove(index)
+    trigger('extras')
+  }
   return (
     <CardFieldArray
       title='Extras'
-      action={<ChipButton label={<AddRounded />} onClick={() => append('')} />}
+      action={<ChipButton label={<AddRounded />} onClick={() => handleAppend()} />}
       fields={fields}
+      error={errors?.extras?.type === 'atLeastOneExtra'}
     >
       {fields.length > 0 && (
         <CardContent>
@@ -45,7 +56,7 @@ const Extras = () => {
                           placeholder='Extra'
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton label={<RemoveRounded />} onClick={() => remove(index)} />
+                              <ChipButton label={<RemoveRounded />} onClick={() => handleRemove(index)} />
                             </InputAdornment>
                           }
                           {...register(`extras.${index}.value`)}
