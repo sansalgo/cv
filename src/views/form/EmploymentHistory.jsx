@@ -27,9 +27,11 @@ const EmploymentHistory = () => {
     name: 'employmentHistory'
   })
 
+  const is_empty = errors?.employmentHistory?.type === 'atLeastOneEmploymentHistory'
+
   const handleAppend = () => {
     append()
-    trigger('employmentHistory')
+    if (is_empty) trigger('employmentHistory')
   }
   const handleRemove = index => {
     remove(index)
@@ -41,7 +43,7 @@ const EmploymentHistory = () => {
       title='Employment History'
       action={<ChipButton onClick={() => handleAppend()} label={<AddRoundedIcon />} />}
       fields={fields}
-      error={errors?.employmentHistory?.type === 'atLeastOneEmploymentHistory'}
+      error={is_empty}
     >
       <CardContent>
         <Grid container spacing={2}>
@@ -77,38 +79,52 @@ const EmploymentHistory = () => {
 
                       <Grid item xs={12} sm={6}>
                         <DatePickerWrapper>
-                          <Controller
-                            control={control}
-                            name={`employmentHistory.${index}.startDate`}
-                            render={({ field: { value, onChange } }) => (
-                              <DatePicker
-                                dateFormat='MM/yyyy'
-                                placeholderText='Start Date'
-                                showMonthYearPicker
-                                selected={value ? new Date(value) : null}
-                                onChange={onChange}
-                                customInput={<OutlinedInput fullWidth />}
-                              />
-                            )}
-                          />
+                          <InputErrorHelper errorMessage={errors?.employmentHistory?.[index]?.startDate?.message}>
+                            <Controller
+                              control={control}
+                              name={`employmentHistory.${index}.startDate`}
+                              render={({ field: { value, onChange } }) => (
+                                <DatePicker
+                                  dateFormat='MM/yyyy'
+                                  placeholderText='Start Date'
+                                  showMonthYearPicker
+                                  selected={value ? new Date(value) : null}
+                                  onChange={onChange}
+                                  customInput={
+                                    <OutlinedInput
+                                      fullWidth
+                                      error={!!errors?.employmentHistory?.[index]?.startDate?.message}
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </InputErrorHelper>
                         </DatePickerWrapper>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <DatePickerWrapper>
-                          <Controller
-                            control={control}
-                            name={`employmentHistory.${index}.endDate`}
-                            render={({ field: { value, onChange } }) => (
-                              <DatePicker
-                                dateFormat='MM/yyyy'
-                                placeholderText='End Date'
-                                showMonthYearPicker
-                                selected={value ? new Date(value) : null}
-                                onChange={onChange}
-                                customInput={<OutlinedInput fullWidth />}
-                              />
-                            )}
-                          />
+                          <InputErrorHelper errorMessage={errors?.employmentHistory?.[index]?.endDate?.message}>
+                            <Controller
+                              control={control}
+                              name={`employmentHistory.${index}.endDate`}
+                              render={({ field: { value, onChange } }) => (
+                                <DatePicker
+                                  dateFormat='MM/yyyy'
+                                  placeholderText='End Date'
+                                  showMonthYearPicker
+                                  selected={value ? new Date(value) : null}
+                                  onChange={onChange}
+                                  customInput={
+                                    <OutlinedInput
+                                      fullWidth
+                                      error={!!errors?.employmentHistory?.[index]?.endDate?.message}
+                                    />
+                                  }
+                                />
+                              )}
+                            />
+                          </InputErrorHelper>
                         </DatePickerWrapper>
                       </Grid>
                       <Grid item xs={12} sm={12}>

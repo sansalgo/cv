@@ -23,9 +23,11 @@ const Projects = () => {
     name: 'projects'
   })
 
+  const is_empty = errors?.projects?.type === 'atLeastOneProject'
+
   const handleAppend = () => {
     append()
-    trigger('projects')
+    if (is_empty) trigger('projects')
   }
   const handleRemove = index => {
     remove(index)
@@ -37,7 +39,7 @@ const Projects = () => {
       title='Projects'
       action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
-      error={errors?.projects?.type === 'atLeastOneProject'}
+      error={is_empty}
     >
       {fields.length ? (
         <CardContent>

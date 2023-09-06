@@ -23,9 +23,11 @@ const Achievement = () => {
     name: 'achievement'
   })
 
+  const is_empty = errors?.achievement?.type === 'atLeastOneAchievement'
+
   const handleAppend = () => {
     append()
-    trigger('achievement')
+    if (is_empty) trigger('achievement')
   }
   const handleRemove = index => {
     remove(index)
@@ -36,7 +38,7 @@ const Achievement = () => {
       title='Achievement'
       action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
-      error={errors?.achievement?.type === 'atLeastOneAchievement'}
+      error={is_empty}
     >
       {fields.length ? (
         <CardContent>

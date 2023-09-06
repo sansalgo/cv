@@ -99,7 +99,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '&:last-child': {
-            paddingBottom: '1rem'
+            paddingBottom: '16px'
           }
         }
       }
@@ -107,6 +107,7 @@ const theme = createTheme({
     MuiCardHeader: {
       styleOverrides: {
         action: {
+          alignSelf: 'center',
           margin: 0
         }
       }

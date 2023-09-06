@@ -1,4 +1,5 @@
 import BetweenElse from '@/components/BetweenElse'
+import { StyledCardError } from '@/components/CardFieldArray'
 import ChipButton from '@/components/ChipButton'
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded'
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
@@ -23,11 +24,16 @@ const StyledInputContentWrapper = styled(Box)(({ theme }) => ({
 }))
 
 const FileName = () => {
-  const { register, getValues } = useFormContext()
+  const {
+    register,
+    getValues,
+    formState: { errors }
+  } = useFormContext()
   const [isContentEditable, setIsContentEditable] = useState(false)
   const toggleContentEditable = () => {
     setIsContentEditable(prevState => !prevState)
   }
+  const is_error = !!errors?.fileName?.message
   if (isContentEditable) {
     return (
       <StyledInputContentWrapper>
@@ -35,6 +41,8 @@ const FileName = () => {
           <OutlinedInput
             type='text'
             placeholder='Filename'
+            fullWidth
+            error={!!errors?.fileName?.message}
             endAdornment={
               <InputAdornment position='end'>
                 <ChipButton label={<DoneRoundedIcon />} onClick={toggleContentEditable} />
@@ -47,14 +55,14 @@ const FileName = () => {
     )
   }
   return (
-    <Card>
+    <StyledCardError error={is_error}>
       <CardContent>
         <BetweenElse>
-          <Box>{getValues('fileName')}</Box>
+          {is_error ? <Box color='error.main'>{errors?.fileName?.message}</Box> : <Box>{getValues('fileName')}</Box>}
           <ChipButton label={<DriveFileRenameOutlineRoundedIcon fontSize='small' />} onClick={toggleContentEditable} />
         </BetweenElse>
       </CardContent>
-    </Card>
+    </StyledCardError>
   )
 }
 

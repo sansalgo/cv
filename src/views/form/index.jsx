@@ -26,7 +26,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const validationSchema = yup.object().shape({
-  fileName: yup.string().required('File name is required'),
+  fileName: yup.string().trim().required('File name is required'),
   intro: yup.object().shape({
     firstName: yup.string().trim().required('First name is required'),
     lastName: yup.string().trim().required('Last name is required'),
@@ -48,8 +48,19 @@ const validationSchema = yup.object().shape({
       yup.object().shape({
         position: yup.string().trim().required('Position is required'),
         companyName: yup.string().trim().required('Company name is required'),
-        startDate: yup.date().required('Start date is required'),
-        endDate: yup.date().required('End date is required'),
+        startDate: yup
+          .date()
+          .transform((value, originalValue) => {
+            // Convert empty strings to null before validation
+            return originalValue === '' ? null : value
+          })
+          .required('Start date is required'),
+        endDate: yup
+          .date()
+          .transform((value, originalValue) => {
+            return originalValue === '' ? null : value
+          })
+          .required('End date is required'),
         location: yup.string().trim().required('Location is required'),
         description: yup.string().trim().required('Description is required')
       })
@@ -63,8 +74,18 @@ const validationSchema = yup.object().shape({
       yup.object().shape({
         course: yup.string().trim().required('Course is required'),
         institution: yup.string().trim().required('Institution name is required'),
-        startDate: yup.date().required('Start date is required'),
-        endDate: yup.date().required('End date is required'),
+        startDate: yup
+          .date()
+          .transform((value, originalValue) => {
+            return originalValue === '' ? null : value
+          })
+          .required('Start date is required'),
+        endDate: yup
+          .date()
+          .transform((value, originalValue) => {
+            return originalValue === '' ? null : value
+          })
+          .required('End date is required'),
         location: yup.string().trim().required('Location is required'),
         percentage: yup
           .number()
@@ -131,6 +152,7 @@ const validationSchema = yup.object().shape({
 
 const Form = ({ record }) => {
   const methods = useForm({
+    mode: 'onChange',
     resolver: yupResolver(validationSchema),
     defaultValues: {
       employmentHistory: [

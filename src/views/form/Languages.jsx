@@ -24,9 +24,11 @@ const Languages = () => {
     name: 'languages'
   })
 
+  const is_empty = errors?.languages?.type === 'atLeastOneLanguage'
+
   const handleAppend = () => {
     append()
-    trigger('languages')
+    if (is_empty) trigger('languages')
   }
   const handleRemove = index => {
     remove(index)
@@ -37,7 +39,7 @@ const Languages = () => {
       title='Languages'
       action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
-      error={errors?.languages?.type === 'atLeastOneLanguage'}
+      error={is_empty}
     >
       {fields.length ? (
         <CardContent>

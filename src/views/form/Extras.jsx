@@ -25,9 +25,11 @@ const Extras = () => {
     name: 'extras'
   })
 
+  const is_empty = errors?.extras?.type === 'atLeastOneExtra'
+
   const handleAppend = () => {
     append()
-    trigger('extras')
+    if (is_empty) trigger('extras')
   }
   const handleRemove = index => {
     remove(index)
@@ -38,7 +40,7 @@ const Extras = () => {
       title='Extras'
       action={<ChipButton label={<AddRounded />} onClick={() => handleAppend()} />}
       fields={fields}
-      error={errors?.extras?.type === 'atLeastOneExtra'}
+      error={is_empty}
     >
       {fields.length > 0 && (
         <CardContent>

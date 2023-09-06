@@ -27,9 +27,11 @@ const Education = () => {
     name: 'education'
   })
 
+  const is_empty = errors?.education?.type === 'atLeastOneEducation'
+
   const handleAppend = () => {
     append()
-    trigger('education')
+    if (is_empty) trigger('education')
   }
   const handleRemove = index => {
     remove(index)
@@ -41,7 +43,7 @@ const Education = () => {
       title='Education'
       action={<ChipButton onClick={() => handleAppend()} label={<AddRounded />} />}
       fields={fields}
-      error={errors?.education?.type === 'atLeastOneEducation'}
+      error={is_empty}
     >
       <CardContent>
         <Grid container spacing={2}>
@@ -76,38 +78,49 @@ const Education = () => {
 
                         <Grid item xs={12} sm={6}>
                           <DatePickerWrapper>
-                            <Controller
-                              control={control}
-                              name={`education.${index}.startDate`}
-                              render={({ field: { value, onChange } }) => (
-                                <DatePicker
-                                  dateFormat='MM/yyyy'
-                                  placeholderText='Start Date'
-                                  showMonthYearPicker
-                                  selected={value ? new Date(value) : null}
-                                  onChange={onChange}
-                                  customInput={<OutlinedInput fullWidth />}
-                                />
-                              )}
-                            />
+                            <InputErrorHelper errorMessage={errors?.education?.[index]?.startDate?.message}>
+                              <Controller
+                                control={control}
+                                name={`education.${index}.startDate`}
+                                render={({ field: { value, onChange } }) => (
+                                  <DatePicker
+                                    dateFormat='MM/yyyy'
+                                    placeholderText='Start Date'
+                                    showMonthYearPicker
+                                    selected={value ? new Date(value) : null}
+                                    onChange={onChange}
+                                    customInput={
+                                      <OutlinedInput
+                                        fullWidth
+                                        error={!!errors?.education?.[index]?.startDate?.message}
+                                      />
+                                    }
+                                  />
+                                )}
+                              />
+                            </InputErrorHelper>
                           </DatePickerWrapper>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                           <DatePickerWrapper>
-                            <Controller
-                              control={control}
-                              name={`education.${index}.endDate`}
-                              render={({ field: { value, onChange } }) => (
-                                <DatePicker
-                                  dateFormat='MM/yyyy'
-                                  placeholderText='End Date'
-                                  showMonthYearPicker
-                                  selected={value ? new Date(value) : null}
-                                  onChange={onChange}
-                                  customInput={<OutlinedInput fullWidth />}
-                                />
-                              )}
-                            />
+                            <InputErrorHelper errorMessage={errors?.education?.[index]?.endDate?.message}>
+                              <Controller
+                                control={control}
+                                name={`education.${index}.endDate`}
+                                render={({ field: { value, onChange } }) => (
+                                  <DatePicker
+                                    dateFormat='MM/yyyy'
+                                    placeholderText='End Date'
+                                    showMonthYearPicker
+                                    selected={value ? new Date(value) : null}
+                                    onChange={onChange}
+                                    customInput={
+                                      <OutlinedInput fullWidth error={!!errors?.education?.[index]?.endDate?.message} />
+                                    }
+                                  />
+                                )}
+                              />
+                            </InputErrorHelper>
                           </DatePickerWrapper>
                         </Grid>
 

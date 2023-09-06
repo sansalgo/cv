@@ -23,9 +23,11 @@ const Skills = () => {
     name: 'skills'
   })
 
+  const is_empty = errors?.skills?.type === 'atLeastOneSkill'
+
   const handleAppend = () => {
     append()
-    trigger('skills')
+    if (is_empty) trigger('skills')
   }
   const handleRemove = index => {
     remove(index)
@@ -37,7 +39,7 @@ const Skills = () => {
       title='Skills'
       action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
-      error={errors?.skills?.type === 'atLeastOneSkill'}
+      error={is_empty}
     >
       {fields.length ? (
         <CardContent>
