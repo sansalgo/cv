@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
-
 const DatePickerWrapper = styled(Box)(({ theme }) => ({
   '& .react-datepicker-popper': {
     zIndex: 20
@@ -43,9 +42,7 @@ const DatePickerWrapper = styled(Box)(({ theme }) => ({
         height: 26,
         border: 'none',
         ...(theme.direction === 'ltr' ? { left: 15 } : { right: 15 }),
-        backgroundImage: `${"url('data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' style=\\'width:24px;height:24px\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath fill=\\'currentColor\\' d=\\'M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z\\' /%3E%3C/svg%3E')"
-          .replace('currentColor', theme.palette.text.secondary)
-          .replace('#', '%23')}`,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiBox-root css-uqopch' focusable='false' aria-hidden='true' viewBox='0 0 24 24' data-testid='KeyboardArrowLeftRoundedIcon'%3E%3Cpath d='M14.71 15.88 10.83 12l3.88-3.88c.39-.39.39-1.02 0-1.41a.9959.9959 0 0 0-1.41 0L8.71 11.3c-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0 .38-.39.39-1.03 0-1.42z'%3E%3C/path%3E%3C/svg%3E")`,
         '& .react-datepicker__navigation-icon': {
           display: 'none'
         }
@@ -55,9 +52,7 @@ const DatePickerWrapper = styled(Box)(({ theme }) => ({
         height: 26,
         border: 'none',
         ...(theme.direction === 'ltr' ? { right: 15 } : { left: 15 }),
-        backgroundImage: `${"url('data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' style=\\'width:24px;height:24px\\' viewBox=\\'0 0 24 24\\'%3E%3Cpath fill=\\'currentColor\\' d=\\'M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z\\' /%3E%3C/svg%3E')"
-          .replace('currentColor', theme.palette.text.secondary)
-          .replace('#', '%23')}`,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='MuiSvgIcon-root MuiSvgIcon-fontSizeMedium MuiBox-root css-uqopch' focusable='false' aria-hidden='true' viewBox='0 0 24 24' data-testid='KeyboardArrowRightRoundedIcon'%3E%3Cpath d='M9.29 15.88 13.17 12 9.29 8.12a.9959.9959 0 0 1 0-1.41c.39-.39 1.02-.39 1.41 0l4.59 4.59c.39.39.39 1.02 0 1.41L10.7 17.3c-.39.39-1.02.39-1.41 0-.38-.39-.39-1.03 0-1.42z'%3E%3C/path%3E%3C/svg%3E")`,
         '& .react-datepicker__navigation-icon': {
           display: 'none'
         }
@@ -120,8 +115,7 @@ const DatePickerWrapper = styled(Box)(({ theme }) => ({
         color: theme.palette.text.primary,
         backgroundColor: 'transparent',
         '&:hover': {
-          color: theme.palette.grey['50'],
-          backgroundColor: `rgba(${theme.palette.primary.main}, 0.06)`
+          backgroundColor: theme.palette.action.hover
         }
       }
     },

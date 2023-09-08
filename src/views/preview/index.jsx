@@ -9,8 +9,11 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import EndCard from '@/components/EndCard'
 import Button from '@mui/material/Button'
+import LinearProgress from '@mui/material/LinearProgress'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
+import { fetchPdfBlob } from '@/utils/fetch-pdf'
+import ContainerCenter from '@/components/ContainerCenter'
 
 // import { useFormContext, useWatch } from 'react-hook-form'
 
@@ -19,7 +22,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = src
 export default ({ record }) => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
-  const [pdfBlobUrl, setPdfBlobUrl] = useState(null)
+  const [pdfBlob, setPdfBlob] = useState(null)
   const router = useRouter()
   const id = router.query.id
 
@@ -33,6 +36,12 @@ export default ({ record }) => {
           maxWidth: '100%',
           height: 'auto !important'
         }
+      },
+      '& .react-pdf__message': {
+        maxWidth: '100%',
+        width: '594px',
+        aspectRatio: '1 / 1.4142',
+        textAlign: 'center'
       }
     }
   }))
@@ -52,48 +61,37 @@ export default ({ record }) => {
   }
 
   useEffect(() => {
-    const fetchPdfBuffer = async () => {
-      try {
-        const response = await axios.post(`/api/pdf`, { id }, { responseType: 'arraybuffer' })
-        return response.data
-      } catch (error) {
-        console.log('Error fetching PDF', error)
-        return null
-      }
-    }
-
-    fetchPdfBuffer().then(pdfBuffer => {
-      if (pdfBuffer) {
-        const pdfBlob = new Blob([pdfBuffer], { type: 'application/pdf' })
-
-        const blobUrl = URL.createObjectURL(pdfBlob)
-
-        setPdfBlobUrl(blobUrl)
-      }
-    })
+    console.log('call & call')
+    fetchPdfBlob(id).then(blob => setPdfBlob(blob))
 
     return () => {
-      URL.revokeObjectURL(pdfBlobUrl)
+      URL.revokeObjectURL(pdfBlob)
     }
   }, [])
 
-  return pdfBlobUrl ? (
+  if (pdfBlob === null) {
+    return (
+      <ContainerCenter maxWidth='xs'>
+        <LinearProgress sx={{ borderRadius: '1px' }} />
+      </ContainerCenter>
+    )
+  }
+
+  return (
     <div>
       <DocumentWrapper>
-        <Document file={pdfBlobUrl} onLoadSuccess={onDocumentLoadSuccess}>
+        <Document file={pdfBlob + 1} onLoadSuccess={onDocumentLoadSuccess}>
           <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
         </Document>
       </DocumentWrapper>
       <EndCard sx={{ marginTop: '10px' }}>
-        <Button variant='outlined' onClick={gotoForm}>
-          back
+        <Button variant='outlined' color='secondary' onClick={gotoForm}>
+          Back
         </Button>
         <Button variant='contained' onClick={onSubmit}>
-          save
+          Save
         </Button>
       </EndCard>
     </div>
-  ) : (
-    'loadConfig...'
   )
 }

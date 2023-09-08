@@ -150,32 +150,51 @@ const validationSchema = yup.object().shape({
     })
 })
 
+const defaultValues = {
+  achievement: [],
+  education: [
+    {
+      course: '',
+      institution: '',
+      startDate: '',
+      endDate: '',
+      location: '',
+      percentage: ''
+    }
+  ],
+  employmentHistory: [
+    {
+      position: '',
+      companyName: '',
+      startDate: '',
+      endDate: '',
+      location: '',
+      description: ''
+    }
+  ],
+  extras: [],
+  languages: [],
+  projects: [],
+  skills: [],
+  intro: {
+    firstName: '',
+    lastName: '',
+    position: '',
+    email: '',
+    phone: '',
+    city: '',
+    linkedin: '',
+    github: ''
+  },
+  profileSummary: '',
+  fileName: ''
+}
+
 const Form = ({ record }) => {
   const methods = useForm({
     mode: 'onChange',
     resolver: yupResolver(validationSchema),
-    defaultValues: {
-      employmentHistory: [
-        {
-          position: '',
-          companyName: '',
-          startDate: '',
-          endDate: '',
-          location: '',
-          description: ''
-        }
-      ],
-      education: [
-        {
-          course: '',
-          institution: '',
-          startDate: '',
-          endDate: '',
-          location: '',
-          percentage: ''
-        }
-      ]
-    }
+    defaultValues
   })
 
   const router = useRouter()
@@ -189,8 +208,6 @@ const Form = ({ record }) => {
       methods.reset(record)
     }
   }, [])
-
-  console.log(methods.formState.errors)
 
   const onSubmit = async data => {
     await axios.put(`/api/records/drafts/${id}`, formatRecord(data))
@@ -227,6 +244,9 @@ const Form = ({ record }) => {
           </Grid>
           <Grid item xs={12} order={{ xs: 3 }} justifyContent='center'>
             <EndCard>
+              <Button variant='outlined' color='secondary' onClick={() => methods.reset(defaultValues)}>
+                Reset
+              </Button>
               <Button type='submit' disabled={loading} variant='contained'>
                 {loading ? <CircularProgress color='secondary' /> : 'Preview'}
               </Button>
