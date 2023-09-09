@@ -14,6 +14,7 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { fetchPdfBlob } from '@/utils/fetch-pdf'
 import ContainerCenter from '@/components/ContainerCenter'
+import { Container } from '@mui/material'
 
 // import { useFormContext, useWatch } from 'react-hook-form'
 
@@ -27,21 +28,24 @@ export default ({ record }) => {
   const id = router.query.id
 
   const DocumentWrapper = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'center',
     '& .react-pdf__Document': {
       borderRadius: theme.shape.borderRadius,
       '& .react-pdf__Page': {
         '& .react-pdf__Page__canvas': {
           maxWidth: '100%',
-          height: 'auto !important'
+          height: 'auto !important',
+          margin: 'auto'
         }
       },
       '& .react-pdf__message': {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 'auto',
         maxWidth: '100%',
         width: '594px',
         aspectRatio: '1 / 1.4142',
-        textAlign: 'center'
+        backgroundColor: 'white'
       }
     }
   }))
@@ -69,22 +73,26 @@ export default ({ record }) => {
     }
   }, [])
 
-  if (pdfBlob === null) {
-    return (
-      <ContainerCenter maxWidth='xs'>
-        <LinearProgress sx={{ borderRadius: '1px' }} />
-      </ContainerCenter>
-    )
-  }
-
   return (
     <div>
-      <DocumentWrapper>
-        <Document file={pdfBlob + 1} onLoadSuccess={onDocumentLoadSuccess}>
-          <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
-        </Document>
-      </DocumentWrapper>
-      <EndCard sx={{ marginTop: '10px' }}>
+      {pdfBlob ? (
+        <DocumentWrapper>
+          <Document
+            file={pdfBlob}
+            // error={<Container maxWidth='lg'>some text</Container>}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
+            <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
+          </Document>
+        </DocumentWrapper>
+      ) : (
+        <Container maxWidth='xs'>
+          <div>
+            <LinearProgress sx={{ borderRadius: '1px', width: '100%' }} />
+          </div>
+        </Container>
+      )}
+      <EndCard sx={{ marginTop: 3 }}>
         <Button variant='outlined' color='secondary' onClick={gotoForm}>
           Back
         </Button>
