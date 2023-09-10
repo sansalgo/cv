@@ -14,7 +14,7 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { fetchPdfBlob } from '@/utils/fetch-pdf'
 import ContainerCenter from '@/components/ContainerCenter'
-import { Container } from '@mui/material'
+import { CircularProgress, Container } from '@mui/material'
 
 // import { useFormContext, useWatch } from 'react-hook-form'
 
@@ -50,6 +50,16 @@ export default ({ record }) => {
     }
   }))
 
+  const CircularProgressWrapper = styled(Box)(() => ({
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 'auto',
+    maxWidth: '100%',
+    width: '594px',
+    aspectRatio: '1 / 1.4142'
+  }))
+
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages)
   }
@@ -79,6 +89,7 @@ export default ({ record }) => {
         <DocumentWrapper>
           <Document
             file={pdfBlob}
+            loading={<CircularProgress />}
             // error={<Container maxWidth='lg'>some text</Container>}
             onLoadSuccess={onDocumentLoadSuccess}
           >
@@ -86,11 +97,9 @@ export default ({ record }) => {
           </Document>
         </DocumentWrapper>
       ) : (
-        <Container maxWidth='xs'>
-          <div>
-            <LinearProgress sx={{ borderRadius: '1px', width: '100%' }} />
-          </div>
-        </Container>
+        <CircularProgressWrapper>
+          <CircularProgress />
+        </CircularProgressWrapper>
       )}
       <EndCard sx={{ marginTop: 3 }}>
         <Button variant='outlined' color='secondary' onClick={gotoForm}>

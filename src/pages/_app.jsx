@@ -10,6 +10,7 @@ import { wrapper } from '@/store'
 import { Provider } from 'react-redux'
 import { Toaster } from 'react-hot-toast'
 import Theme from '@/theme'
+import { SnackbarProvider } from 'notistack'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -38,7 +39,15 @@ const App = ({ Component, ...rest }) => {
         <SessionProvider session={session}>
           <Theme>
             <Toaster position='top-right' reverseOrder={false} />
-            {getLayout(<Component {...pageProps} />)}
+            <SnackbarProvider
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+              maxSnack={4}
+            >
+              {getLayout(<Component {...pageProps} />)}
+            </SnackbarProvider>
           </Theme>
         </SessionProvider>
       </CacheProvider>

@@ -7,14 +7,11 @@ import palette from './palette'
 const theme = createTheme({
   palette,
   typography: {
-    fontFamily: 'Lato'
-  },
-  typography: {
+    fontFamily: 'Lato',
     button: {
       textTransform: 'none'
     }
   },
-
   components: {
     MuiPaper: {
       defaultProps: {
