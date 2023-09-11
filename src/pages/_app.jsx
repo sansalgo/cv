@@ -40,11 +40,12 @@ const App = ({ Component, ...rest }) => {
           <Theme>
             <Toaster position='top-right' reverseOrder={false} />
             <SnackbarProvider
+              autoHideDuration={3000}
               anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right'
               }}
-              maxSnack={4}
+              maxSnack={2}
             >
               {getLayout(<Component {...pageProps} />)}
             </SnackbarProvider>

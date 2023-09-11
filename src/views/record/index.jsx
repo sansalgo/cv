@@ -38,7 +38,7 @@ const Record = () => {
   const [isPending, startTransition] = useTransition()
   const [nameEditableId, setNameEditableId] = useState(null)
   const theme = useTheme()
-  const down_sm = useMediaQuery('(max-width: 599.95px)')
+  const downSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   const router = useRouter()
 
@@ -98,9 +98,11 @@ const Record = () => {
       </TableContainer>
       <StyledEndCard>
         <Pagination
+          boundaryCount={1}
+          siblingCount={0}
           count={Math.ceil(count / page_size)}
           page={page}
-          size={down_sm ? 'small' : 'medium'}
+          size={'medium'}
           onChange={handleChangePage}
           variant='outlined'
           shape='rounded'

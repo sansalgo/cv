@@ -4,6 +4,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { wrapper } from '@/store'
 import { setRecords } from '@/store/record'
+import Layout from '@/components/Layout'
 
 const extendTheme = theme =>
   createTheme({
@@ -46,6 +47,7 @@ const extendTheme = theme =>
 export default () => (
   <ThemeProvider theme={theme => extendTheme(theme)}>
     <CssBaseline />
+
     <Record />
   </ThemeProvider>
 )

@@ -108,20 +108,21 @@ const Register = () => {
               Register
             </Button>
           </BetweenElse>
-
-          <BetweenElse>
-            <Box>
-              <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
-                Back
+          {resendOTP => (
+            <BetweenElse>
+              <Box>
+                <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
+                  Back
+                </Button>
+                <Button variant='outlined' onClick={resendOTP} color='secondary'>
+                  Resend
+                </Button>
+              </Box>
+              <Button type='submit' variant='contained' color='primary'>
+                Verify
               </Button>
-              <Button variant='outlined' onClick={resendOTP} color='secondary'>
-                Resend
-              </Button>
-            </Box>
-            <Button type='submit' variant='contained' color='primary'>
-              Verify
-            </Button>
-          </BetweenElse>
+            </BetweenElse>
+          )}
 
           <BetweenElse>
             <Button type='submit' variant='contained' color='primary'>

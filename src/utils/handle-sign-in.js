@@ -17,13 +17,10 @@ const handleSignIn = async data => {
 
   if (res?.error) {
     console.log(res.error)
-    // toast.error(data.errorMessage)
 
     enqueueSnackbar(data.errorMessage, {
       variant: 'error',
-      persist: true,
-      preventDuplicate: true,
-      style: { whiteSpace: 'pre-line' }
+      preventDuplicate: true
     })
   }
   if (res.url) {

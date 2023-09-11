@@ -11,6 +11,17 @@ const GlobalStyles = theme => {
         position: 'fixed',
         backgroundColor: theme.palette.primary.main
       }
+    },
+    '.notistack-Snackbar': {
+      '.notistack-MuiContent': {
+        whiteSpace: 'pre-line',
+        boxShadow: 'none',
+        backgroundColor: 'initial',
+        border: `1px solid ${theme.palette.divider}`
+      },
+      '.notistack-MuiContent-error': {
+        color: theme.palette.error.main
+      }
     }
   }
 }
