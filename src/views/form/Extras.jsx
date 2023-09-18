@@ -1,7 +1,7 @@
-import ChipButton from '@/components/ChipButton'
 import AddRounded from '@mui/icons-material/AddRounded'
 import RemoveRounded from '@mui/icons-material/RemoveRounded'
 import CardContent from '@mui/material/CardContent'
+import Chip from '@mui/material/Chip'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -10,7 +10,6 @@ import { Fragment } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 // import CardActionHeader from './components/cardActionHeader'
 import CardFieldArray from '@/components/CardFieldArray'
-import { FileDownloadOffSharp } from '@mui/icons-material'
 import InputErrorHelper from '@/components/InputErrorHelper'
 
 const Extras = () => {
@@ -38,7 +37,7 @@ const Extras = () => {
   return (
     <CardFieldArray
       title='Extras'
-      action={<ChipButton label={<AddRounded />} onClick={() => handleAppend()} />}
+      action={<Chip label={<AddRounded />} onClick={() => handleAppend()} />}
       fields={fields}
       error={is_empty}
     >
@@ -58,7 +57,7 @@ const Extras = () => {
                           placeholder='Extra'
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton label={<RemoveRounded />} onClick={() => handleRemove(index)} />
+                              <Chip label={<RemoveRounded />} onClick={() => handleRemove(index)} />
                             </InputAdornment>
                           }
                           {...register(`extras.${index}.value`)}

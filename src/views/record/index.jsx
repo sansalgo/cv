@@ -11,19 +11,17 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 
+import MuiCircularProgress from '@mui/material/CircularProgress'
 import Stack from '@mui/material/Stack'
+import { styled } from '@mui/material/styles'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import FileName from './FileName'
 import MenuAction from './DialogAction'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import { useTheme } from '@emotion/react'
-import { styled } from '@mui/material/styles'
 
-const StyledEndCard = styled(EndCard)(({ theme }) => ({
+const ExtendEndCard = styled(EndCard)(({ theme }) => ({
   '& .MuiBox-root': {
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center'
@@ -31,14 +29,18 @@ const StyledEndCard = styled(EndCard)(({ theme }) => ({
   }
 }))
 
+const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
+  width: `${theme.spacing(2.5)} !important`,
+  height: `${theme.spacing(2.5)} !important`,
+  color: disabled ? theme.palette.action.disabled : theme.palette.common.white
+}))
+
 const Record = () => {
   const {
     records: { count, page, page_size, results }
   } = useSelector(state => state.record)
-  const [isPending, startTransition] = useTransition()
+  const [isLoading, setIsLoading] = useState(false)
   const [nameEditableId, setNameEditableId] = useState(null)
-  const theme = useTheme()
-  const downSM = useMediaQuery(theme.breakpoints.down('sm'))
 
   const router = useRouter()
 
@@ -46,11 +48,10 @@ const Record = () => {
     router.push({ pathname: `/`, query: { page: newPage, page_size } })
   }
 
-  const createNewRecord = () => {
-    startTransition(async () => {
-      const response = await axios.get(`/api/records/drafts`)
-      router.push(`/form/${response.data._id}`)
-    })
+  const createNewRecord = async () => {
+    setIsLoading(true)
+    const response = await axios.get(`/api/records/drafts`).finally(() => setIsLoading(false))
+    router.push(`/form/${response.data._id}`)
   }
 
   const rows = results.map((value, index) => ({
@@ -64,7 +65,12 @@ const Record = () => {
   return (
     <Stack spacing={2}>
       <Box display='flex' justifyContent='flex-end'>
-        <Button variant='contained' onClick={createNewRecord} startIcon={<AddRoundedIcon color='white' />}>
+        <Button
+          variant='contained'
+          onClick={createNewRecord}
+          disabled={isLoading}
+          startIcon={isLoading ? <CircularProgress disabled={isLoading} /> : <AddRoundedIcon color='white' />}
+        >
           New Record
         </Button>
       </Box>
@@ -83,11 +89,7 @@ const Record = () => {
             {rows.map(row => (
               <TableRow key={row.index}>
                 <TableCell align='center'>{row.index}</TableCell>
-                <TableCell>
-                  <FileName isEditable={nameEditableId === row._id} setNameEditableId={setNameEditableId}>
-                    {row.name}
-                  </FileName>
-                </TableCell>
+                <TableCell>{row.name}</TableCell>
                 <TableCell>{row.dateCreated}</TableCell>
                 <TableCell>{row.dateModified}</TableCell>
                 <TableCell align='center'>{<MenuAction row={row} setNameEditableId={setNameEditableId} />}</TableCell>
@@ -96,7 +98,7 @@ const Record = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <StyledEndCard>
+      <ExtendEndCard>
         <Pagination
           boundaryCount={1}
           siblingCount={0}
@@ -107,7 +109,7 @@ const Record = () => {
           variant='outlined'
           shape='rounded'
         />
-      </StyledEndCard>
+      </ExtendEndCard>
     </Stack>
   )
 }

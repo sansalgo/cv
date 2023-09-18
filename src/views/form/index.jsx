@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import EndCard from '@/components/EndCard'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
+import MuiCircularProgress from '@mui/material/CircularProgress'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
@@ -190,6 +190,12 @@ const defaultValues = {
   fileName: ''
 }
 
+const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
+  width: `${theme.spacing(3.0625)} !important`,
+  height: `${theme.spacing(3.0625)} !important`,
+  color: disabled ? theme.palette.action.disabled : theme.palette.common.white
+}))
+
 const Form = ({ record }) => {
   const methods = useForm({
     mode: 'onChange',
@@ -210,7 +216,8 @@ const Form = ({ record }) => {
   }, [])
 
   const onSubmit = async data => {
-    await axios.put(`/api/records/drafts/${id}`, formatRecord(data))
+    setLoading(true)
+    await axios.put(`/api/records/drafts/${id}`, formatRecord(data)).finally(() => setLoading(false))
 
     router.push(`/preview/${id}`)
   }
@@ -247,8 +254,8 @@ const Form = ({ record }) => {
               <Button variant='outlined' color='secondary' onClick={() => methods.reset(defaultValues)}>
                 Reset
               </Button>
-              <Button type='submit' disabled={loading} variant='contained'>
-                {loading ? <CircularProgress color='secondary' /> : 'Preview'}
+              <Button type='submit' size='medium' disabled={true} variant='contained'>
+                {true ? <CircularProgress disabled={true} /> : 'Preview'}
               </Button>
             </EndCard>
           </Grid>

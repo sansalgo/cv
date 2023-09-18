@@ -1,8 +1,8 @@
 import { styled } from '@mui/material'
-import Box from '@mui/material/Box'
+import MuiBox from '@mui/material/Box'
 import Container from '@mui/material/Container'
 
-const StyledBox = styled(Box)(() => ({
+const Box = styled(MuiBox)(() => ({
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -11,9 +11,9 @@ const StyledBox = styled(Box)(() => ({
 }))
 
 const ContainerCenter = ({ children, ...rest }) => (
-  <StyledBox>
+  <Box>
     <Container {...rest}>{children}</Container>
-  </StyledBox>
+  </Box>
 )
 
 export default ContainerCenter

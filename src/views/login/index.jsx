@@ -28,6 +28,7 @@ import BetweenElse from '@/components/BetweenElse'
 import PasswordInput from '@/components/PasswordInput'
 import { yupResolver } from '@hookform/resolvers/yup'
 import schema from '@/utils/validation-schema'
+import { Alert } from '@mui/material'
 
 const Login = () => {
   const validationSchema = schema([
@@ -41,13 +42,18 @@ const Login = () => {
   } = useForm({ resolver: yupResolver(validationSchema) })
   const router = useRouter()
   const [showPassword, setShowPassword] = useState(false)
+  const [serverError, setServerError] = useState(null)
   const handleClickShowPassword = () => setShowPassword(() => !showPassword)
 
-  const onSubmit = async data =>
-    await handleSignIn({
-      ...data,
-      errorMessage: 'Invalid credentials. Please check your username and password and try again.'
-    })
+  const onSubmit = async data => {
+    try {
+      await handleSignIn(data)
+    } catch (error) {
+      console.log(error)
+      const errorMessage = 'Invalid credentials. Please check your username and password and try again.'
+      setServerError(errorMessage)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -63,6 +69,7 @@ const Login = () => {
                 <PasswordInput placeholder='Password' name='password' register={register} errors={errors} />
                 <FormHelperText error>{errors.password?.message}</FormHelperText>
               </Box>
+              {serverError ? <Alert severity='error'>{serverError}</Alert> : null}
               <BetweenElse>
                 <FormControlLabel control={<Checkbox sx={{ p: 0, px: '9px' }} />} label='Remember Me' />
                 <Link component={LinkBehavior} href='/forgot'>

@@ -16,13 +16,9 @@ const handleSignIn = async data => {
   const res = await signIn('credentials', { ...credentials, ...parameters })
 
   if (res?.error) {
-    console.log(res.error)
-
-    enqueueSnackbar(data.errorMessage, {
-      variant: 'error',
-      preventDuplicate: true
-    })
+    throw res.error
   }
+
   if (res.url) {
     Router.push(res.url)
   }

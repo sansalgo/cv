@@ -3,17 +3,17 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardHeader from '@mui/material/CardHeader'
+import Chip from '@mui/material/Chip'
 import Grid from '@mui/material/Grid'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import DatePicker from 'react-datepicker'
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 
 import CardFieldArray from '@/components/CardFieldArray'
-import ChipButton from '@/components/ChipButton'
 
 import DatePickerWrapper from '@/components/DatePickerWrapper'
-import 'react-datepicker/dist/react-datepicker.css'
 import InputErrorHelper from '@/components/InputErrorHelper'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const EmploymentHistory = () => {
   const {
@@ -41,7 +41,7 @@ const EmploymentHistory = () => {
   return (
     <CardFieldArray
       title='Employment History'
-      action={<ChipButton onClick={() => handleAppend()} label={<AddRoundedIcon />} />}
+      action={<Chip onClick={() => handleAppend()} label={<AddRoundedIcon />} />}
       fields={fields}
       error={is_empty}
     >
@@ -51,9 +51,7 @@ const EmploymentHistory = () => {
             return (
               <Grid item key={item.id}>
                 <Card variant='outlined' key={item.id}>
-                  <CardHeader
-                    action={<ChipButton label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />}
-                  />
+                  <CardHeader action={<Chip label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />} />
                   <CardContent>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>

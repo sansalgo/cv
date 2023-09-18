@@ -1,15 +1,15 @@
 import MuiAppBar from '@mui/material/AppBar'
-import MuiToolbar from '@mui/material/Toolbar'
+import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
-import Avatar from '@mui/material/Avatar'
 import Container from '@mui/material/Container'
+import MuiToolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import { styled } from '@mui/material/styles'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
+import { styled, useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { useTheme } from '@mui/material/styles'
+import { signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import CVLogo from './CVLogo'
 
 const Layout = ({ children }) => {
   const router = useRouter()
@@ -31,37 +31,13 @@ const Layout = ({ children }) => {
     padding: theme.spacing(3, 0)
   }))
 
-  const ProfileChip = () => {
-    const username = session?.user.username
-    const avatarLetter = session?.user.username[0].toUpperCase()
-
-    return (
-      <Chip
-        sx={{ borderRadius: 1 }}
-        variant='outlined'
-        size='medium'
-        label={username}
-        color='primary'
-        avatar={<Avatar variant='rounded'>{avatarLetter}</Avatar>}
-      />
-    )
-  }
-
-  const StyledTypography = styled(Typography)(({ theme }) => ({
-    fontFamily: 'Roboto Slab Variable',
-    fontWeight: 'bold',
-    color: theme.palette.orange
-  }))
-
   return (
     <Container maxWidth='lg'>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position='static'>
           <Toolbar>
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              {/* <StyledTypography>{smDown ? 'CV' : 'Curriculum Vitae'}</StyledTypography> */}
-              <ProfileChip />
-            </Box>
+            <CVLogo />
+            <Chip label='Logout' size='medium' onClick={() => signOut()} />
           </Toolbar>
         </AppBar>
       </Box>

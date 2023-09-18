@@ -1,11 +1,11 @@
 import CardFieldArray from '@/components/CardFieldArray'
-import ChipButton from '@/components/ChipButton'
 import InputErrorHelper from '@/components/InputErrorHelper'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
+import Chip from '@mui/material/Chip'
 import InputAdornment from '@mui/material/InputAdornment'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import { Fragment } from 'react'
@@ -36,7 +36,7 @@ const Achievement = () => {
   return (
     <CardFieldArray
       title='Achievement'
-      action={<ChipButton label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
+      action={<Chip label={<AddRoundedIcon />} onClick={() => handleAppend()} />}
       fields={fields}
       error={is_empty}
     >
@@ -56,7 +56,7 @@ const Achievement = () => {
                           placeholder='Achievement'
                           endAdornment={
                             <InputAdornment position='end'>
-                              <ChipButton label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />
+                              <Chip label={<RemoveRoundedIcon />} onClick={() => handleRemove(index)} />
                             </InputAdornment>
                           }
                           {...register(`achievement.${index}.value`)}

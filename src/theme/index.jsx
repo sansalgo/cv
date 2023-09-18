@@ -4,6 +4,8 @@ import GlobalStyling from './globalStyles'
 import GlobalStyles from '@mui/material/GlobalStyles'
 import palette from './palette'
 
+const defaultTheme = createTheme({})
+
 const theme = createTheme({
   palette,
   typography: {
@@ -49,6 +51,18 @@ const theme = createTheme({
         disableTouchRipple: true
       }
     },
+    MuiAlert: {
+      defaultProps: {
+        icon: false,
+        variant: 'outlined'
+      },
+      styleOverrides: {
+        root: {
+          color: defaultTheme.palette.error.main,
+          border: `1px solid ${defaultTheme.palette.error.main}`
+        }
+      }
+    },
     MuiChip: {
       defaultProps: {
         variant: 'outlined',
@@ -59,7 +73,11 @@ const theme = createTheme({
         root: {
           '&:active': {
             boxShadow: 'unset'
-          }
+          },
+          borderRadius: defaultTheme.shape.borderRadius
+        },
+        label: {
+          display: 'flex'
         }
       }
     },
@@ -79,7 +97,7 @@ const theme = createTheme({
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          minWidth: '2rem'
+          minWidth: defaultTheme.spacing(4)
         }
       }
     },
@@ -96,7 +114,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           '&:last-child': {
-            paddingBottom: '16px'
+            paddingBottom: defaultTheme.spacing(2)
           }
         }
       }
@@ -122,7 +140,7 @@ const theme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
-          fontSize: '0.85rem'
+          fontSize: defaultTheme.spacing(1.7)
         }
       }
     },
@@ -141,7 +159,7 @@ const theme = createTheme({
         container: {
           '& .MuiDialog-paperFullWidth': {
             width: '100%',
-            margin: '1rem'
+            margin: defaultTheme.spacing(2)
           }
         }
       }

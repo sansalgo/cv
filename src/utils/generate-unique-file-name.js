@@ -1,11 +1,11 @@
-const adjectives = ['busy', 'dark', 'eloquent', 'vivid', 'sunny' /* Add more adjectives */]
-const nouns = ['forest', 'mountain', 'leavitt', 'river', 'ocean' /* Add more nouns */]
+import fs from 'fs'
 
 const generateUniqueFileName = () => {
-  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)]
-  const noun = nouns[Math.floor(Math.random() * nouns.length)]
-  const randomString = Math.random().toString(36).substr(2, 6)
-  return `${adjective}-${noun}-${randomString}`
+  const words = fs.readFileSync('src/data/wordlist10000.txt', 'utf-8').split('\n')
+  const randomWord0 = words[Math.floor(Math.random() * words.length)]
+  const randomWord1 = words[Math.floor(Math.random() * words.length)]
+  const randomString = Math.random().toString(36).substring(2, 8)
+  return `${randomWord0}-${randomWord1}-${randomString}`
 }
 
 export default generateUniqueFileName
