@@ -4,17 +4,31 @@ import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Box, CardContent } from '@mui/material'
 import Button from '@mui/material/Button'
-import CircularProgress from '@mui/material/CircularProgress'
+import MuiCircularProgress from '@mui/material/CircularProgress'
 import Dialog from '@mui/material/Dialog'
 import FormHelperText from '@mui/material/FormHelperText'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Stack from '@mui/material/Stack'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useDialog } from './DialogContext'
+import { styled } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
 
-const FileRename = ({ id, open, handleClose }) => {
+const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
+  width: `${theme.spacing(3.0625)} !important`,
+  height: `${theme.spacing(3.0625)} !important`,
+  color: disabled ? theme.palette.action.disabled : theme.palette.primary.main
+}))
+
+const DialogRename = ({ id }) => {
+  const {
+    state: { rename_d },
+    dispatch: localDispatch
+  } = useDialog()
   const dispatch = useDispatch()
+  const handleRenameDialog = () => localDispatch({ type: 'rename_d' })
+
   const validationSchema = schema([{ field: 'fileName' }])
   const [isLoading, setIsLoading] = useState(false)
   const {
@@ -28,9 +42,9 @@ const FileRename = ({ id, open, handleClose }) => {
       .unwrap()
       .finally(() => setIsLoading(false))
   }
-  console.log(open)
+
   return (
-    <Dialog fullWidth maxWidth='xs' open={open} onClose={handleClose}>
+    <Dialog fullWidth maxWidth='xs' open={rename_d} onClose={handleRenameDialog}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent>
           <Stack spacing={2}>
@@ -45,11 +59,11 @@ const FileRename = ({ id, open, handleClose }) => {
               <FormHelperText error>{errors.fileName?.message}</FormHelperText>
             </Box>
             <BetweenElse>
-              <Button variant='outlined' color='secondary' onClick={() => handleClose()}>
+              <Button variant='outlined' color='secondary' onClick={handleRenameDialog}>
                 Cancel
               </Button>
               <Button disabled={isLoading} variant='contained' type='submit'>
-                {true ? <CircularProgress sx={{ color: 'white' }} size={24.5} /> : 'Rename'}
+                {isLoading ? <CircularProgress disabled={isLoading} /> : 'Rename'}
               </Button>
             </BetweenElse>
           </Stack>
@@ -59,4 +73,4 @@ const FileRename = ({ id, open, handleClose }) => {
   )
 }
 
-export default FileRename
+export default DialogRename

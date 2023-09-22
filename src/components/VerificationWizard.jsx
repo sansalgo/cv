@@ -42,28 +42,8 @@ const OTPVerification = ({ children }) => {
   const dispatch = useDispatch()
   const {
     register,
-    getValues,
     formState: { errors }
   } = useFormContext()
-
-  const resendOTP = async () => {
-    await dispatch(sendOTP({ email: getValues('email') }))
-      .unwrap()
-      .then(() => toast.success('OTP send successfully'))
-  }
-
-  // useEffect(() => {
-  //   const resendOTPButton = document.getElementById('resendOTPButton')
-  //   resendOTPButton.addEventListener('click', resendOTP)
-
-  //   return () => {
-  //     resendOTPButton.removeEventListener('click', resendOTP)
-  //   }
-  // })
-
-  const childrenWithProps = Children.map(children, child => {
-    return cloneElement(child, { resendOTP })
-  })
 
   return (
     <Stack spacing={2}>
@@ -71,7 +51,7 @@ const OTPVerification = ({ children }) => {
         <OTPInput length={6} name='otp' register={register} errors={errors} />
         <FormHelperText error>{!!errors.otp && errors.otp.filter(v => !!v)[0].message}</FormHelperText>
       </Box>
-      {childrenWithProps}
+      {children}
     </Stack>
   )
 }

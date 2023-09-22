@@ -3,13 +3,14 @@ import { addUser, checkUser, sendOTP, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useState } from 'react'
+import Alert from '@mui/material/Alert'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
 import BetweenElse from '@/components/BetweenElse'
 import IndexStepRender from '@/components/IndexStepRender'
+import StyledCircularProgress from '@/components/StyledCircularProgress'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
@@ -22,10 +23,13 @@ const validationSchemas = [
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(0)
+  const [isLoading, setIsLoading] = useState(null)
+  const [serverError, setServerError] = useState(null)
+
   const methods = useForm({ resolver: yupResolver(validationSchemas[currentStep]) })
   const dispatch = useDispatch()
   const router = useRouter()
-  const { setError, setValue } = methods
+  const { setError, setValue, getValues } = methods
 
   const nextStep = () => {
     setCurrentStep(currentStep + 1)
@@ -35,13 +39,38 @@ const Register = () => {
     setCurrentStep(currentStep - 1)
   }
 
+  useEffect(() => {
+    if (serverError) {
+      setServerError(null)
+    }
+  }, [currentStep])
+
+  const handelCancel = () => {
+    router.push(`/login`)
+  }
+
+  const handleOTPSend = async ({ email, next = null, tag = null }) => {
+    try {
+      if (tag) setIsLoading(tag)
+      await dispatch(sendOTP({ email })).unwrap()
+      if (next) next()
+    } catch (error) {
+      console.log(error)
+      setServerError(error.data.error)
+    } finally {
+      if (tag) setIsLoading(null)
+    }
+  }
+
   const onSubmit = async data => {
-    console.log('submit', data)
     switch (currentStep) {
       case 0:
         const credentials = { email: data.email, username: data.username }
         try {
-          await dispatch(checkUser({ ...credentials })).unwrap()
+          setIsLoading('continue')
+          await dispatch(checkUser({ ...credentials }))
+            .unwrap()
+            .finally(() => setIsLoading(null))
         } catch (error) {
           switch (error.status) {
             case 400:
@@ -51,33 +80,31 @@ const Register = () => {
               break
             case 409:
             case 500:
-              toast.error(error.data.message)
+              setServerError(error.data.message)
               break
             case 404:
-              try {
-                await dispatch(sendOTP({ email: data.email })).unwrap()
-                nextStep()
-              } catch (error) {
-                toast.error(error.data.error)
-              }
+              handleOTPSend({ email: data.email, next: nextStep, tag: 'continue' })
               break
           }
         }
         break
       case 1:
         try {
+          setIsLoading('verify')
           await dispatch(verifyOTP({ email: data.email, otp: data.otp.join('') }))
             .unwrap()
             .then(({ verificationSign }) => {
               setValue('verificationSign', verificationSign)
               nextStep()
             })
+            .finally(() => setIsLoading(null))
         } catch (error) {
-          toast.error(error.data.message)
+          setServerError(error.data.message)
         }
         break
       case 2:
         try {
+          setIsLoading('register')
           await dispatch(
             addUser({
               username: data.username,
@@ -86,10 +113,10 @@ const Register = () => {
               password: data.confirmPassword
             })
           ).unwrap()
-          await handleSignIn({ ...data, errorMessage: 'Something went wrong' })
+          await handleSignIn({ ...data, errorMessage: 'Something went wrong' }).finally(() => setIsLoading(null))
         } catch (error) {
           console.log(error)
-          // toast.error(error.data.message)
+          setServerError(error.data.message)
         }
       default:
         break
@@ -99,34 +126,38 @@ const Register = () => {
   return (
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
+        {serverError ? <Alert severity='error'>{serverError}</Alert> : null}
         <IndexStepRender stepIndex={currentStep}>
           <BetweenElse>
-            <Button variant='outlined' color='secondary' onClick={() => router.push(`/login`)}>
+            <Button variant='outlined' color='secondary' onClick={handelCancel}>
               Login
             </Button>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
+            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
+              {isLoading === 'continue' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Continue'}
             </Button>
           </BetweenElse>
-          {resendOTP => (
-            <BetweenElse>
-              <Box>
-                <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
-                  Back
-                </Button>
-                <Button variant='outlined' onClick={resendOTP} color='secondary'>
-                  Resend
-                </Button>
-              </Box>
-              <Button type='submit' variant='contained' color='primary'>
-                Verify
-              </Button>
-            </BetweenElse>
-          )}
-
           <BetweenElse>
-            <Button type='submit' variant='contained' color='primary'>
-              Register
+            <Box>
+              <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
+                Back
+              </Button>
+              <Button
+                disabled={!!isLoading}
+                variant='outlined'
+                onClick={() => handleOTPSend({ email: getValues('email'), tag: 'resend' })}
+                color='secondary'
+              >
+                {isLoading === 'resend' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Resend'}
+              </Button>
+            </Box>
+            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
+              {isLoading === 'verify' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Verify'}
+              Verify
+            </Button>
+          </BetweenElse>
+          <BetweenElse>
+            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
+              {!!isLoading === 'register' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Register'}
             </Button>
           </BetweenElse>
         </IndexStepRender>

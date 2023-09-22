@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     switch (req.method) {
       case 'POST':
         const { status, json } = await userCheck(req.body)
-        return res.status(status).json(json)
+        res.status(status).json(json)
         break
       default:
         res.setHeader('Allow', ['POST'])

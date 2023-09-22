@@ -28,7 +28,8 @@ import BetweenElse from '@/components/BetweenElse'
 import PasswordInput from '@/components/PasswordInput'
 import { yupResolver } from '@hookform/resolvers/yup'
 import schema from '@/utils/validation-schema'
-import { Alert } from '@mui/material'
+import Alert from '@mui/material/Alert'
+import StyledCircularProgress from '@/components/StyledCircularProgress'
 
 const Login = () => {
   const validationSchema = schema([
@@ -41,13 +42,13 @@ const Login = () => {
     formState: { errors }
   } = useForm({ resolver: yupResolver(validationSchema) })
   const router = useRouter()
-  const [showPassword, setShowPassword] = useState(false)
   const [serverError, setServerError] = useState(null)
-  const handleClickShowPassword = () => setShowPassword(() => !showPassword)
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSubmit = async data => {
     try {
-      await handleSignIn(data)
+      setIsLoading(true)
+      await handleSignIn(data).finally(() => setIsLoading(false))
     } catch (error) {
       console.log(error)
       const errorMessage = 'Invalid credentials. Please check your username and password and try again.'
@@ -80,8 +81,8 @@ const Login = () => {
                 <Button variant='outlined' color='secondary' onClick={() => router.push(`/register`)}>
                   Register
                 </Button>
-                <Button type='submit' variant='contained' color='primary'>
-                  Login
+                <Button disabled={isLoading} type='submit' variant='contained' color='primary'>
+                  {isLoading ? <StyledCircularProgress disabled={isLoading} /> : 'Login'}
                 </Button>
               </BetweenElse>
             </Stack>

@@ -3,9 +3,9 @@ import { checkUser, sendOTP, updateUser, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
+import Alert from '@mui/material/Alert'
 import { useDispatch } from 'react-redux'
 
 import BetweenElse from '@/components/BetweenElse'
@@ -13,6 +13,7 @@ import IndexStepRender from '@/components/IndexStepRender'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
+import StyledCircularProgress from '@/components/StyledCircularProgress'
 
 const validationSchemas = [
   schema([{ field: 'username', level: 'required' }, { field: 'email' }]),
@@ -23,61 +24,81 @@ const validationSchemas = [
 const Forgot = () => {
   const [currentStep, setCurrentStep] = useState(0)
   const methods = useForm({ resolver: yupResolver(validationSchemas[currentStep]) })
+  const [isLoading, setIsLoading] = useState(null)
+  const [serverError, setServerError] = useState(null)
   const dispatch = useDispatch()
   const router = useRouter()
-  const { setError, setValue } = methods
+  const { setValue, getValues } = methods
 
-  const nextStep = async () => {
+  const nextStep = () => {
     setCurrentStep(currentStep + 1)
   }
 
-  const prevStep = async () => {
+  const prevStep = () => {
     setCurrentStep(currentStep - 1)
   }
+
+  useEffect(() => {
+    if (serverError) {
+      setServerError(null)
+    }
+  }, [currentStep])
 
   const handelCancel = () => {
     router.push(`/login`)
   }
 
+  const handleOTPSend = async ({ email, next = null, tag = null }) => {
+    try {
+      if (tag) setIsLoading(tag)
+      await dispatch(sendOTP({ email })).unwrap()
+      if (next) next()
+    } catch (error) {
+      console.log(error)
+      setServerError(error.data.error)
+    } finally {
+      if (tag) setIsLoading(null)
+    }
+  }
+
   const onSubmit = async data => {
-    console.log('submit', data)
     switch (currentStep) {
       case 0:
-        console.log(currentStep)
         const credentials = { email: data.email, username: data.username }
         const errorOptions = { accountError: false }
         try {
-          await dispatch(checkUser({ ...credentials, errorOptions })).unwrap()
+          setIsLoading('continue')
+          await dispatch(checkUser({ ...credentials, errorOptions }))
+            .unwrap()
+            .finally(() => setIsLoading(null))
         } catch (error) {
           switch (error.status) {
             case 404:
-              toast.error(error.data.message)
+              setServerError(error.data.message)
               break
             case 409:
-              try {
-                await dispatch(sendOTP({ email: data.email })).unwrap()
-                nextStep()
-              } catch (error) {
-                toast.error(error.data.error)
-              }
+              handleOTPSend({ email: data.email, next: nextStep, tag: 'continue' })
               break
           }
         }
         break
       case 1:
         try {
+          setIsLoading('verify')
           await dispatch(verifyOTP({ email: data.email, otp: data.otp.join('') }))
             .unwrap()
             .then(({ verificationSign }) => {
               setValue('verificationSign', verificationSign)
               nextStep()
             })
+            .finally(() => setIsLoading(null))
         } catch (error) {
-          toast.error(error.data.message)
+          setServerError(error.data.message)
         }
         break
       case 2:
         try {
+          setIsLoading('reset')
           await dispatch(
             updateUser({
               username: data.username,
@@ -86,10 +107,11 @@ const Forgot = () => {
               password: data.confirmPassword
             })
           ).unwrap()
-          await handleSignIn({ ...data, errorMessage: 'Something went wrong' })
+
+          await handleSignIn({ ...data, errorMessage: 'Something went wrong' }).finally(() => setIsLoading(null))
         } catch (error) {
           console.log(error)
-          // toast.error(error.data.message)
+          setServerError(error.data.message)
         }
       default:
         break
@@ -99,37 +121,42 @@ const Forgot = () => {
   return (
     <FormProvider {...methods}>
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
+        {serverError ? <Alert severity='error'>{serverError}</Alert> : null}
         <IndexStepRender stepIndex={currentStep}>
           <BetweenElse>
             <Button variant='outlined' color='secondary' onClick={handelCancel}>
               Login
             </Button>
-            <Button type='submit' variant='contained' color='primary'>
-              Continue
+            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
+              {isLoading === 'continue' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Continue'}
             </Button>
           </BetweenElse>
-          {resendOTP => (
-            <BetweenElse>
-              <Box>
-                <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
-                  Back
-                </Button>
-                <Button variant='outlined' onClick={resendOTP} color='secondary'>
-                  Resend
-                </Button>
-              </Box>
-              <Button type='submit' variant='contained' color='primary'>
-                Verify
+
+          <BetweenElse>
+            <Box>
+              <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
+                Back
               </Button>
-            </BetweenElse>
-          )}
+              <Button
+                disabled={!!isLoading}
+                variant='outlined'
+                onClick={() => handleOTPSend({ email: getValues('email'), tag: 'resend' })}
+                color='secondary'
+              >
+                {isLoading == 'resend' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Resend'}
+              </Button>
+            </Box>
+            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
+              {isLoading === 'verify' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Verify'}
+            </Button>
+          </BetweenElse>
 
           <BetweenElse>
             <Button variant='outlined' onClick={handelCancel} color='secondary'>
               Cancel
             </Button>
-            <Button type='submit' variant='contained' color='primary'>
-              Reset
+            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
+              {isLoading === 'reset' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Reset'}
             </Button>
           </BetweenElse>
         </IndexStepRender>

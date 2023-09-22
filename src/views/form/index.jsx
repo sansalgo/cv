@@ -24,6 +24,7 @@ import formatRecord from '@/utils/format-record'
 import FileName from './FileName'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import StyledCircularProgress from '@/components/StyledCircularProgress'
 
 const validationSchema = yup.object().shape({
   fileName: yup.string().trim().required('File name is required'),
@@ -190,12 +191,6 @@ const defaultValues = {
   fileName: ''
 }
 
-const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
-  width: `${theme.spacing(3.0625)} !important`,
-  height: `${theme.spacing(3.0625)} !important`,
-  color: disabled ? theme.palette.action.disabled : theme.palette.common.white
-}))
-
 const Form = ({ record }) => {
   const methods = useForm({
     mode: 'onChange',
@@ -204,7 +199,7 @@ const Form = ({ record }) => {
   })
 
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const id = router.query.id
 
   useEffect(() => {
@@ -216,8 +211,8 @@ const Form = ({ record }) => {
   }, [])
 
   const onSubmit = async data => {
-    setLoading(true)
-    await axios.put(`/api/records/drafts/${id}`, formatRecord(data)).finally(() => setLoading(false))
+    setIsLoading(true)
+    await axios.put(`/api/records/drafts/${id}`, formatRecord(data)).finally(() => setIsLoading(false))
 
     router.push(`/preview/${id}`)
   }
@@ -254,8 +249,8 @@ const Form = ({ record }) => {
               <Button variant='outlined' color='secondary' onClick={() => methods.reset(defaultValues)}>
                 Reset
               </Button>
-              <Button type='submit' size='medium' disabled={true} variant='contained'>
-                {true ? <CircularProgress disabled={true} /> : 'Preview'}
+              <Button type='submit' size='medium' disabled={isLoading} variant='contained'>
+                {isLoading ? <StyledCircularProgress disabled={isLoading} /> : 'Preview'}
               </Button>
             </EndCard>
           </Grid>

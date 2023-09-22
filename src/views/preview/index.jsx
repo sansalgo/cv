@@ -16,57 +16,62 @@ import { fetchPdfBlob } from '@/utils/fetch-pdf'
 import ContainerCenter from '@/components/ContainerCenter'
 import { CircularProgress, Container } from '@mui/material'
 
-// import { useFormContext, useWatch } from 'react-hook-form'
-
 pdfjs.GlobalWorkerOptions.workerSrc = src
+
+const DocumentWrapper = styled(Box)(({ theme }) => ({
+  '& .react-pdf__Document': {
+    borderRadius: theme.shape.borderRadius,
+    '& .react-pdf__Page': {
+      '& .react-pdf__Page__canvas': {
+        maxWidth: '100%',
+        height: 'auto !important',
+        margin: 'auto'
+      }
+    },
+    '& .react-pdf__message': {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 'auto',
+      maxWidth: '100%',
+      width: '594px',
+      aspectRatio: '1 / 1.4142',
+      backgroundColor: 'white'
+    }
+  }
+}))
+
+const CircularProgressWrapper = styled(Box)(() => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  margin: 'auto',
+  maxWidth: '100%',
+  width: '594px',
+  aspectRatio: '1 / 1.4142'
+}))
+
+const CircularProgressII = styled(CircularProgress)(({ theme, disabled }) => ({
+  width: `${theme.spacing(3.0625)} !important`,
+  height: `${theme.spacing(3.0625)} !important`,
+  color: disabled ? theme.palette.action.disabled : theme.palette.common.white
+}))
 
 export default ({ record }) => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
   const [pdfBlob, setPdfBlob] = useState(null)
   const router = useRouter()
   const id = router.query.id
-
-  const DocumentWrapper = styled(Box)(({ theme }) => ({
-    '& .react-pdf__Document': {
-      borderRadius: theme.shape.borderRadius,
-      '& .react-pdf__Page': {
-        '& .react-pdf__Page__canvas': {
-          maxWidth: '100%',
-          height: 'auto !important',
-          margin: 'auto'
-        }
-      },
-      '& .react-pdf__message': {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 'auto',
-        maxWidth: '100%',
-        width: '594px',
-        aspectRatio: '1 / 1.4142',
-        backgroundColor: 'white'
-      }
-    }
-  }))
-
-  const CircularProgressWrapper = styled(Box)(() => ({
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 'auto',
-    maxWidth: '100%',
-    width: '594px',
-    aspectRatio: '1 / 1.4142'
-  }))
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages)
   }
 
   const onSubmit = async () => {
-    await axios.put(`/api/records/drafts/${id}`, { draft: false })
-
+    setIsLoading(true)
+    await axios.put(`/api/records/drafts/${id}`, { draft: false }).finally(() => setIsLoading(false))
     router.push(`/`)
   }
 
@@ -75,7 +80,6 @@ export default ({ record }) => {
   }
 
   useEffect(() => {
-    console.log('call & call')
     fetchPdfBlob(id).then(blob => setPdfBlob(blob))
 
     return () => {
@@ -105,8 +109,8 @@ export default ({ record }) => {
         <Button variant='outlined' color='secondary' onClick={gotoForm}>
           Back
         </Button>
-        <Button variant='contained' onClick={onSubmit}>
-          Save
+        <Button disabled={isLoading} variant='contained' onClick={onSubmit}>
+          {isLoading ? <CircularProgressII disabled={isLoading} /> : 'Save'}
         </Button>
       </EndCard>
     </div>

@@ -15,9 +15,10 @@ import MenuList from '@mui/material/MenuList'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import FileRename from './FileRename'
+import { DialogProvider, useDialog } from './DialogContext'
+import DialogRename from './DialogRename'
 
 const CircularProgress = styled(MuiCircularProgress)(({ theme }) => ({
   width: `${theme.spacing(2.5)} !important`,
@@ -25,23 +26,17 @@ const CircularProgress = styled(MuiCircularProgress)(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const MenuAction = ({ row }) => {
-  const [openMenu, setOpenMenu] = useState(false)
-  const [openDialog, setOpenDialog] = useState(false)
-  const handleMenuOpen = () => setOpenMenu(true)
-  const handleMenuClose = () => setOpenMenu(false)
-  const handleDialogOpen = () => setOpenDialog(true)
-  const handleDialogClose = () => {
-    console.log('false-----')
-    setOpenDialog(prevOpenDialog => !prevOpenDialog)
-  }
-  const [isLoading, setIsLoading] = useState(null)
-  const router = useRouter()
+const DialogAction = ({ row }) => {
+  const {
+    state: { action_d },
+    dispatch: localDispatch
+  } = useDialog()
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(null)
 
-  useEffect(() => {
-    console.log('openUseEffect', openDialog)
-  }, [openDialog])
+  const router = useRouter()
+
+  const handleDialogAction = () => localDispatch({ type: 'action_d' })
 
   const handleEdit = () => {
     router.push(`/form/${row._id}`)
@@ -79,22 +74,22 @@ const MenuAction = ({ row }) => {
 
   return (
     <Fragment>
-      <IconButton onClick={handleMenuOpen} sx={{ padding: 0 }}>
+      <IconButton onClick={handleDialogAction} sx={{ padding: 0 }}>
         <MoreVertIcon />
       </IconButton>
-      <Dialog open={openMenu} onClose={handleMenuClose}>
+      <Dialog open={action_d} onClose={handleDialogAction}>
         <MenuList
           component={Stack}
           direction='row'
           divider={<Divider orientation='vertical' variant='middle' />}
-          autoFocusItem={openMenu}
+          autoFocusItem={action_d}
         >
-          <MenuItem onClick={handleDialogOpen}>
+          <MenuItem onClick={() => localDispatch({ type: 'rename_d' })}>
             <IconButton disabled={!!isLoading}>
               <DriveFileRenameOutlineRoundedIcon />
             </IconButton>
-            <FileRename id={row._id} open={openDialog} handleClose={handleDialogClose} />
           </MenuItem>
+          <DialogRename id={row._id} />
           <MenuItem onClick={handleEdit}>
             <IconButton disabled={!!isLoading}>
               <ModeEditRoundedIcon />
@@ -121,4 +116,10 @@ const MenuAction = ({ row }) => {
   )
 }
 
-export default MenuAction
+export default ({ ...rest }) => {
+  return (
+    <DialogProvider>
+      <DialogAction {...rest} />
+    </DialogProvider>
+  )
+}

@@ -19,9 +19,9 @@ import { styled } from '@mui/material/styles'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
-import MenuAction from './DialogAction'
+import DialogAction from './DialogAction'
 
-const ExtendEndCard = styled(EndCard)(({ theme }) => ({
+const StyledEndCard = styled(EndCard)(({ theme }) => ({
   '& .MuiBox-root': {
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center'
@@ -92,13 +92,13 @@ const Record = () => {
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.dateCreated}</TableCell>
                 <TableCell>{row.dateModified}</TableCell>
-                <TableCell align='center'>{<MenuAction row={row} setNameEditableId={setNameEditableId} />}</TableCell>
+                <TableCell align='center'>{<DialogAction row={row} setNameEditableId={setNameEditableId} />}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <ExtendEndCard>
+      <StyledEndCard>
         <Pagination
           boundaryCount={1}
           siblingCount={0}
@@ -109,7 +109,7 @@ const Record = () => {
           variant='outlined'
           shape='rounded'
         />
-      </ExtendEndCard>
+      </StyledEndCard>
     </Stack>
   )
 }
