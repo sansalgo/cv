@@ -1,15 +1,28 @@
+import { getServerSession } from 'next-auth'
 import puppeteer from 'puppeteer'
+import { authOptions } from '../auth/[...nextauth]'
 
 export default async function handler(req, res) {
   try {
+    const session = await getServerSession(req, res, authOptions)
+    if (!session) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
     switch (req.method) {
       case 'POST':
-
+        const body = req.body
+        if (!body || Object.keys(body).length === 0) {
+          return res.status(204).send()
+        }
         const { id } = req.body
+        if (!id) {
+          return res.status(400).json({ message: 'Record ID is required' })
+        }
         const browser = await puppeteer.launch({ headless: 'new' })
 
         const page = await browser.newPage()
-        const url = `http://localhost:3000/pdf/${id}`
+        const url = `${process.env.NEXTAUTH_URL}/pdf/${id}`
 
         const cookies = req.headers.cookie
           ? req.headers.cookie.split(';').map(cookie => {
@@ -20,10 +33,10 @@ export default async function handler(req, res) {
 
         await page.setCookie(...cookies)
 
-        await page.goto(url, { waitUntil: 'networkidle0' })
-        await page.evaluate(() => {
-          localStorage.setItem('record', JSON.stringify('text-local-storage'))
-        })
+        const response = await page.goto(url, { waitUntil: 'networkidle0' })
+        if (!response.ok()) {
+          return res.status(response.status()).json({ message: 'Something went wrong' })
+        }
 
         await page.emulateMediaType('screen')
 

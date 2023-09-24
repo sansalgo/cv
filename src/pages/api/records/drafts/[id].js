@@ -1,6 +1,5 @@
 import connectToDatabase from '@/lib/mongodb'
 import Record from '@/models/record'
-import formatRecord from '@/utils/format-record'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth/[...nextauth]'
 
@@ -14,15 +13,18 @@ export default async function handler(req, res) {
       return
     }
     switch (req.method) {
-      case 'PUT':
-        const updatedDraftRecord = await Record.findOneAndUpdate({ _id: id }, req.body)
+      case 'PATCH':
+        const updatedDraftRecord = await Record.findOneAndUpdate(
+          { _id: id, user: session.user.id, draft: true },
+          { draft: false }
+        )
         if (!updatedDraftRecord) {
           return res.status(404).json({ message: 'Draft not found' })
         }
         res.status(200).json({ message: 'Draft updated successfully' })
         break
       default:
-        res.setHeader('Allow', ['PUT'])
+        res.setHeader('Allow', ['PATCH'])
         res.status(405).json({ message: `Method ${req.method} not allowed` })
         break
     }

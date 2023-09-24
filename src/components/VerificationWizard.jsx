@@ -1,8 +1,6 @@
 import ContainerCenter from '@/components/ContainerCenter'
-import { sendOTP } from '@/store/user'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import { toast } from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 
 import FormHelperText from '@mui/material/FormHelperText'
@@ -13,7 +11,6 @@ import { useFormContext } from 'react-hook-form'
 import OTPInput from '@/components/OTPInput'
 import PasswordInput from '@/components/PasswordInput'
 import Box from '@mui/material/Box'
-import { Children, cloneElement } from 'react'
 import IndexStepRender from './IndexStepRender'
 
 const UserVerification = ({ children }) => {

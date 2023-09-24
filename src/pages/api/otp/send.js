@@ -8,12 +8,14 @@ export default async function handler(req, res) {
     await connectToDatabase()
     switch (req.method) {
       case 'POST':
-        const { email } = req.body
-
-        console.log(email)
+        const body = req.body
+        if (!body || Object.keys(body).length === 0) {
+          return res.status(204).send()
+        }
+        const { email } = body
 
         if (!email) {
-          return res.status(400).json({ error: 'Email is required' })
+          return res.status(400).json({ message: 'Email is required' })
         }
 
         const generatedOTP = generateOTP()
@@ -23,7 +25,7 @@ export default async function handler(req, res) {
           await sendRegisterVerifyMail(email, 'san', generatedOTP)
         } catch (error) {
           console.log(error)
-          return res.status(500).json({ error: 'Something went wrong' })
+          return res.status(500).json({ message: 'Something went wrong' })
         }
         res.status(200).json({ message: 'OTP sent successfully' })
         break

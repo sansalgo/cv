@@ -1,7 +1,5 @@
 import { signIn } from 'next-auth/react'
-import { toast } from 'react-hot-toast'
 import Router from 'next/router'
-import { enqueueSnackbar } from 'notistack'
 
 const handleSignIn = async data => {
   const credentials = {

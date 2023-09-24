@@ -11,7 +11,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import MuiCircularProgress from '@mui/material/CircularProgress'
 import Stack from '@mui/material/Stack'
@@ -20,6 +20,8 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import DialogAction from './DialogAction'
+import ContainerCenter from '@/components/ContainerCenter'
+import { Container } from '@mui/material'
 
 const StyledEndCard = styled(EndCard)(({ theme }) => ({
   '& .MuiBox-root': {
@@ -74,42 +76,63 @@ const Record = () => {
           New Record
         </Button>
       </Box>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align='center'>Index</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Date Created</TableCell>
-              <TableCell>Date Modified</TableCell>
-              <TableCell align='center'>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => (
-              <TableRow key={row.index}>
-                <TableCell align='center'>{row.index}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.dateCreated}</TableCell>
-                <TableCell>{row.dateModified}</TableCell>
-                <TableCell align='center'>{<DialogAction row={row} setNameEditableId={setNameEditableId} />}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <StyledEndCard>
-        <Pagination
-          boundaryCount={1}
-          siblingCount={0}
-          count={Math.ceil(count / page_size)}
-          page={page}
-          size={'medium'}
-          onChange={handleChangePage}
-          variant='outlined'
-          shape='rounded'
-        />
-      </StyledEndCard>
+      {count > 0 ? (
+        <Fragment>
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell align='center'>Index</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Date Created</TableCell>
+                  <TableCell>Date Modified</TableCell>
+                  <TableCell align='center'>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map(row => (
+                  <TableRow key={row.index}>
+                    <TableCell align='center'>{row.index}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.dateCreated}</TableCell>
+                    <TableCell>{row.dateModified}</TableCell>
+                    <TableCell align='center'>
+                      {<DialogAction row={row} setNameEditableId={setNameEditableId} />}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <StyledEndCard>
+            <Pagination
+              boundaryCount={1}
+              siblingCount={0}
+              count={Math.ceil(count / page_size)}
+              page={page}
+              size={'medium'}
+              onChange={handleChangePage}
+              variant='outlined'
+              shape='rounded'
+            />
+          </StyledEndCard>
+        </Fragment>
+      ) : (
+        <Box
+          color='primary.main'
+          padding={2}
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          component={Paper}
+        >
+          No&nbsp;
+          <Box color='orange' fontFamily='Roboto Slab Variable' fontWeight='bold' component='span'>
+            CV
+          </Box>
+          &nbsp;Records Found
+        </Box>
+      )}
     </Stack>
   )
 }

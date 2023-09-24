@@ -43,9 +43,13 @@ const DialogAction = ({ row }) => {
   }
 
   const handlePreview = () => {
-    router.push({
-      pathname: `/preview/${row._id}`
-    })
+    router.push(
+      {
+        pathname: `/preview/[id]`,
+        query: { id: row._id, back: '/', draft: row.draft }
+      },
+      `/preview/${row._id}`
+    )
   }
 
   const handleDownload = async () => {

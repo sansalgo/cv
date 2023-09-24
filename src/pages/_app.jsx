@@ -1,16 +1,15 @@
-import { Router } from 'next/router'
-import NProgress from 'nprogress'
-import { CacheProvider } from '@emotion/react'
-import { createEmotionCache } from '@/utils/create-emotion-cache'
-import '@fontsource/lato'
-import '@fontsource-variable/roboto-slab'
 import Layout from '@/components/Layout'
-import { SessionProvider } from 'next-auth/react'
 import { wrapper } from '@/store'
-import { Provider } from 'react-redux'
-import { Toaster } from 'react-hot-toast'
 import Theme from '@/theme'
+import { createEmotionCache } from '@/utils/create-emotion-cache'
+import { CacheProvider } from '@emotion/react'
+import '@fontsource-variable/roboto-slab'
+import '@fontsource/lato'
+import { SessionProvider } from 'next-auth/react'
+import { Router } from 'next/router'
 import { SnackbarProvider } from 'notistack'
+import NProgress from 'nprogress'
+import { Provider } from 'react-redux'
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -38,7 +37,6 @@ const App = ({ Component, ...rest }) => {
       <CacheProvider value={emotionCache}>
         <SessionProvider session={session}>
           <Theme>
-            <Toaster position='top-right' reverseOrder={false} />
             <SnackbarProvider
               autoHideDuration={3000}
               anchorOrigin={{

@@ -6,7 +6,11 @@ export default async function handler(req, res) {
     await connectToDatabase()
     switch (req.method) {
       case 'POST':
-        const { status, json } = await userCheck(req.body)
+        const body = req.body
+        if (!body || Object.keys(body).length === 0) {
+          return res.status(204).send()
+        }
+        const { status, json } = await userCheck(body)
         res.status(status).json(json)
         break
       default:

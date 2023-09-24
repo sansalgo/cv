@@ -25,131 +25,145 @@ import FileName from './FileName'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import StyledCircularProgress from '@/components/StyledCircularProgress'
+import schema from '@/utils/validation-schema'
 
-const validationSchema = yup.object().shape({
-  fileName: yup.string().trim().required('File name is required'),
-  intro: yup.object().shape({
-    firstName: yup.string().trim().required('First name is required'),
-    lastName: yup.string().trim().required('Last name is required'),
-    position: yup.string().trim().required('Position is required'),
-    email: yup.string().trim().email('Invalid email address').required('Email is required'),
-    phone: yup
-      .string()
-      .trim()
-      .matches(/^[0-9]+$/, 'Phone number must be numeric')
-      .required('Phone is required'),
-    city: yup.string().trim().required('City is required'),
-    linkedin: yup.string().trim().url('Invalid LinkedIn URL').required('LinkedIn is required'),
-    github: yup.string().trim().url('Invalid GitHub URL').required('GitHub is required')
-  }),
-  profileSummary: yup.string().trim().required('Profile summary is required'),
-  employmentHistory: yup
-    .array()
-    .of(
-      yup.object().shape({
-        position: yup.string().trim().required('Position is required'),
-        companyName: yup.string().trim().required('Company name is required'),
-        startDate: yup
-          .date()
-          .transform((value, originalValue) => {
-            // Convert empty strings to null before validation
-            return originalValue === '' ? null : value
-          })
-          .required('Start date is required'),
-        endDate: yup
-          .date()
-          .transform((value, originalValue) => {
-            return originalValue === '' ? null : value
-          })
-          .required('End date is required'),
-        location: yup.string().trim().required('Location is required'),
-        description: yup.string().trim().required('Description is required')
-      })
-    )
-    .test('atLeastOneEmploymentHistory', 'At least one employment history entry is required', function (value) {
-      return value && value.length > 0
-    }),
-  education: yup
-    .array()
-    .of(
-      yup.object().shape({
-        course: yup.string().trim().required('Course is required'),
-        institution: yup.string().trim().required('Institution name is required'),
-        startDate: yup
-          .date()
-          .transform((value, originalValue) => {
-            return originalValue === '' ? null : value
-          })
-          .required('Start date is required'),
-        endDate: yup
-          .date()
-          .transform((value, originalValue) => {
-            return originalValue === '' ? null : value
-          })
-          .required('End date is required'),
-        location: yup.string().trim().required('Location is required'),
-        percentage: yup
-          .number()
-          .typeError('Percentage must be a number')
-          .required('Percentage is required')
-          .min(0, 'Percentage cannot be negative')
-          .max(100, 'Percentage cannot be greater than 100')
-      })
-    )
-    .test('atLeastOneEducation', 'At least one education entry is required', function (value) {
-      return value && value.length > 0
-    }),
-  extras: yup
-    .array()
-    .of(
-      yup.object().shape({
-        value: yup.string().trim().required('Extra value is required')
-      })
-    )
-    .test('atLeastOneExtra', 'At least one extra entry is required', function (value) {
-      return value && value.length > 0
-    }),
-  skills: yup
-    .array()
-    .of(
-      yup.object().shape({
-        value: yup.string().trim().required('Skill value is required')
-      })
-    )
-    .test('atLeastOneSkill', 'At least one skill entry is required', function (value) {
-      return value && value.length > 0
-    }),
-  projects: yup
-    .array()
-    .of(
-      yup.object().shape({
-        value: yup.string().trim().required('Project value is required')
-      })
-    )
-    .test('atLeastOneProject', 'At least one project entry is required', function (value) {
-      return value && value.length > 0
-    }),
-  languages: yup
-    .array()
-    .of(
-      yup.object().shape({
-        value: yup.string().trim().required('Language value is required')
-      })
-    )
-    .test('atLeastOneLanguage', 'At least one language entry is required', function (value) {
-      return value && value.length > 0
-    }),
-  achievement: yup
-    .array()
-    .of(
-      yup.object().shape({
-        value: yup.string().trim().required('Achievement value is required')
-      })
-    )
-    .test('atLeastOneAchievement', 'At least one achievement entry is required', function (value) {
-      return value && value.length > 0
-    })
-})
+// const validationSchema = yup.object().shape({
+//   fileName: yup.string().trim().required('File name is required'),
+//   intro: yup.object().shape({
+//     firstName: yup.string().trim().required('First name is required'),
+//     lastName: yup.string().trim().required('Last name is required'),
+//     position: yup.string().trim().required('Position is required'),
+//     email: yup.string().trim().email('Invalid email address').required('Email is required'),
+//     phone: yup
+//       .string()
+//       .trim()
+//       .matches(/^[0-9]+$/, 'Phone number must be numeric')
+//       .required('Phone is required'),
+//     city: yup.string().trim().required('City is required'),
+//     linkedin: yup.string().trim().url('Invalid LinkedIn URL').required('LinkedIn is required'),
+//     github: yup.string().trim().url('Invalid GitHub URL').required('GitHub is required')
+//   }),
+//   profileSummary: yup.string().trim().required('Profile summary is required'),
+//   employmentHistory: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         position: yup.string().trim().required('Position is required'),
+//         companyName: yup.string().trim().required('Company name is required'),
+//         startDate: yup
+//           .date()
+//           .transform((value, originalValue) => {
+//             // Convert empty strings to null before validation
+//             return originalValue === '' ? null : value
+//           })
+//           .required('Start date is required'),
+//         endDate: yup
+//           .date()
+//           .transform((value, originalValue) => {
+//             return originalValue === '' ? null : value
+//           })
+//           .required('End date is required'),
+//         location: yup.string().trim().required('Location is required'),
+//         description: yup.string().trim().required('Description is required')
+//       })
+//     )
+//     .test('atLeastOneEmploymentHistory', 'At least one employment history entry is required', function (value) {
+//       return value && value.length > 0
+//     }),
+//   education: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         course: yup.string().trim().required('Course is required'),
+//         institution: yup.string().trim().required('Institution name is required'),
+//         startDate: yup
+//           .date()
+//           .transform((value, originalValue) => {
+//             return originalValue === '' ? null : value
+//           })
+//           .required('Start date is required'),
+//         endDate: yup
+//           .date()
+//           .transform((value, originalValue) => {
+//             return originalValue === '' ? null : value
+//           })
+//           .required('End date is required'),
+//         location: yup.string().trim().required('Location is required'),
+//         percentage: yup
+//           .number()
+//           .typeError('Percentage must be a number')
+//           .required('Percentage is required')
+//           .min(0, 'Percentage cannot be negative')
+//           .max(100, 'Percentage cannot be greater than 100')
+//       })
+//     )
+//     .test('atLeastOneEducation', 'At least one education entry is required', function (value) {
+//       return value && value.length > 0
+//     }),
+//   extras: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         value: yup.string().trim().required('Extra value is required')
+//       })
+//     )
+//     .test('atLeastOneExtra', 'At least one extra entry is required', function (value) {
+//       return value && value.length > 0
+//     }),
+//   skills: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         value: yup.string().trim().required('Skill value is required')
+//       })
+//     )
+//     .test('atLeastOneSkill', 'At least one skill entry is required', function (value) {
+//       return value && value.length > 0
+//     }),
+//   projects: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         value: yup.string().trim().required('Project value is required')
+//       })
+//     )
+//     .test('atLeastOneProject', 'At least one project entry is required', function (value) {
+//       return value && value.length > 0
+//     }),
+//   languages: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         value: yup.string().trim().required('Language value is required')
+//       })
+//     )
+//     .test('atLeastOneLanguage', 'At least one language entry is required', function (value) {
+//       return value && value.length > 0
+//     }),
+//   achievement: yup
+//     .array()
+//     .of(
+//       yup.object().shape({
+//         value: yup.string().trim().required('Achievement value is required')
+//       })
+//     )
+//     .test('atLeastOneAchievement', 'At least one achievement entry is required', function (value) {
+//       return value && value.length > 0
+//     })
+// })
+
+const validationSchema = schema([
+  { field: 'fileName' },
+  { field: 'intro' },
+  { field: 'profileSummary' },
+  { field: 'employmentHistory' },
+  { field: 'education' },
+  { field: 'extras' },
+  { field: 'skills' },
+  { field: 'projects' },
+  { field: 'languages' },
+  { field: 'achievement' }
+])
 
 const defaultValues = {
   achievement: [],
@@ -212,9 +226,9 @@ const Form = ({ record }) => {
 
   const onSubmit = async data => {
     setIsLoading(true)
-    await axios.put(`/api/records/drafts/${id}`, formatRecord(data)).finally(() => setIsLoading(false))
+    await axios.put(`/api/records/${id}`, data).finally(() => setIsLoading(false))
 
-    router.push(`/preview/${id}`)
+    router.push({ pathname: `/preview/[id]`, query: { id, draft: record.draft } }, `/preview/${id}`)
   }
 
   return (

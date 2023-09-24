@@ -57,13 +57,13 @@ const CircularProgressII = styled(CircularProgress)(({ theme, disabled }) => ({
   color: disabled ? theme.palette.action.disabled : theme.palette.common.white
 }))
 
-export default ({ record }) => {
+export default () => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [pdfBlob, setPdfBlob] = useState(null)
   const router = useRouter()
-  const id = router.query.id
+  const { id, back, draft } = router.query
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages)
@@ -71,12 +71,13 @@ export default ({ record }) => {
 
   const onSubmit = async () => {
     setIsLoading(true)
-    await axios.put(`/api/records/drafts/${id}`, { draft: false }).finally(() => setIsLoading(false))
+    if (draft) await axios.patch(`/api/records/drafts/${id}`)
+    setIsLoading(false)
     router.push(`/`)
   }
 
-  const gotoForm = () => {
-    router.push(`/form/${id}`)
+  const goBack = () => {
+    router.push(back ?? `/form/${id}`)
   }
 
   useEffect(() => {
@@ -106,7 +107,7 @@ export default ({ record }) => {
         </CircularProgressWrapper>
       )}
       <EndCard sx={{ marginTop: 3 }}>
-        <Button variant='outlined' color='secondary' onClick={gotoForm}>
+        <Button variant='outlined' color='secondary' onClick={goBack}>
           Back
         </Button>
         <Button disabled={isLoading} variant='contained' onClick={onSubmit}>

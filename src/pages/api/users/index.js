@@ -9,7 +9,10 @@ export default async function handler(req, res) {
     await connectToDatabase()
     switch (req.method) {
       case 'PATCH':
-        const { username, email, verificationSign, password } = req.body
+        const body = req.body
+        if (!body || Object.keys(body).length === 0) {
+          return res.status(204).send()
+        }
         const validationFields = [
           { field: 'username', level: 'required' },
           { field: 'email' },
@@ -17,16 +20,14 @@ export default async function handler(req, res) {
           { field: 'password' }
         ]
 
-        const { status, json } = await userCheck(req.body)
+        const { status, json } = await userCheck(body)
         if (status === 404) {
           return res.status(status).json(json)
         }
 
+        let validatedBody = {}
         try {
-          const error = await schema(validationFields).validate(
-            { username, email, password, verificationSign },
-            { abortEarly: false }
-          )
+          validatedBody = await schema(validationFields).validate(body, { abortEarly: false, stripUnknown: true })
         } catch ({ inner }) {
           const validationError = {}
           inner.forEach(({ path, message }) => {
@@ -35,6 +36,8 @@ export default async function handler(req, res) {
 
           return res.status(400).json(validationError)
         }
+
+        const { username, email, verificationSign, password } = validatedBody
 
         const sign = verifySign(verificationSign)
 

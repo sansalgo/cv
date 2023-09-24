@@ -1,24 +1,56 @@
 import connectToDatabase from '@/lib/mongodb'
 import Record from '@/models/record'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../auth/[...nextauth]'
+import schema from '@/utils/validation-schema'
+import formatRecord from '@/utils/format-record'
 
 export default async function handler(req, res) {
   try {
     await connectToDatabase()
+    const session = await getServerSession(req, res, authOptions)
+    if (!session) {
+      res.status(401).json({ message: 'Unauthorized' })
+      return
+    }
     const { id } = req.query
     switch (req.method) {
       case 'GET':
         try {
-          const record = await Record.findOne({ _id: id })
+          const record = await Record.findOne({ _id: id, user: session.user.id })
           if (!record) {
             return res.status(404).json({ message: 'Record not found' })
           }
           res.status(200).json(record)
         } catch (error) {
-          return res.status(400).json({ message: 'Invalid ID provided' })
+          res.status(400).json({ message: 'Invalid ID provided' })
         }
         break
       case 'PUT':
-        const updatedRecord = await Record.findOneAndUpdate({ _id: id }, req.body)
+        const body = req.body
+        if (!body || Object.keys(body).length === 0) {
+          return res.status(204).send()
+        }
+
+        const validationFields = Object.keys(body).map(value => ({ field: value }))
+
+        let validatedBody = {}
+        try {
+          validatedBody = await schema(validationFields).validate(body, { abortEarly: false, stripUnknown: true })
+        } catch ({ inner }) {
+          const validationError = {}
+          inner.forEach(({ path, message }) => {
+            validationError[path] = { message }
+          })
+
+          return res.status(400).json(validationError)
+        }
+
+        console.log(validatedBody)
+        const updatedRecord = await Record.findOneAndUpdate(
+          { _id: id, user: session.user.id },
+          formatRecord(validatedBody)
+        )
         if (!updatedRecord) {
           return res.status(404).json({ message: 'Record not found' })
         }
@@ -26,10 +58,13 @@ export default async function handler(req, res) {
         break
       case 'DELETE':
         try {
-          await Record.findByIdAndDelete({ _id: id })
-          return res.status(200).json({ message: 'Record deleted successfully' })
+          const deletedRecord = await Record.findOneAndDelete({ _id: id, user: session.user.id })
+          if (!deletedRecord) {
+            return res.status(404).json({ message: 'Record not found' })
+          }
+          res.status(200).json({ message: 'Record deleted successfully' })
         } catch (error) {
-          return res.status(500).json({ error: error.message })
+          res.status(500).json({ error: error.message })
         }
       default:
         res.setHeader('Allow', ['GET'])
