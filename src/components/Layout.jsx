@@ -10,6 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import CVLogo from './CVLogo'
+import { destroyCookie } from 'nookies'
 
 const Layout = ({ children }) => {
   const router = useRouter()
@@ -37,7 +38,11 @@ const Layout = ({ children }) => {
         <AppBar position='static'>
           <Toolbar>
             <CVLogo />
-            <Chip label='Logout' size='medium' onClick={() => signOut()} />
+            <Chip
+              label='Logout'
+              size='medium'
+              onClick={() => signOut().then(() => destroyCookie(null, 'rememberMe'))}
+            />
           </Toolbar>
         </AppBar>
       </Box>

@@ -2,6 +2,7 @@ import connectToDatabase from '@/lib/mongodb'
 import User from '@/models/user'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import { parseCookies, setCookie } from 'nookies'
 
 export const authOptions = {
   providers: [
@@ -52,11 +53,24 @@ export const authOptions = {
 }
 
 export default async function auth(req, res) {
-  console.log('login-->')
+  const cookies = parseCookies({ req })
+
+  let maxAge = 1 * 24 * 60 * 60 // one day in seconds
+  const eightyFourDays = 84 * 24 * 60 * 60 // in seconds
+
+  if (cookies['rememberMe']) {
+    maxAge = cookies['rememberMe'] == 'true' ? eightyFourDays : maxAge
+  } else if (req.body.rememberMe) {
+    maxAge = req.body.rememberMe == 'true' ? eightyFourDays : maxAge
+
+    setCookie({ res }, 'rememberMe', req.body.rememberMe, {
+      maxAge,
+      path: '/'
+    })
+  }
+
   return await NextAuth(req, res, {
     ...authOptions,
-    session: {
-      maxAge: 84 * 24 * 60 * 60
-    }
+    session: { maxAge }
   })
 }
