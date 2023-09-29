@@ -9,7 +9,8 @@ export const authOptions = {
       name: 'Credentials',
       credentials: {
         username: { label: 'Username', type: 'text' },
-        password: { label: 'Password', type: 'password' }
+        password: { label: 'Password', type: 'password' },
+        rememberMe: { label: 'Remember Me', type: 'checkbox' }
       },
       async authorize(credentials, req) {
         connectToDatabase()
@@ -49,4 +50,13 @@ export const authOptions = {
     }
   }
 }
-export default NextAuth(authOptions)
+
+export default async function auth(req, res) {
+  console.log('login-->')
+  return await NextAuth(req, res, {
+    ...authOptions,
+    session: {
+      maxAge: 84 * 24 * 60 * 60
+    }
+  })
+}

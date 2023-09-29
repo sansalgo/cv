@@ -62,7 +62,12 @@ const Login = () => {
               </Box>
               {serverError ? <Alert severity='error'>{serverError}</Alert> : null}
               <BetweenElse>
-                <FormControlLabel control={<Checkbox sx={{ p: 0, px: '9px' }} />} label='Remember Me' />
+                <FormControlLabel
+                  control={<Checkbox sx={{ p: 0, px: '9px' }} />}
+                  defaultValue={false}
+                  label='Remember Me'
+                  {...register('rememberMe')}
+                />
                 <Link component={LinkBehavior} href='/forgot'>
                   Forgot Password?
                 </Link>

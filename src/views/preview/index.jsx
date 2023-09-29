@@ -1,26 +1,19 @@
+import { useEffect, useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
-import { useState } from 'react'
-import src from 'pdfjs-dist/build/pdf.worker.js'
-import { useEffect } from 'react'
-// import PDFDocument from './PDFDocument'
-import { createContext } from 'react'
-import axios from 'axios'
-import { useRouter } from 'next/router'
 import EndCard from '@/components/EndCard'
-import LoadingButton from '@mui/lab/LoadingButton'
-import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
-import Paper from '@mui/material/Paper'
-import LinearProgress from '@mui/material/LinearProgress'
-import Box from '@mui/material/Box'
-import { styled } from '@mui/material/styles'
 import { fetchPdfBlob } from '@/utils/fetch-pdf'
-import ContainerCenter from '@/components/ContainerCenter'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
 import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
-import { CircularProgress, Container } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { CircularProgress } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import Paper from '@mui/material/Paper'
+import { styled } from '@mui/material/styles'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 import localPdf from 'src/views/preview/6d93a92d-cd35-4156-b238-4fce8d6901a1.pdf'
-import { trusted } from 'mongoose'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.js', import.meta.url).toString()
 
@@ -29,6 +22,10 @@ const DocumentWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   '& .react-pdf__Document': {
+    maxWidth: '100%',
+    position: 'relative',
+    backgroundColor: theme.palette.common.white,
+    overflow: 'hidden',
     borderRadius: theme.shape.borderRadius,
     '& .react-pdf__Page': {
       '& .react-pdf__Page__canvas': {
@@ -44,9 +41,22 @@ const DocumentWrapper = styled(Box)(({ theme }) => ({
       margin: 'auto',
       maxWidth: '100%',
       width: '594px',
-      aspectRatio: '1 / 1.4142',
-      backgroundColor: 'white'
+      aspectRatio: '1 / 1.4142'
     }
+  },
+  '& .pagination': {
+    position: 'absolute',
+    opacity: 0,
+    bottom: '4%',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: 'fit-content'
+  },
+  '& .pagination:hover': {
+    opacity: 1
+  },
+  '& .react-pdf__Document:hover ~ .pagination': {
+    opacity: 1
   }
 }))
 
@@ -60,12 +70,6 @@ const CircularProgressWrapper = styled(Box)(() => ({
   aspectRatio: '1 / 1.4142'
 }))
 
-const CircularProgressII = styled(CircularProgress)(({ theme, disabled }) => ({
-  width: `${theme.spacing(3.0625)} !important`,
-  height: `${theme.spacing(3.0625)} !important`,
-  color: disabled ? theme.palette.action.disabled : theme.palette.common.white
-}))
-
 export default () => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
@@ -73,6 +77,8 @@ export default () => {
   const [pdfBlob, setPdfBlob] = useState(null)
   const router = useRouter()
   const { id, back, draft } = router.query
+  const haveNextPage = pageNumber < numPages
+  const havePreviousPage = pageNumber - 1 > 0
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages)
@@ -89,6 +95,18 @@ export default () => {
     router.push(back ?? `/form/${id}`)
   }
 
+  const nextPage = () => {
+    if (haveNextPage) {
+      setPageNumber(pageNumber + 1)
+    }
+  }
+
+  const previousPage = () => {
+    if (havePreviousPage) {
+      setPageNumber(pageNumber - 1)
+    }
+  }
+
   useEffect(() => {
     fetchPdfBlob(id).then(blob => setPdfBlob(blob))
 
@@ -100,31 +118,22 @@ export default () => {
   return (
     <div>
       {localPdf ? (
-        <>
-          <DocumentWrapper>
-            <Document file={localPdf} loading={<CircularProgress />} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
-            </Document>
-            <Box position='absolute' bottom='2%' component={Paper} width='fit-content'>
-              <Chip
-                size='medium'
-                sx={{ border: 'none' }}
-                label={<KeyboardArrowLeftRoundedIcon />}
-                onClick={() => setPageNumber(pageNumber - 1)}
-              />
-
-              <Box component='span'>
-                {pageNumber} of {numPages}
-              </Box>
-              <Chip
-                size='medium'
-                sx={{ border: 'none' }}
-                label={<KeyboardArrowRightRoundedIcon />}
-                onClick={() => setPageNumber(pageNumber + 1)}
-              />
+        <DocumentWrapper>
+          <Document file={localPdf} loading={<CircularProgress />} onLoadSuccess={onDocumentLoadSuccess}>
+            <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
+          </Document>
+          <Box className='pagination' component={Paper}>
+            <IconButton disabled={!havePreviousPage} onClick={previousPage}>
+              <KeyboardArrowLeftRoundedIcon />
+            </IconButton>
+            <Box component='span'>
+              {pageNumber} of {numPages}
             </Box>
-          </DocumentWrapper>
-        </>
+            <IconButton disabled={!haveNextPage} onClick={nextPage}>
+              <KeyboardArrowRightRoundedIcon />
+            </IconButton>
+          </Box>
+        </DocumentWrapper>
       ) : (
         <CircularProgressWrapper>
           <CircularProgress />

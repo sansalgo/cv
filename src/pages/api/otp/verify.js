@@ -23,9 +23,7 @@ export default async function handler(req, res) {
           return res.status(401).json({ message: 'Invalid OTP' })
         }
 
-        const tenMinutes = 10 * 60
-
-        console.log(findOTP.updatedAt.getTime())
+        const tenMinutes = 10 * 60 * 1000 // in milliseconds
 
         if (findOTP.updatedAt.getTime() < Date.now() - tenMinutes) {
           return res.status(408).json({ message: 'OTP has expired' })

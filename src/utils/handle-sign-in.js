@@ -4,7 +4,8 @@ import Router from 'next/router'
 const handleSignIn = async data => {
   const credentials = {
     username: data.username,
-    password: data.password
+    password: data.password,
+    rememberMe: data.rememberMe
   }
   const parameters = {
     redirect: false,
