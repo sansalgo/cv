@@ -10,23 +10,23 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-const registerVerifyMailContent = (username, otp) => `Hello ${username},<br>
+const verifyMailContent = (username, otp) =>
+  `Hi ${username},
 
-Thank you for signing up with our platform. To complete the registration process, please enter the following OTP (One-Time Password):<br>
+  We've received your request for an OTP verification code for your account with CV.
 
-OTP: ${otp}<br>
+  Your OTP verification code is: ${otp}
 
-If you did not initiate this sign-up request, please ignore this email.<br>
+  If you didn't request this code, you can safely ignore this email. Someone else might have typed your email address by mistake.
 
-Best regards,<br>
-CV`
+  Thanks,
+  CV`
 
-export const sendRegisterVerifyMail = async (to, username, otp) => {
-  console.log(process.env.SENDINBLUE_USERNAME)
+export const sendVerifyMail = async (to, username, otp) => {
   const info = await transporter.sendMail({
     from: `CV <${process.env.SENDINBLUE_USERNAME}>`,
     to,
-    subject: 'Register OTP Verification',
-    html: registerVerifyMailContent(username, otp)
+    subject: 'OTP Verification',
+    text: verifyMailContent(username, otp)
   })
 }

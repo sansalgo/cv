@@ -1,7 +1,7 @@
 import connectToDatabase from '@/lib/mongodb'
 import OTP from '@/models/otp'
 import generateOTP from '@/utils/generate-otp'
-import { sendRegisterVerifyMail } from '@/utils/send-mail'
+import { sendVerifyMail } from '@/utils/send-mail'
 
 export default async function handler(req, res) {
   try {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
         await OTP.findOneAndUpdate({ email }, { otp: generatedOTP }, { new: true, upsert: true })
         try {
-          await sendRegisterVerifyMail(email, 'san', generatedOTP)
+          await sendVerifyMail(email, 'san', generatedOTP)
         } catch (error) {
           console.log(error)
           return res.status(500).json({ message: 'Something went wrong' })
