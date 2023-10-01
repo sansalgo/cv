@@ -5,6 +5,18 @@ import { authOptions } from '../auth/[...nextauth]'
 import schema from '@/utils/validation-schema'
 import formatRecord from '@/utils/format-record'
 
+export async function getAPIRecord(id, session) {
+  try {
+    const record = await Record.findOne({ _id: id, user: session.user.id })
+    if (!record) {
+      return { status: 404, json: { message: 'Record not found' } }
+    }
+    return { status: 200, json: record }
+  } catch (error) {
+    return { status: 400, json: { message: 'Invalid ID provided' } }
+  }
+}
+
 export default async function handler(req, res) {
   try {
     await connectToDatabase()
@@ -16,15 +28,8 @@ export default async function handler(req, res) {
     const { id } = req.query
     switch (req.method) {
       case 'GET':
-        try {
-          const record = await Record.findOne({ _id: id, user: session.user.id })
-          if (!record) {
-            return res.status(404).json({ message: 'Record not found' })
-          }
-          res.status(200).json(record)
-        } catch (error) {
-          res.status(400).json({ message: 'Invalid ID provided' })
-        }
+        const { status, json } = await getAPIRecord(id, session)
+        res.status(status).json(json)
         break
       case 'PUT':
         const body = req.body

@@ -6,6 +6,21 @@ import { authOptions } from '../auth/[...nextauth]'
 import paginate from '@/utils/paginate'
 import schema from '@/utils/validation-schema'
 
+export async function getAPIRecords(req, session) {
+  const page = parseInt(req.query.page) || 1
+  const pageSize = parseInt(req.query.page_size) || 6
+
+  const records = await Record.find({ user: session.user.id })
+  const paginatedRecords = paginate(records, page, pageSize)
+
+  return {
+    count: records.length,
+    page,
+    page_size: pageSize,
+    results: paginatedRecords
+  }
+}
+
 export default async function handler(req, res) {
   try {
     await connectToDatabase()
@@ -16,18 +31,7 @@ export default async function handler(req, res) {
     }
     switch (req.method) {
       case 'GET':
-        const page = parseInt(req.query.page) || 1
-        const pageSize = parseInt(req.query.page_size) || 6
-
-        const records = await Record.find({ user: session.user.id })
-        const paginatedRecords = paginate(records, page, pageSize)
-
-        const resObj = {
-          count: records.length,
-          page,
-          page_size: pageSize,
-          results: paginatedRecords
-        }
+        const resObj = await getAPIRecords(req, session)
         res.status(200).json(resObj)
         break
       case 'POST':

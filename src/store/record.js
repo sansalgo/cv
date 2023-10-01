@@ -7,12 +7,12 @@ export const getRecords = createAsyncThunk('record/getRecords', async (_, { getS
   const {
     records: { page, page_size }
   } = state.record
-  const response = await axios.get(`http://localhost:3000/api/records`, { params: { page, page_size } })
+  const response = await axios.get(`/api/records`, { params: { page, page_size } })
   return response.data
 })
 
 export const getRecord = createAsyncThunk('record/getRecord', async id => {
-  const response = await axios.get(`http://localhost:3000/api/records/${id}`)
+  const response = await axios.get(`/api/records/${id}`)
   return response.data
 })
 

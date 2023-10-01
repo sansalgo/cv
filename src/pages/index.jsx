@@ -5,6 +5,10 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { wrapper } from '@/store'
 import { setRecords } from '@/store/record'
 import Layout from '@/components/Layout'
+import { getAPIRecords } from './api/records'
+import connectToDatabase from '@/lib/mongodb'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './api/auth/[...nextauth]'
 
 const extendTheme = theme =>
   createTheme({
@@ -52,13 +56,10 @@ export default () => (
   </ThemeProvider>
 )
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, query }) => {
-  const { data: records } = await axios.get(`http://localhost:3000/api/records`, {
-    headers: {
-      cookie: req.headers.cookie
-    },
-    params: query
-  })
-
-  store.dispatch(setRecords(records))
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({ req, query, res }) => {
+  await connectToDatabase()
+  req.query = query
+  const session = await getServerSession(req, res, authOptions)
+  const records = await getAPIRecords(req, session)
+  store.dispatch(setRecords(JSON.parse(JSON.stringify(records))))
 })

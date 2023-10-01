@@ -1,7 +1,11 @@
+import connectToDatabase from '@/lib/mongodb'
 import PDF from '@/views/pdf'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import axios from 'axios'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../api/auth/[...nextauth]'
+import { getAPIRecord } from '../api/records/[id]'
 
 const extendTheme = theme =>
   createTheme({
@@ -159,7 +163,6 @@ const extendTheme = theme =>
     }
   })
 
-
 const PDFPage = ({ record }) => (
   <ThemeProvider theme={theme => extendTheme(theme)}>
     <CssBaseline />
@@ -170,14 +173,17 @@ export default PDFPage
 
 PDFPage.getLayout = page => page
 
-export const getServerSideProps = async ({ params, req }) => {
-  const { data: record } = await axios.get(`http://localhost:3000/api/records/${params.id}`, {
-    headers: {
-      cookie: req.headers.cookie
-    }
-  })
+export const getServerSideProps = async ({ req, params, res }) => {
+  await connectToDatabase()
+  const session = await getServerSession(req, res, authOptions)
+  const { status, json } = await getAPIRecord(params.id, session)
 
+  if (status !== 200) {
+    return {
+      notFound: true
+    }
+  }
   return {
-    props: { record }
+    props: { record: JSON.parse(JSON.stringify(json)) }
   }
 }
