@@ -3,13 +3,13 @@ import MuiCard from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 
 export const CardError = styled(MuiCard)(({ theme, error }) => ({
-  ...(error && { border: `1px solid ${theme.palette.error.main}` })
+  ...(error === 'true' && { border: `1px solid ${theme.palette.error.main}` })
 }))
 
 const CardFieldArray = props => {
   const { fields, title, action, error, children } = props
   return (
-    <CardError error={error} variant='outlined'>
+    <CardError error={error.toString()} variant='outlined'>
       <CardHeader
         title={title}
         titleTypographyProps={{ variant: 'h6', fontWeight: 'normal' }}

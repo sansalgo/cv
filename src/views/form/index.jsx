@@ -260,7 +260,11 @@ const Form = ({ record }) => {
           </Grid>
           <Grid item xs={12} order={{ xs: 3 }} justifyContent='center'>
             <EndCard>
-              <Button variant='outlined' color='secondary' onClick={() => methods.reset(defaultValues)}>
+              <Button
+                variant='outlined'
+                color='secondary'
+                onClick={() => methods.reset({ ...defaultValues, fileName: methods.getValues('fileName') })}
+              >
                 Reset
               </Button>
               <Button type='submit' size='medium' disabled={isLoading} variant='contained'>

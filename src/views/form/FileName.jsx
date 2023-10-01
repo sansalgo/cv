@@ -53,7 +53,7 @@ const FileName = () => {
     )
   }
   return (
-    <CardError error={is_error}>
+    <CardError error={is_error.toString()}>
       <CardContent>
         <BetweenElse>
           {is_error ? <Box color='error.main'>{errors?.fileName?.message}</Box> : <Box>{getValues('fileName')}</Box>}

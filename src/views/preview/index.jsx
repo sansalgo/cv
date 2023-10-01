@@ -13,7 +13,6 @@ import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import localPdf from 'src/views/preview/6d93a92d-cd35-4156-b238-4fce8d6901a1.pdf'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.js', import.meta.url).toString()
 
@@ -117,9 +116,9 @@ export default () => {
 
   return (
     <div>
-      {localPdf ? (
+      {pdfBlob ? (
         <DocumentWrapper>
-          <Document file={localPdf} loading={<CircularProgress />} onLoadSuccess={onDocumentLoadSuccess}>
+          <Document file={pdfBlob} loading={<CircularProgress />} onLoadSuccess={onDocumentLoadSuccess}>
             <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
           </Document>
           <Box className='pagination' component={Paper}>

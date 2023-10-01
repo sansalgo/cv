@@ -10,7 +10,7 @@ export async function getAPIRecords(req, session) {
   const page = parseInt(req.query.page) || 1
   const pageSize = parseInt(req.query.page_size) || 6
 
-  const records = await Record.find({ user: session.user.id })
+  const records = await Record.find({ user: session.user.id, draft: false })
   const paginatedRecords = paginate(records, page, pageSize)
 
   return {

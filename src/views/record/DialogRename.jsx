@@ -40,7 +40,10 @@ const DialogRename = ({ id }) => {
     setIsLoading(true)
     dispatch(renameRecord({ id, fileName: data.fileName }))
       .unwrap()
-      .finally(() => setIsLoading(false))
+      .finally(() => {
+        setIsLoading(false)
+        handleRenameDialog()
+      })
   }
 
   return (
