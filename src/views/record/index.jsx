@@ -3,6 +3,7 @@ import formatDateTime from '@/utils/format-date-time'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Pagination from '@mui/material/Pagination'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -28,6 +29,26 @@ const StyledEndCard = styled(EndCard)(({ theme }) => ({
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'center'
     }
+  }
+}))
+
+const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
+  color: 'primary',
+  width: '100%',
+  borderColor: 'primary',
+  padding: theme.spacing(8),
+  borderStyle: 'dashed',
+  '&:hover': {
+    borderStyle: 'dashed'
+  },
+  '&.Mui-disabled': {
+    borderStyle: 'dashed'
+  },
+  '& .MuiLoadingButton-loadingIndicator': {
+    display: 'inherit',
+    position: 'revert',
+    marginRight: theme.spacing(1),
+    marginLeft: `-${theme.spacing(0.5)}`
   }
 }))
 
@@ -64,20 +85,23 @@ const Record = () => {
     dateModified: formatDateTime(value.updatedAt)
   }))
 
+  const [load, setLoad] = useState(false)
+
   return (
     <Stack spacing={2}>
-      <Box display='flex' justifyContent='flex-end'>
-        <Button
-          variant='contained'
-          onClick={createNewRecord}
-          disabled={isLoading}
-          startIcon={isLoading ? <CircularProgress disabled={isLoading} /> : <AddRoundedIcon color='white' />}
-        >
-          New Record
-        </Button>
-      </Box>
+      <div onClick={() => setLoad(!load)}>load</div>
       {count > 0 ? (
         <Fragment>
+          <Box display='flex' justifyContent='flex-end'>
+            <Button
+              variant='contained'
+              onClick={createNewRecord}
+              disabled={isLoading}
+              startIcon={isLoading ? <CircularProgress disabled={isLoading} /> : <AddRoundedIcon color='white' />}
+            >
+              New Record
+            </Button>
+          </Box>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -118,20 +142,11 @@ const Record = () => {
           </StyledEndCard>
         </Fragment>
       ) : (
-        <Box
-          color='primary.main'
-          padding={2}
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-          component={Paper}
-        >
-          No&nbsp;
-          <Box color='orange' fontFamily='Roboto Slab Variable' fontWeight='bold' component='span'>
-            CV
-          </Box>
-          &nbsp;Records Found
-        </Box>
+        <ContainerCenter maxWidth='sm'>
+          <StyledLoadingButton loading={load} variant='outlined' loadingPosition='start' startIcon={<AddRoundedIcon />}>
+            <span>New Record</span>
+          </StyledLoadingButton>
+        </ContainerCenter>
       )}
     </Stack>
   )
