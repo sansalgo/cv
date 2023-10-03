@@ -38,6 +38,9 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   borderColor: 'primary',
   padding: theme.spacing(8),
   borderStyle: 'dashed',
+  '& .MuiLoadingButton-startIconLoadingStart': {
+    display: 'none'
+  },
   '&:hover': {
     borderStyle: 'dashed'
   },
@@ -46,9 +49,11 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
   },
   '& .MuiLoadingButton-loadingIndicator': {
     display: 'inherit',
-    position: 'revert',
+    position: 'unset',
     marginRight: theme.spacing(1),
-    marginLeft: `-${theme.spacing(0.5)}`
+    marginLeft: `-${theme.spacing(0.5)}`,
+    width: theme.spacing(2.5),
+    height: theme.spacing(2.5)
   }
 }))
 
@@ -85,22 +90,20 @@ const Record = () => {
     dateModified: formatDateTime(value.updatedAt)
   }))
 
-  const [load, setLoad] = useState(false)
-
   return (
     <Stack spacing={2}>
-      <div onClick={() => setLoad(!load)}>load</div>
       {count > 0 ? (
         <Fragment>
           <Box display='flex' justifyContent='flex-end'>
-            <Button
+            <LoadingButton
               variant='contained'
               onClick={createNewRecord}
-              disabled={isLoading}
-              startIcon={isLoading ? <CircularProgress disabled={isLoading} /> : <AddRoundedIcon color='white' />}
+              loading={isLoading}
+              loadingPosition='start'
+              startIcon={<AddRoundedIcon color='white' />}
             >
               New Record
-            </Button>
+            </LoadingButton>
           </Box>
           <TableContainer component={Paper}>
             <Table>
@@ -143,7 +146,13 @@ const Record = () => {
         </Fragment>
       ) : (
         <ContainerCenter maxWidth='sm'>
-          <StyledLoadingButton loading={load} variant='outlined' loadingPosition='start' startIcon={<AddRoundedIcon />}>
+          <StyledLoadingButton
+            loading={isLoading}
+            variant='outlined'
+            loadingPosition='start'
+            onClick={createNewRecord}
+            startIcon={<AddRoundedIcon />}
+          >
             <span>New Record</span>
           </StyledLoadingButton>
         </ContainerCenter>

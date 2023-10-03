@@ -49,10 +49,10 @@ const Register = () => {
     router.push(`/login`)
   }
 
-  const handleOTPSend = async ({ email, next = null, tag = null }) => {
+  const handleOTPSend = async ({ email, username, next = null, tag = null }) => {
     try {
       if (tag) setIsLoading(tag)
-      await dispatch(sendOTP({ email })).unwrap()
+      await dispatch(sendOTP({ email, username })).unwrap()
       if (next) next()
     } catch (error) {
       console.log(error)
@@ -83,7 +83,7 @@ const Register = () => {
               setServerError(error.data.message)
               break
             case 404:
-              handleOTPSend({ email: data.email, next: nextStep, tag: 'continue' })
+              handleOTPSend({ email: data.email, username: data.username, next: nextStep, tag: 'continue' })
               break
           }
         }
@@ -144,7 +144,9 @@ const Register = () => {
               <Button
                 disabled={!!isLoading}
                 variant='outlined'
-                onClick={() => handleOTPSend({ email: getValues('email'), tag: 'resend' })}
+                onClick={() =>
+                  handleOTPSend({ email: getValues('email'), username: getValues('username'), tag: 'resend' })
+                }
                 color='secondary'
               >
                 {isLoading === 'resend' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Resend'}

@@ -12,17 +12,17 @@ export default async function handler(req, res) {
         if (!body || Object.keys(body).length === 0) {
           return res.status(204).send()
         }
-        const { email } = body
+        const { email, username } = body
 
-        if (!email) {
-          return res.status(400).json({ message: 'Email is required' })
+        if (!email || !username) {
+          return res.status(400).json({ message: 'Email and Username is required' })
         }
 
         const generatedOTP = generateOTP()
 
         await OTP.findOneAndUpdate({ email }, { otp: generatedOTP }, { new: true, upsert: true })
         try {
-          await sendVerifyMail(email, 'san', generatedOTP)
+          await sendVerifyMail(email, username, generatedOTP)
         } catch (error) {
           console.log(error)
           return res.status(500).json({ message: 'Something went wrong' })
