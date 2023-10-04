@@ -1,23 +1,25 @@
+import ContainerCenter from '@/components/ContainerCenter'
 import EndCard from '@/components/EndCard'
 import formatDateTime from '@/utils/format-date-time'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
+import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
+import KeyboardArrowRightRoundedIcon from '@mui/icons-material/KeyboardArrowRightRounded'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
 import Pagination from '@mui/material/Pagination'
+import PaginationItem from '@mui/material/PaginationItem'
 import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { Fragment, useState } from 'react'
-
-import ContainerCenter from '@/components/ContainerCenter'
-import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { Fragment, useState } from 'react'
 import { useSelector } from 'react-redux'
 import DialogAction from './DialogAction'
 
@@ -132,6 +134,12 @@ const Record = () => {
               onChange={handleChangePage}
               variant='outlined'
               shape='rounded'
+              renderItem={item => (
+                <PaginationItem
+                  slots={{ previous: KeyboardArrowLeftRoundedIcon, next: KeyboardArrowRightRoundedIcon }}
+                  {...item}
+                />
+              )}
             />
           </StyledEndCard>
         </Fragment>
