@@ -2,30 +2,25 @@ import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import EndCard from '@/components/EndCard'
-import Box from '@mui/material/Box'
+import schema from '@/utils/validation-schema'
+import { yupResolver } from '@hookform/resolvers/yup'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Button from '@mui/material/Button'
-import MuiCircularProgress from '@mui/material/CircularProgress'
 import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
-import { styled } from '@mui/material/styles'
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import Achievement from './Achievement'
 import Education from './Education'
 import EmploymentHistory from './EmploymentHistory'
 import Extras from './Extras'
+import FileName from './FileName'
 import Intro from './Intro'
 import Languages from './Languages'
 import ProfileSummary from './ProfileSummary'
 import Projects from './Projects'
 import Skills from './Skills'
-import axios from 'axios'
-import formatRecord from '@/utils/format-record'
-import FileName from './FileName'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import StyledCircularProgress from '@/components/StyledCircularProgress'
-import schema from '@/utils/validation-schema'
 
 // const validationSchema = yup.object().shape({
 //   fileName: yup.string().trim().required('File name is required'),
@@ -267,9 +262,9 @@ const Form = ({ record }) => {
               >
                 Reset
               </Button>
-              <Button type='submit' size='medium' disabled={isLoading} variant='contained'>
-                {isLoading ? <StyledCircularProgress disabled={isLoading} /> : 'Preview'}
-              </Button>
+              <LoadingButton type='submit' size='medium' loading={isLoading} variant='contained'>
+                <span>Preview</span>
+              </LoadingButton>
             </EndCard>
           </Grid>
         </Grid>

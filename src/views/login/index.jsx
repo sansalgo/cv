@@ -2,10 +2,10 @@ import BetweenElse from '@/components/BetweenElse'
 import ContainerCenter from '@/components/ContainerCenter'
 import LinkBehavior from '@/components/LinkBehavior'
 import PasswordInput from '@/components/PasswordInput'
-import StyledCircularProgress from '@/components/StyledCircularProgress'
 import handleSignIn from '@/utils/handle-sign-in'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -76,9 +76,9 @@ const Login = () => {
                 <Button variant='outlined' color='secondary' onClick={() => router.push(`/register`)}>
                   Register
                 </Button>
-                <Button disabled={isLoading} type='submit' variant='contained' color='primary'>
-                  {isLoading ? <StyledCircularProgress disabled={isLoading} /> : 'Login'}
-                </Button>
+                <LoadingButton loading={isLoading} type='submit' variant='contained' color='primary'>
+                  <span>Login</span>
+                </LoadingButton>
               </BetweenElse>
             </Stack>
           </CardContent>

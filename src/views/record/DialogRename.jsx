@@ -2,6 +2,7 @@ import BetweenElse from '@/components/BetweenElse'
 import { renameRecord } from '@/store/record'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { Box, CardContent } from '@mui/material'
 import Button from '@mui/material/Button'
 import MuiCircularProgress from '@mui/material/CircularProgress'
@@ -9,11 +10,11 @@ import Dialog from '@mui/material/Dialog'
 import FormHelperText from '@mui/material/FormHelperText'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Stack from '@mui/material/Stack'
+import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDialog } from './DialogContext'
-import { styled } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
+import { useDialog } from './DialogContext'
 
 const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
   width: `${theme.spacing(3.0625)} !important`,
@@ -65,9 +66,9 @@ const DialogRename = ({ id }) => {
               <Button variant='outlined' color='secondary' onClick={handleRenameDialog}>
                 Cancel
               </Button>
-              <Button disabled={isLoading} variant='contained' type='submit'>
-                {isLoading ? <CircularProgress disabled={isLoading} /> : 'Rename'}
-              </Button>
+              <LoadingButton loading={isLoading} variant='contained' type='submit'>
+                <span>Rename</span>
+              </LoadingButton>
             </BetweenElse>
           </Stack>
         </CardContent>

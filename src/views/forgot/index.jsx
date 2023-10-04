@@ -3,17 +3,17 @@ import { checkUser, sendOTP, updateUser, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import Alert from '@mui/material/Alert'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import Alert from '@mui/material/Alert'
 import { useDispatch } from 'react-redux'
 
 import BetweenElse from '@/components/BetweenElse'
 import IndexStepRender from '@/components/IndexStepRender'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
-import StyledCircularProgress from '@/components/StyledCircularProgress'
 
 const validationSchemas = [
   schema([{ field: 'username', level: 'required' }, { field: 'email' }]),
@@ -127,9 +127,9 @@ const Forgot = () => {
             <Button variant='outlined' color='secondary' onClick={handelCancel}>
               Login
             </Button>
-            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
-              {isLoading === 'continue' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Continue'}
-            </Button>
+            <LoadingButton loading={isLoading === 'continue'} type='submit' variant='contained' color='primary'>
+              <span>Continue</span>
+            </LoadingButton>
           </BetweenElse>
 
           <BetweenElse>
@@ -137,29 +137,29 @@ const Forgot = () => {
               <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
                 Back
               </Button>
-              <Button
-                disabled={!!isLoading}
+              <LoadingButton
+                loading={isLoading == 'resend'}
                 variant='outlined'
                 onClick={() =>
                   handleOTPSend({ email: getValues('email'), username: getValues('username'), tag: 'resend' })
                 }
                 color='secondary'
               >
-                {isLoading == 'resend' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Resend'}
-              </Button>
+                <span>Resend</span>
+              </LoadingButton>
             </Box>
-            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
-              {isLoading === 'verify' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Verify'}
-            </Button>
+            <LoadingButton loading={isLoading === 'verify'} type='submit' variant='contained' color='primary'>
+              <span>Verify</span>
+            </LoadingButton>
           </BetweenElse>
 
           <BetweenElse>
             <Button variant='outlined' onClick={handelCancel} color='secondary'>
               Cancel
             </Button>
-            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
-              {isLoading === 'reset' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Reset'}
-            </Button>
+            <LoadingButton loading={isLoading === 'reset'} type='submit' variant='contained' color='primary'>
+              <span>Reset</span>
+            </LoadingButton>
           </BetweenElse>
         </IndexStepRender>
       </VerificationWizard>

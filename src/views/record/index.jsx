@@ -1,9 +1,8 @@
 import EndCard from '@/components/EndCard'
 import formatDateTime from '@/utils/format-date-time'
 import AddRoundedIcon from '@mui/icons-material/AddRounded'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import LoadingButton from '@mui/lab/LoadingButton'
+import Box from '@mui/material/Box'
 import Pagination from '@mui/material/Pagination'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -14,15 +13,13 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { Fragment, useState } from 'react'
 
-import MuiCircularProgress from '@mui/material/CircularProgress'
+import ContainerCenter from '@/components/ContainerCenter'
 import Stack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import DialogAction from './DialogAction'
-import ContainerCenter from '@/components/ContainerCenter'
-import { Container } from '@mui/material'
 
 const StyledEndCard = styled(EndCard)(({ theme }) => ({
   '& .MuiBox-root': {
@@ -55,12 +52,6 @@ const StyledLoadingButton = styled(LoadingButton)(({ theme }) => ({
     width: theme.spacing(2.5),
     height: theme.spacing(2.5)
   }
-}))
-
-const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
-  width: `${theme.spacing(2.5)} !important`,
-  height: `${theme.spacing(2.5)} !important`,
-  color: disabled ? theme.palette.action.disabled : theme.palette.common.white
 }))
 
 const Record = () => {

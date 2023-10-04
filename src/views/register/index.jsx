@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 
 import BetweenElse from '@/components/BetweenElse'
 import IndexStepRender from '@/components/IndexStepRender'
-import StyledCircularProgress from '@/components/StyledCircularProgress'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { useRouter } from 'next/router'
@@ -132,35 +132,34 @@ const Register = () => {
             <Button variant='outlined' color='secondary' onClick={handelCancel}>
               Login
             </Button>
-            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
-              {isLoading === 'continue' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Continue'}
-            </Button>
+            <LoadingButton loading={isLoading === 'continue'} type='submit' variant='contained' color='primary'>
+              <span>Continue</span>
+            </LoadingButton>
           </BetweenElse>
           <BetweenElse>
             <Box>
               <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
                 Back
               </Button>
-              <Button
-                disabled={!!isLoading}
+              <LoadingButton
+                loading={isLoading === 'resend'}
                 variant='outlined'
                 onClick={() =>
                   handleOTPSend({ email: getValues('email'), username: getValues('username'), tag: 'resend' })
                 }
                 color='secondary'
               >
-                {isLoading === 'resend' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Resend'}
-              </Button>
+                <span>Resend</span>
+              </LoadingButton>
             </Box>
-            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
-              {isLoading === 'verify' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Verify'}
-              Verify
-            </Button>
+            <LoadingButton loading={isLoading === 'verify'} type='submit' variant='contained' color='primary'>
+              <span>Verify</span>
+            </LoadingButton>
           </BetweenElse>
           <BetweenElse>
-            <Button disabled={!!isLoading} type='submit' variant='contained' color='primary'>
-              {!!isLoading === 'register' ? <StyledCircularProgress disabled={!!isLoading} /> : 'Register'}
-            </Button>
+            <LoadingButton loading={isLoading === 'register'} type='submit' variant='contained' color='primary'>
+              <span>Register</span>
+            </LoadingButton>
           </BetweenElse>
         </IndexStepRender>
       </VerificationWizard>

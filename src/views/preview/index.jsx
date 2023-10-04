@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-import { Document, Page, pdfjs } from 'react-pdf'
 import EndCard from '@/components/EndCard'
 import { fetchPdfBlob } from '@/utils/fetch-pdf'
 import KeyboardArrowLeftRoundedIcon from '@mui/icons-material/KeyboardArrowLeftRounded'
@@ -13,6 +11,8 @@ import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { Document, Page, pdfjs } from 'react-pdf'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.js', import.meta.url).toString()
 
