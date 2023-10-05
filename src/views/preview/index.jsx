@@ -122,13 +122,13 @@ export default () => {
             <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
           </Document>
           <Box className='pagination' component={Paper}>
-            <IconButton disabled={!havePreviousPage} onClick={previousPage}>
+            <IconButton color='primary' disabled={!havePreviousPage} onClick={previousPage}>
               <KeyboardArrowLeftRoundedIcon />
             </IconButton>
             <Box component='span'>
               {pageNumber} of {numPages}
             </Box>
-            <IconButton disabled={!haveNextPage} onClick={nextPage}>
+            <IconButton color='primary' disabled={!haveNextPage} onClick={nextPage}>
               <KeyboardArrowRightRoundedIcon />
             </IconButton>
           </Box>

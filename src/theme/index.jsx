@@ -106,6 +106,9 @@ const theme = createTheme({
         root: {
           '&:hover': {
             backgroundColor: 'unset'
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'inherit'
           }
         }
       }

@@ -78,7 +78,7 @@ const DialogAction = ({ row }) => {
 
   return (
     <Fragment>
-      <IconButton onClick={handleDialogAction} sx={{ padding: 0 }}>
+      <IconButton color='primary' onClick={handleDialogAction} sx={{ padding: 0 }}>
         <MoreVertIcon />
       </IconButton>
       <Dialog open={action_d} onClose={handleDialogAction}>
@@ -89,28 +89,28 @@ const DialogAction = ({ row }) => {
           autoFocusItem={action_d}
         >
           <MenuItem onClick={() => localDispatch({ type: 'rename_d' })}>
-            <IconButton disabled={!!isLoading}>
+            <IconButton color='primary' disabled={!!isLoading}>
               <DriveFileRenameOutlineRoundedIcon />
             </IconButton>
           </MenuItem>
           <DialogRename id={row._id} />
           <MenuItem onClick={handleEdit}>
-            <IconButton disabled={!!isLoading}>
+            <IconButton color='primary' disabled={!!isLoading}>
               <ModeEditRoundedIcon />
             </IconButton>
           </MenuItem>
           <MenuItem onClick={handlePreview}>
-            <IconButton disabled={!!isLoading}>
+            <IconButton color='primary' disabled={!!isLoading}>
               <VisibilityRoundedIcon />
             </IconButton>
           </MenuItem>
           <MenuItem onClick={handleDownload}>
-            <IconButton disabled={!!isLoading}>
+            <IconButton color='primary' disabled={!!isLoading}>
               {isLoading === 'download' ? <CircularProgress /> : <FileDownloadRoundedIcon />}
             </IconButton>
           </MenuItem>
           <MenuItem onClick={handelDelete}>
-            <IconButton disabled={!!isLoading}>
+            <IconButton color='primary' disabled={!!isLoading}>
               {isLoading === 'delete' ? <CircularProgress /> : <DeleteRoundedIcon />}
             </IconButton>
           </MenuItem>
