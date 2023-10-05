@@ -1,19 +1,21 @@
+import BetweenElse from '@/components/BetweenElse'
+import IndexStepRender from '@/components/IndexStepRender'
+import LinkBehavior from '@/components/LinkBehavior'
 import VerificationWizard from '@/components/VerificationWizard'
 import { addUser, checkUser, sendOTP, verifyOTP } from '@/store/user'
 import handleSignIn from '@/utils/handle-sign-in'
 import schema from '@/utils/validation-schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import LoadingButton from '@mui/lab/LoadingButton'
 import Alert from '@mui/material/Alert'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Link from '@mui/material/Link'
+import Typography from '@mui/material/Typography'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-
-import BetweenElse from '@/components/BetweenElse'
-import IndexStepRender from '@/components/IndexStepRender'
-import LoadingButton from '@mui/lab/LoadingButton'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import { useRouter } from 'next/router'
 
 const validationSchemas = [
   schema([{ field: 'username' }, { field: 'email' }]),
@@ -44,10 +46,6 @@ const Register = () => {
       setServerError(null)
     }
   }, [currentStep])
-
-  const handelCancel = () => {
-    router.push(`/login`)
-  }
 
   const handleOTPSend = async ({ email, username, next = null, tag = null }) => {
     try {
@@ -128,14 +126,18 @@ const Register = () => {
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
         {serverError ? <Alert severity='error'>{serverError}</Alert> : null}
         <IndexStepRender stepIndex={currentStep}>
-          <BetweenElse>
-            <Button variant='outlined' color='secondary' onClick={handelCancel}>
-              Login
-            </Button>
+          <Box display='flex' flexDirection='column' gap={2}>
             <LoadingButton loading={isLoading === 'continue'} type='submit' variant='contained' color='primary'>
               <span>Continue</span>
             </LoadingButton>
-          </BetweenElse>
+            <Typography textAlign='center'>
+              Already have an account?&nbsp;
+              <Link component={LinkBehavior} href='/login'>
+                Login
+              </Link>
+            </Typography>
+          </Box>
+
           <BetweenElse>
             <Box>
               <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
@@ -156,11 +158,10 @@ const Register = () => {
               <span>Verify</span>
             </LoadingButton>
           </BetweenElse>
-          <BetweenElse>
-            <LoadingButton loading={isLoading === 'register'} type='submit' variant='contained' color='primary'>
-              <span>Register</span>
-            </LoadingButton>
-          </BetweenElse>
+
+          <LoadingButton loading={isLoading === 'register'} type='submit' variant='contained' color='primary'>
+            <span>Register</span>
+          </LoadingButton>
         </IndexStepRender>
       </VerificationWizard>
     </FormProvider>

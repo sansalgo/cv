@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Checkbox from '@mui/material/Checkbox'
@@ -17,6 +16,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import Link from '@mui/material/Link'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -72,14 +72,15 @@ const Login = () => {
                   Forgot Password?
                 </Link>
               </BetweenElse>
-              <BetweenElse>
-                <Button variant='outlined' color='secondary' onClick={() => router.push(`/register`)}>
+              <LoadingButton loading={isLoading} type='submit' variant='contained' color='primary'>
+                <span>Login</span>
+              </LoadingButton>
+              <Typography textAlign='center'>
+                Don&lsquo;t have an account?&nbsp;
+                <Link component={LinkBehavior} href='/register'>
                   Register
-                </Button>
-                <LoadingButton loading={isLoading} type='submit' variant='contained' color='primary'>
-                  <span>Login</span>
-                </LoadingButton>
-              </BetweenElse>
+                </Link>
+              </Typography>
             </Stack>
           </CardContent>
         </Card>

@@ -2,8 +2,8 @@ import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
-import VisibilityIcon from '@mui/icons-material/Visibility'
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded'
+import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
 import { useState } from 'react'
 
 const PasswordInput = ({ placeholder, name, register, errors }) => {
@@ -19,7 +19,7 @@ const PasswordInput = ({ placeholder, name, register, errors }) => {
         endAdornment={
           <InputAdornment position='end'>
             <IconButton color='primary' onClick={handleClickShowPassword} edge='end'>
-              {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              {showPassword ? <VisibilityRoundedIcon /> : <VisibilityOffRoundedIcon />}
             </IconButton>
           </InputAdornment>
         }
