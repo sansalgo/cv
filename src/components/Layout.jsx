@@ -1,20 +1,17 @@
 import MuiAppBar from '@mui/material/AppBar'
-import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import MuiToolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
 import { styled, useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import CVLogo from './CVLogo'
 import { destroyCookie } from 'nookies'
+import CVLogo from './CVLogo'
 
 const Layout = ({ children }) => {
   const router = useRouter()
-  const { data: session } = useSession()
   const theme = useTheme()
   const downSM = useMediaQuery(theme.breakpoints.down('sm'))
 
