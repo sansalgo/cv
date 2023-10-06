@@ -57,9 +57,13 @@ const theme = createTheme({
         variant: 'outlined'
       },
       styleOverrides: {
-        root: {
+        outlinedError: {
           color: defaultTheme.palette.error.main,
           border: `1px solid ${defaultTheme.palette.error.main}`
+        },
+        outlinedInfo: {
+          color: defaultTheme.palette.info.main,
+          border: `1px solid ${defaultTheme.palette.info.main}`
         }
       }
     },

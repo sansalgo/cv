@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
+import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -126,7 +127,7 @@ const Forgot = () => {
       <VerificationWizard currentStep={currentStep} onSubmit={onSubmit}>
         {serverError ? <Alert severity='error'>{serverError}</Alert> : null}
         <IndexStepRender stepIndex={currentStep}>
-          <Box display='flex' flexDirection='column' gap={2}>
+          <Stack spacing={2}>
             <LoadingButton loading={isLoading === 'continue'} type='submit' variant='contained' color='primary'>
               <span>Continue</span>
             </LoadingButton>
@@ -136,27 +137,30 @@ const Forgot = () => {
                 Back to login
               </Link>
             </Typography>
-          </Box>
-          <BetweenElse>
-            <Box>
-              <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
-                Back
-              </Button>
-              <LoadingButton
-                loading={isLoading == 'resend'}
-                variant='outlined'
-                onClick={() =>
-                  handleOTPSend({ email: getValues('email'), username: getValues('username'), tag: 'resend' })
-                }
-                color='secondary'
-              >
-                <span>Resend</span>
+          </Stack>
+          <Stack spacing={2}>
+            {!serverError ? <Alert severity='info'>OTP verification code sent to your email</Alert> : null}
+            <BetweenElse>
+              <Box>
+                <Button sx={{ mr: 1 }} onClick={prevStep} variant='outlined' color='secondary'>
+                  Back
+                </Button>
+                <LoadingButton
+                  loading={isLoading == 'resend'}
+                  variant='outlined'
+                  onClick={() =>
+                    handleOTPSend({ email: getValues('email'), username: getValues('username'), tag: 'resend' })
+                  }
+                  color='secondary'
+                >
+                  <span>Resend</span>
+                </LoadingButton>
+              </Box>
+              <LoadingButton loading={isLoading === 'verify'} type='submit' variant='contained' color='primary'>
+                <span>Verify</span>
               </LoadingButton>
-            </Box>
-            <LoadingButton loading={isLoading === 'verify'} type='submit' variant='contained' color='primary'>
-              <span>Verify</span>
-            </LoadingButton>
-          </BetweenElse>
+            </BetweenElse>
+          </Stack>
 
           <BetweenElse>
             <Button variant='outlined' onClick={handelCancel} color='secondary'>
