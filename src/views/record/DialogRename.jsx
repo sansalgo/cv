@@ -22,7 +22,7 @@ const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
   color: disabled ? theme.palette.action.disabled : theme.palette.primary.main
 }))
 
-const DialogRename = ({ id }) => {
+const DialogRename = ({ id, currentFileName }) => {
   const {
     state: { rename_d },
     dispatch: localDispatch
@@ -36,7 +36,7 @@ const DialogRename = ({ id }) => {
     handleSubmit,
     register,
     formState: { errors }
-  } = useForm({ resolver: yupResolver(validationSchema) })
+  } = useForm({ defaultValues: { fileName: currentFileName }, resolver: yupResolver(validationSchema) })
   const onSubmit = data => {
     setIsLoading(true)
     dispatch(renameRecord({ id, fileName: data.fileName }))

@@ -93,7 +93,7 @@ const DialogAction = ({ row }) => {
               <DriveFileRenameOutlineRoundedIcon />
             </IconButton>
           </MenuItem>
-          <DialogRename id={row._id} />
+          <DialogRename id={row._id} currentFileName={row.name} />
           <MenuItem onClick={handleEdit}>
             <IconButton color='primary' disabled={!!isLoading}>
               <ModeEditRoundedIcon />
