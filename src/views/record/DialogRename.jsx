@@ -5,22 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Box, CardContent } from '@mui/material'
 import Button from '@mui/material/Button'
-import MuiCircularProgress from '@mui/material/CircularProgress'
 import Dialog from '@mui/material/Dialog'
 import FormHelperText from '@mui/material/FormHelperText'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Stack from '@mui/material/Stack'
-import { styled } from '@mui/material/styles'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { useDialog } from './DialogContext'
-
-const CircularProgress = styled(MuiCircularProgress)(({ theme, disabled }) => ({
-  width: `${theme.spacing(3.0625)} !important`,
-  height: `${theme.spacing(3.0625)} !important`,
-  color: disabled ? theme.palette.action.disabled : theme.palette.primary.main
-}))
 
 const DialogRename = ({ id, currentFileName }) => {
   const {

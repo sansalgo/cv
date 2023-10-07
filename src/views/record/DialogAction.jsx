@@ -19,6 +19,7 @@ import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { DialogProvider, useDialog } from './DialogContext'
 import DialogRename from './DialogRename'
+import DialogDelete from './DialogDelete'
 
 const CircularProgress = styled(MuiCircularProgress)(({ theme }) => ({
   width: `${theme.spacing(2.5)} !important`,
@@ -69,13 +70,6 @@ const DialogAction = ({ row }) => {
       .finally(() => setIsLoading(null))
   }
 
-  const handelDelete = () => {
-    setIsLoading('delete')
-    dispatch(deleteRecord(row._id))
-      .unwrap()
-      .finally(() => setIsLoading(null))
-  }
-
   return (
     <Fragment>
       <IconButton color='primary' onClick={handleDialogAction} sx={{ padding: 0 }}>
@@ -109,11 +103,12 @@ const DialogAction = ({ row }) => {
               {isLoading === 'download' ? <CircularProgress /> : <FileDownloadRoundedIcon />}
             </IconButton>
           </MenuItem>
-          <MenuItem onClick={handelDelete}>
+          <MenuItem onClick={() => localDispatch({ type: 'delete_d' })}>
             <IconButton color='primary' disabled={!!isLoading}>
               {isLoading === 'delete' ? <CircularProgress /> : <DeleteRoundedIcon />}
             </IconButton>
           </MenuItem>
+          <DialogDelete id={row._id} />
         </MenuList>
       </Dialog>
     </Fragment>

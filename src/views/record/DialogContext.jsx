@@ -12,7 +12,7 @@ export const useDialog = () => {
 }
 
 export const DialogProvider = ({ children }) => {
-  const initialState = { action_d: false, rename_d: false }
+  const initialState = { action_d: false, rename_d: false, delete_d: false }
   const [state, dispatch] = useReducer(dialogReducer, initialState)
 
   return <DialogContext.Provider value={{ state, dispatch }}>{children}</DialogContext.Provider>
