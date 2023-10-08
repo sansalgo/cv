@@ -1,38 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CV
 
-## Getting Started
+CV is a web application built using Next.js and MongoDB that allows users to create and manage their CVs (resumes) online. With features like CV form creation, preview, PDF download, and a CV management dashboard, it makes the process of creating and maintaining CVs easier than ever.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Check out the live demo of CV [here](https://cv-one-alpha.vercel.app/).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- **CV Form**: Create and customize your CV by filling out a user-friendly form.
+- **Preview**: Preview your CV before saving it (after filling out the form).
+- **PDF Download**: Download your CV in PDF format for easy sharing and printing.
+- **CV Management Dashboard**: Manage your CVs with features like delete, edit, and download from the dashboard.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Technologies Used
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- **Next.js**: A React framework for building fast and scalable web applications.
+- **MongoDB**: A NoSQL database for storing user CV data.
+- **Vercel**: Hosting platform for deploying and serving the application.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Usage
 
-## Learn More
+1. Visit the CV application at the provided URL or run it locally.
+2. Click on the `+ New Record` button to start building your CV.
+3. Fill out the CV form with your personal and professional information.
+4. Click the `Preview` button to review your CV's appearance.
+5. If you're satisfied with your CV, click the `Save` button to store it.
+6. You will be redirected to the home page dashboard, where you can `download`, `edit` or `delete` your CVs.
 
-To learn more about Next.js, take a look at the following resources:
+## Sample Screens
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Home Page
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![Home Page](screenshots/HomePage.png)
+The home page provides an overview of the CV Builder application and allows users to create and manage their CVs.
 
-## Deploy on Vercel
+### CV Form
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![CV Form](screenshots/CVForm.png)
+The CV form is where users input their personal and professional information to create a CV.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<!-- ### CV Preview
+![CV Preview](comming soon)
+Users can preview their CV's appearance before saving it. -->
+
+### CV Management Dashboard
+
+![Dashboard](screenshots/CVManagementDashboard.png)
+The dashboard allows users to manage their saved CVs, including downloading, editing, and deleting them.
+
+## Thanks
+
+Thanks to CHATGPT for generating this README.md file! If you have any questions or feedback about this website, please feel free to contact us. We welcome all feedback and suggestions!
+
+## Contribution
+
+Contributions are welcome! If you have any ideas for improvements or find any issues, please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
