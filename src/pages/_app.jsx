@@ -6,6 +6,7 @@ import { CacheProvider } from '@emotion/react'
 import '@fontsource-variable/roboto-slab'
 import '@fontsource/lato'
 import { SessionProvider } from 'next-auth/react'
+import Head from 'next/head'
 import { Router } from 'next/router'
 import { SnackbarProvider } from 'notistack'
 import NProgress from 'nprogress'
@@ -35,6 +36,18 @@ const App = ({ Component, ...rest }) => {
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{`CV Builder - Create Professional Resumes Online | CV`}</title>
+          <meta
+            name='description'
+            content={`Create impressive resumes effortlessly with CV, the best online CV builder. Choose from professionally designed templates and stand out to potential employers.`}
+          />
+          <meta
+            name='keywords'
+            content='CV builder, resume builder, online resume maker, professional CV creator, resume templates'
+          />
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
         <SessionProvider session={session}>
           <Theme>
             <SnackbarProvider
