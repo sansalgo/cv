@@ -1,28 +1,21 @@
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import { StyleSheet, View, Text } from '@react-pdf/renderer'
+import Container from './components/Container'
+import PointText from './components/PointText'
+import Section from './components/Section'
+import SectionTitle from './components/SectionTitle'
 import { usePDFData } from './PDFDataContext'
-import { accessObj } from './utils'
 
 const Extras = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { extras } = usePDFData()
   return (
-    <Box component='section'>
-      <Typography variant='h2' className='extras__heading'>
-        EXTRAS
-      </Typography>
-      <Divider />
-      <ul>
-        {getValue('extras')?.map((element, index) => {
-          return (
-            <li key={index}>
-              <Typography>{element}</Typography>
-            </li>
-          )
-        })}
-      </ul>
-    </Box>
+    <Section>
+      <SectionTitle title='EXTRAS' />
+      <Container>
+        {extras.map((e, i) => (
+          <PointText key={i} text={e} />
+        ))}
+      </Container>
+    </Section>
   )
 }
 

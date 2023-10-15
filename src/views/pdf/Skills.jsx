@@ -1,32 +1,43 @@
-import Box from '@mui/material/Box'
-import Chip from '@mui/material/Chip'
-import Divider from '@mui/material/Divider'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import { accessObj } from './utils'
+import { StyleSheet, View, Text } from '@react-pdf/renderer'
+import Container from './components/Container'
+import Section from './components/Section'
+import SectionTitle from './components/SectionTitle'
+import palette from '@/theme/palette'
 import { usePDFData } from './PDFDataContext'
 
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  roundedLabel: {
+    fontFamily: 'Lato',
+    fontStyle: 'normal',
+    fontSize: 10,
+    padding: 3,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: palette.gray.main,
+    borderRadius: 4,
+    margin: 1
+  }
+})
+
 const Skills = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { skills } = usePDFData()
   return (
-    <Box component='section'>
-      <Typography variant='h2' className='skills__heading'>
-        SKILLS
-      </Typography>
-      <Divider />
-      <Box>
-        <Grid container spacing={0.5}>
-          {getValue('skills')?.map((element, index) => {
-            return (
-              <Grid item key={index}>
-                <Chip label={element} />
-              </Grid>
-            )
-          })}
-        </Grid>
-      </Box>
-    </Box>
+    <Section>
+      <SectionTitle title='SKILLS' />
+      <Container>
+        <View style={styles.container}>
+          {skills.map((s, i) => (
+            <Text key={i} style={styles.roundedLabel}>
+              {s}
+            </Text>
+          ))}
+        </View>
+      </Container>
+    </Section>
   )
 }
 

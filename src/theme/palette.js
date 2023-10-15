@@ -12,5 +12,5 @@ export default {
   },
   blue: '#0039ac',
   orange: '#f3890b',
-  gray: '#2d2d2d'
+  gray: { main: '#666666', dark: '#2d2d2d' }
 }

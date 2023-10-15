@@ -1,44 +1,47 @@
-import IconText from '@/components/IconText'
-import AlternateEmailRoundedIcon from '@mui/icons-material/AlternateEmailRounded'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
-import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
+import palette from '@/theme/palette'
+import { StyleSheet, Text, View } from '@react-pdf/renderer'
 import { usePDFData } from './PDFDataContext'
-import { accessObj } from './utils'
+import IconText from './components/IconText'
+
+const styles = StyleSheet.create({
+  name: {
+    fontFamily: 'RobotoSlab',
+    fontStyle: 'bold',
+    fontSize: 24.5,
+    color: palette.primary.main,
+    textTransform: 'uppercase'
+  },
+  position: {
+    fontFamily: 'Lato',
+    fontStyle: 'bold',
+    fontSize: 12,
+    color: palette.primary.main,
+    textTransform: 'uppercase'
+  },
+  contact: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 5
+  }
+})
 
 const Intro = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { intro } = usePDFData()
+
   return (
-    <Box>
-      <Typography variant='h1'>
-        {getValue('intro.firstName')?.toUpperCase()} {getValue('intro.lastName')?.toUpperCase()}
-      </Typography>
-      <Typography variant='h3'>
-        {getValue('intro.position')?.toUpperCase()}
-      </Typography>
-      <Grid container direction='row' columnSpacing={2} rowSpacing={-1}>
-        <Grid item>
-          <IconText icon={<AlternateEmailRoundedIcon />} text={getValue('intro.email')} />
-        </Grid>
-        <Grid item>
-          <IconText icon={<PhoneRoundedIcon />} text={getValue('intro.phone')} />
-        </Grid>
-        <Grid item>
-          <IconText icon={<LocationOnRoundedIcon />} text={getValue('intro.city')} />
-        </Grid>
-        <Grid item>
-          <IconText icon={<LinkedInIcon />} text={getValue('intro.linkedin')} />
-        </Grid>
-        <Grid item>
-          <IconText icon={<GitHubIcon />} text={getValue('intro.github')} />
-        </Grid>
-      </Grid>
-    </Box>
+    <View>
+      <Text style={styles.name}>
+        {intro.firstName} {intro.lastName}
+      </Text>
+      <Text style={styles.position}>{intro.position}</Text>
+      <View style={styles.contact}>
+        <IconText icon='@' text={intro.email} />
+        <IconText icon='phone-flip' text={intro.phone} />
+        <IconText icon='location-pin' text={intro.city} />
+        <IconText icon='linkedin' text={intro.linkedin} fontStyle='brand' />
+        <IconText icon='github' text={intro.github} fontStyle='brand' />
+      </View>
+    </View>
   )
 }
 

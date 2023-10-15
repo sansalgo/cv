@@ -23,9 +23,10 @@ const DocumentWrapper = styled(Box)(({ theme }) => ({
   '& .react-pdf__Document': {
     maxWidth: '100%',
     position: 'relative',
-    backgroundColor: theme.palette.common.white,
+    backgroundColor: theme.palette.background.default,
     overflow: 'hidden',
     borderRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.divider}`,
     '& .react-pdf__Page': {
       '& .react-pdf__Page__canvas': {
         maxWidth: '100%',
@@ -69,7 +70,7 @@ const CircularProgressWrapper = styled(Box)(() => ({
   aspectRatio: '1 / 1.4142'
 }))
 
-export default () => {
+const Preview = ({ record }) => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
@@ -84,9 +85,9 @@ export default () => {
   }
 
   const onSubmit = async () => {
-    setIsLoading(true)
+    setIsLoading('save')
     if (draft) await axios.patch(`/api/records/drafts/${id}`)
-    setIsLoading(false)
+    setIsLoading(null)
     router.push(`/`)
   }
 
@@ -107,7 +108,10 @@ export default () => {
   }
 
   useEffect(() => {
-    fetchPdfBlob(id).then(blob => setPdfBlob(blob))
+    setIsLoading('pdf')
+    fetchPdfBlob(id)
+      .then(blob => setPdfBlob(blob))
+      .finally(() => setIsLoading(null))
 
     return () => {
       URL.revokeObjectURL(pdfBlob)
@@ -116,7 +120,7 @@ export default () => {
 
   return (
     <div>
-      {pdfBlob ? (
+      {isLoading != 'pdf' ? (
         <DocumentWrapper>
           <Document file={pdfBlob} loading={<CircularProgress />} onLoadSuccess={onDocumentLoadSuccess}>
             <Page pageNumber={pageNumber} renderTextLayer={false} renderAnnotationLayer={false} />
@@ -142,10 +146,12 @@ export default () => {
         <Button variant='outlined' color='secondary' onClick={goBack}>
           Back
         </Button>
-        <LoadingButton color='primary' variant='contained' loading={isLoading} onClick={onSubmit}>
+        <LoadingButton color='primary' variant='contained' loading={isLoading == 'save'} onClick={onSubmit}>
           <span>Save</span>
         </LoadingButton>
       </EndCard>
     </div>
   )
 }
+
+export default Preview

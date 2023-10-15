@@ -1,54 +1,41 @@
-import DashedDivider from '@/components/DashedDivider'
-import IconText from '@/components/IconText'
-import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded'
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded'
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import Stack from '@mui/material/Stack'
-import Typography from '@mui/material/Typography'
-import { Fragment } from 'react'
+import { View, Text, StyleSheet } from '@react-pdf/renderer'
+import DividerSubtitle from './components/DividerSubtitle'
+import SectionTitle from './components/SectionTitle'
+import DatePlaceRow from './components/DatePlaceRow'
+import DashedDivider from './components/DashedDivider'
+import Section from './components/Section'
+import Container from './components/Container'
 import { usePDFData } from './PDFDataContext'
-import { accessObj, formatMonthYear } from './utils'
+import { formatMonthYear } from './utils'
+
+const styles = StyleSheet.create({
+  description: {
+    fontFamily: 'Lato',
+    fontStyle: 'normal',
+    fontSize: 10
+  }
+})
 
 const EmploymentHistory = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { employmentHistory } = usePDFData()
   return (
-    <Box component='section'>
-      <Typography variant='h2' sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-        EMPLOYMENT HISTORY
-      </Typography>
-      <Divider />
-      {getValue('employmentHistory')?.map((element, index) => {
-        return (
-          <Fragment key={index}>
-            <Typography variant='h4' sx={{ fontWeight: 'normal' }} mt={1}>
-              {element.position}{' '}
-              <Box display='inline' color='blue'>
-                | {element.companyName}
-              </Box>
-            </Typography>
-
-            <Stack direction='row' spacing={10} mt={0.5} mb={0.5}>
-              <IconText
-                icon={<CalendarMonthRoundedIcon />}
-                text={`${formatMonthYear(element.startDate)} - ${formatMonthYear(element.endDate)}`}
-              />
-
-              <IconText icon={<LocationOnRoundedIcon />} text={`${element.location}`} />
-            </Stack>
-            <Stack>
-              <Typography variant='caption' color='secondary.main'>
-                Description:
-              </Typography>
-
-              <Typography>{element.description}</Typography>
-            </Stack>
-            {index !== getValue('employmentHistory').length - 1 && <DashedDivider />}
-          </Fragment>
-        )
-      })}
-    </Box>
+    <Section>
+      <SectionTitle title='EMPLOYMENT HISTORY' />
+      {employmentHistory.map(eh => (
+        <Container key={eh._id}>
+          <DividerSubtitle beforeText={eh.position} afterText={eh.companyName} />
+          <DatePlaceRow
+            style={styles.datePlaceRow}
+            date={`${formatMonthYear(eh.startDate)} - ${formatMonthYear(eh.endDate)}`}
+            place={eh.location}
+          />
+          <View style={styles.description}>
+            <Text>Description:</Text>
+            <Text>{eh.description}</Text>
+          </View>
+        </Container>
+      ))}
+    </Section>
   )
 }
 

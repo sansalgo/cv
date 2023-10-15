@@ -1,28 +1,23 @@
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import { StyleSheet, View, Text } from '@react-pdf/renderer'
+import Container from './components/Container'
+import PointText from './components/PointText'
+import Section from './components/Section'
+import SectionTitle from './components/SectionTitle'
 import { usePDFData } from './PDFDataContext'
-import { accessObj } from './utils'
+
+const styles = StyleSheet.create({})
 
 const Achievement = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { achievement } = usePDFData()
   return (
-    <Box component='section'>
-      <Typography variant='h2' className='achievement__heading'>
-        ACHIEVEMENT
-      </Typography>
-      <Divider />
-      <ul>
-        {getValue('achievement')?.map((element, index) => {
-          return (
-            <li key={index}>
-              <Typography> {element}</Typography>
-            </li>
-          )
-        })}
-      </ul>
-    </Box>
+    <Section>
+      <SectionTitle title='ACHIEVEMENT' />
+      <Container>
+        {achievement.map((a, i) => (
+          <PointText key={i} text={a} />
+        ))}
+      </Container>
+    </Section>
   )
 }
 

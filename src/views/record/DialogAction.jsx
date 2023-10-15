@@ -1,4 +1,3 @@
-import { deleteRecord } from '@/store/record'
 import { fetchPdfBlob } from '@/utils/fetch-pdf'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded'
@@ -18,8 +17,8 @@ import { useRouter } from 'next/router'
 import { Fragment, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { DialogProvider, useDialog } from './DialogContext'
-import DialogRename from './DialogRename'
 import DialogDelete from './DialogDelete'
+import DialogRename from './DialogRename'
 
 const CircularProgress = styled(MuiCircularProgress)(({ theme }) => ({
   width: `${theme.spacing(2.5)} !important`,

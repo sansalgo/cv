@@ -1,27 +1,23 @@
-import { Fragment } from 'react'
-import { accessObj } from './utils'
-import Divider from '@mui/material/Divider'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import { StyleSheet, View, Text } from '@react-pdf/renderer'
+import Container from './components/Container'
+import PointText from './components/PointText'
+import Section from './components/Section'
+import SectionTitle from './components/SectionTitle'
 import { usePDFData } from './PDFDataContext'
 
+const styles = StyleSheet.create({})
+
 const Languages = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { languages } = usePDFData()
   return (
-    <Box component='section'>
-      <Typography variant='h2'>LANGUAGES</Typography>
-      <Divider />
-      <ul>
-        {getValue('languages')?.map((element, index) => {
-          return (
-            <li key={index}>
-              <Typography>{element}</Typography>
-            </li>
-          )
-        })}
-      </ul>
-    </Box>
+    <Section>
+      <SectionTitle title='LANGUAGES' />
+      <Container>
+        {languages.map((l, i) => (
+          <PointText key={i} text={l} />
+        ))}
+      </Container>
+    </Section>
   )
 }
 

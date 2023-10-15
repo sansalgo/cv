@@ -1,17 +1,28 @@
-import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import palette from '@/theme/palette'
+import { StyleSheet, Text } from '@react-pdf/renderer'
 import { usePDFData } from './PDFDataContext'
-import { accessObj } from './utils'
+import Container from './components/Container'
+import Section from './components/Section'
+import SectionTitle from './components/SectionTitle'
+
+const styles = StyleSheet.create({
+  summary: {
+    fontFamily: 'Lato',
+    fontStyle: 'italic',
+    fontSize: 12,
+    color: palette.blue
+  }
+})
+
 const ProfileSummary = () => {
-  const data = usePDFData()
-  const getValue = accessObj(data)
+  const { profileSummary } = usePDFData()
   return (
-    <Box component='section'>
-      <Typography variant='h2'>PROFILE SUMMARY</Typography>
-      <Divider />
-      <Typography variant='body1'>{getValue('profileSummary')}</Typography>
-    </Box>
+    <Section>
+      <SectionTitle title='PROFILE SUMMARY' />
+      <Container>
+        <Text style={styles.summary}>{profileSummary}</Text>
+      </Container>
+    </Section>
   )
 }
 
