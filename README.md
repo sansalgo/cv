@@ -40,9 +40,10 @@ The home page provides an overview of the CV Builder application and allows user
 ![CV Form](screenshots/CVForm.png)
 The CV form is where users input their personal and professional information to create a CV.
 
-<!-- ### CV Preview
-![CV Preview](comming soon)
-Users can preview their CV's appearance before saving it. -->
+### CV Preview
+
+![CV Preview](screenshots/CVPreview.png)
+Users can preview their CV's appearance before saving it.
 
 ### CV Management Dashboard
 
